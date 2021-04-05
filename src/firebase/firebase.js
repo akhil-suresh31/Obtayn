@@ -1,16 +1,15 @@
-import firebase from 'firebase/app'
-import 'firebase/auth';
-import 'firebase/firestore';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
-
-var firebaseConfig = {
-    apiKey: "AIzaSyBdW8Jml_3biCK9dzpNydIl_64yH5eh2I4",
-    authDomain: "auth-trial-206b6.firebaseapp.com",
-    projectId: "auth-trial-206b6",
-    storageBucket: "auth-trial-206b6.appspot.com",
-    messagingSenderId: "1066855813620",
-    appId: "1:1066855813620:web:b7e0883e73789e6cf4a9a1"
-  };
+const firebaseConfig = {
+	apiKey: "AIzaSyD1V0foEiKi-bS6VA-c93Flmk2RwAp4pgs",
+	authDomain: "obtayn-rd2931.firebaseapp.com",
+	projectId: "obtayn-rd2931",
+	storageBucket: "obtayn-rd2931.appspot.com",
+	messagingSenderId: "357831469103",
+	appId: "1:357831469103:web:4f45d7be8be886db447eda",
+};
 const app = firebase.initializeApp(firebaseConfig);
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
