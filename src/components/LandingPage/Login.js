@@ -5,12 +5,9 @@ import { auth, db, googleProvider } from "../../firebase/firebase";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-function SignUp() {
+function Login() {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
-	const [confirmPass, setConfirmPass] = useState("");
-	const [fullName, setFullName] = useState("");
-	const [phoneNo, setPhoneNo] = useState("");
 	const [disableButton, setDisableButton] = useState(false);
 	const [error, setError] = useState(false);
 
@@ -52,58 +49,31 @@ function SignUp() {
 	var handleSubmit = async (e) => {
 		e.preventDefault();
 		setDisableButton(true);
-		if (pass !== confirmPass) {
-			console.log("nope");
-			alert("noope");
-			setDisableButton(false);
-			return;
-		}
-		if (pass.length < 6) {
-			alert("passwords needs to be more than 6 characters");
-			setDisableButton(false);
-			return;
-		}
+
 		var userCredentials = await auth
-			.createUserWithEmailAndPassword(email, pass)
+			.signInWithEmailAndPassword(email, pass)
 			.catch((error) => {
 				setError(true);
 				console.log(error.code);
-				console.log(error.message);
+				var errorMessage = error.message;
 				setDisableButton(false);
-				alert(error.message);
-				return;
+				alert(errorMessage);
+				return ;
 			});
 		if (error) {
-			return;
+			console.log('yup error');
+			return ;
 		}
 		const user = userCredentials.user;
-		await user
-			.updateProfile({
-				displayName: fullName,
-				photoURL: "",
-			})
-			.catch((error) => {
-				console.log(error.code);
-				console.log(error.message);
-			});
-
-		await db
-			.collection("User")
-			.doc(user.uid)
-			.set({
-				name: user.displayName,
-				profile_picture: user.photoURL,
-				phone_number: phoneNo,
-			})
-			.catch((error) => {
-				console.log(error.code);
-				console.log(error.message);
-			});
-
-		console.log("Doc added with id :", user.uid);
-		user.sendEmailVerification();
+		if (!user.emailValidated) {
+			alert("Email Not validated please validate to continue")
+			
 		setDisableButton(false);
-		console.log("sign up completed");
+			return;
+		}
+		setDisableButton(false);
+		console.log("login successful");
+		alert("welcomee");
 	};
 
 	return (
@@ -117,23 +87,20 @@ function SignUp() {
 							className="d-flex flex-column justify-content-center"
 						>
 							<Row className=" d-flex align-content-center ">
-								<h3>Join Us Now!</h3>
+								<Col className="d-flex flex-column justify-content-center">
+									<Row>
+										<h3>Welcome Back!</h3>
+									</Row>
+									<Row>
+										<h3>Login</h3>
+									</Row>
+								</Col>
 							</Row>
 							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput">
-									<Form.Control
-										required={true}
-										type="text"
-										placeholder="Enter Name"
-										value={fullName}
-										onChange={(e) => {
-											setFullName(e.target.value);
-										}}
-									/>
-								</Form.Group>
-							</Row>
-							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput">
+								<Form.Group
+									controlId="formBasicEmail"
+									className="formInput"
+								>
 									<Form.Control
 										required={true}
 										type="email"
@@ -145,9 +112,11 @@ function SignUp() {
 									/>
 								</Form.Group>
 							</Row>
-
 							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput">
+								<Form.Group
+									controlId="formBasicPassword"
+									className="formInput"
+								>
 									<Form.Control
 										required={true}
 										type="password"
@@ -155,39 +124,6 @@ function SignUp() {
 										value={pass}
 										onChange={(e) => {
 											setpass(e.target.value);
-										}}
-									/>
-								</Form.Group>
-							</Row>
-							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput mt-0">
-									<Form.Text className="text-muted">
-										Your password must be 6-20 characters
-										long.
-									</Form.Text>
-								</Form.Group>
-							</Row>
-							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput">
-									<Form.Control
-										required={true}
-										type="password"
-										placeholder="Confirm Password"
-										value={confirmPass}
-										onChange={(e) => {
-											setConfirmPass(e.target.value);
-										}}
-									/>
-								</Form.Group>
-							</Row>
-							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput">
-									<Form.Control
-										type="number"
-										placeholder="Enter Contact number"
-										value={phoneNo}
-										onChange={(e) => {
-											setPhoneNo(e.target.value);
 										}}
 									/>
 								</Form.Group>
@@ -202,8 +138,10 @@ function SignUp() {
 									>
 										<img
 											style={{
-												maxHeight: "46px",
-												maxWidth: "191px",
+												height: "46px",
+												width: "191px",
+												maxHeight: "100%",
+												maxWidth: "100%",
 											}}
 											src="/images/google-button.png"
 											alt=""
@@ -218,7 +156,7 @@ function SignUp() {
 										type="submit"
 										disabled={disableButton}
 									>
-										Sign Up
+										Login
 									</Button>
 								</Form.Group>
 							</Row>
@@ -230,4 +168,4 @@ function SignUp() {
 	);
 }
 
-export default SignUp;
+export default Login;
