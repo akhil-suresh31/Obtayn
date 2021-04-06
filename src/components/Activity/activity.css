@@ -1,0 +1,6 @@
+.homepage-activity {
+    height: 90vh;
+	width: 25vw;
+	/* background-color: var(--activityBg); */
+    float: right;
+}

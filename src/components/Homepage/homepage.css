@@ -1,7 +1,60 @@
-.create-post{
-    height: 90%;
+:root{
+    /* --navbarBg: #1e2f4d;
+    --feedBg: #c8e2e1;
+    --activityBg: #ccddef;
+    --createPost: #9dc39c; */
+    /* --navbarBg: #6fc7e1; */
+    --navbarBg: #238aa9;
+    --feedBg: #c8e2e1;
+    --activityBg: #fde3c8;
+    --createPost: #ffa883;
 }
 
-/* .add-request-button{
-    padding-left: 80%;
-} */
+.create-post-avatar{
+    width: min-content;
+    margin-left: 3vw;
+    margin-bottom: 1vh;
+}
+
+.create-post-div{
+    height: 15vh;
+    width: 64vw;
+    border-radius: 5px;
+    margin-top: 5vh;
+    background-color: var(--createPost);
+    display: flex;
+}
+
+.homepage-body {
+	height: 90vh;
+    width: 100vw;
+}
+
+.homepage-feed {
+    height: 90vh;
+	width: 75vw;
+	/* background-color: var(--feedBg); */
+    float: left;
+    overflow-y: scroll;
+}
+
+.create-post-input{
+    margin-top: 2vh;
+    margin-left: 1vw;
+    margin-right: 4vw;
+}
+
+.homepage-navbar {
+	height: 10vh !important;
+    background-color: var(--navbarBg) !important;
+}
+
+.icons{
+    margin-top: 3vh;
+    height: 4vh;
+}
+
+.post-input{
+    width: 20vw;
+    padding-right: 10vw;
+}

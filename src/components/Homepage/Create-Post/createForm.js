@@ -1,24 +1,38 @@
 import { React, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import FormControl from "react-bootstrap/FormControl";
 import { Row, Col } from "react-bootstrap";
 import "../homepage.css";
 
 function CreateForm({ selectedTag }) {
 	const [validated, setValidated] = useState(false);
+	const [file, setFile] = useState(null);
+	const [error, setError] = useState(null);
+	const types = ["image/png", "image/jpeg"];
 
-	const handleSubmit = (event) => {
-		const form = event.currentTarget;
+	const handleSubmit = (e) => {
+		const form = e.currentTarget;
 		if (form.checkValidity() === false) {
-			event.preventDefault();
-			event.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 		}
 
 		setValidated(true);
 	};
 
-	if (selectedTag == "Request")
+	const handleChange = (e) => {
+		let selected = e.target.files[0];
+
+		if (selected && types.includes(selected.type)) {
+			setFile(selected);
+			setError("");
+		} else {
+			setFile(null);
+			setError("Please select an image file (png or jpg)");
+		}
+	};
+
+	if (selectedTag === "Request")
 		return (
 			<div>
 				<br />
@@ -101,6 +115,7 @@ function CreateForm({ selectedTag }) {
 									required
 									name="file"
 									label="Add Image"
+									onChange={handleChange}
 								/>
 								<Form.Control.Feedback>
 									Looks good!
@@ -108,6 +123,8 @@ function CreateForm({ selectedTag }) {
 								<Form.Control.Feedback type="invalid">
 									Please choose a valid image.
 								</Form.Control.Feedback>
+								{error && <div className="error">{error}</div>}
+								{file && <div>{file.name}</div>}
 							</Form.Group>
 						</Col>
 					</Row>
@@ -127,7 +144,7 @@ function CreateForm({ selectedTag }) {
 				</Form>
 			</div>
 		);
-	else
+	else if (selectedTag === "Post")
 		return (
 			//Add post form
 			<div>
@@ -183,7 +200,7 @@ function CreateForm({ selectedTag }) {
 							</Form.Group>
 						</Col>
 						<Col>
-                        <br />
+							<br />
 							<Button
 								className="add-post-button"
 								variant="dark"
@@ -196,6 +213,7 @@ function CreateForm({ selectedTag }) {
 				</Form>
 			</div>
 		);
+	else return <div></div>;
 }
 
 export default CreateForm;

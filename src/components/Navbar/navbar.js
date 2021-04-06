@@ -1,24 +1,20 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-// import Form from "react-bootstrap/Form";
-// import Button from "react-bootstrap/Button";
-// import FormControl from "react-bootstrap/FormControl";
-// import NavDropdown from "react-bootstrap/NavDropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Avatar from "react-avatar";
 import "./navbar.css";
-import CreatePostModal from '../Homepage/Create-Post/createPost';
+import CreatePostModal from "../Homepage/Create-Post/createPost";
+import SearchBar from "./searchBar";
+import { ChatRightTextFill } from "react-bootstrap-icons";
 
 export default function NavBar() {
 	return (
 		<>
 			<Navbar
-				bg="dark"
-				variant="dark"
 				expand="lg"
-				className="justify-content-between"
+				className="justify-content-between homepage-navbar"
 			>
 				<Navbar.Brand href="#home">
 					<img
@@ -30,61 +26,49 @@ export default function NavBar() {
 					/>{" "}
 					Obtayn
 				</Navbar.Brand>
+
 				<Navbar.Toggle />
+
 				<Navbar.Collapse>
-					<Nav className="mr-auto">
-						<Nav.Link href="#home">Feed</Nav.Link>
-						<Nav.Link href="#requests">Requests</Nav.Link>
+					<Nav className="mr-auto justify-content-center">
+						<Nav.Link href="#home" style={{color:'white'}}>Feed</Nav.Link>
+						<Nav.Link href="#requests" style={{color:'white'}}>Requests</Nav.Link>
+					</Nav>
+					<SearchBar />
+					<Nav className="justify-content-end">
 						<Nav.Link href="#create-post">
 							<CreatePostModal />
 						</Nav.Link>
+
 						<Nav.Link href="#chat">
-							<img
-								className="chat"
-								src="images/chat.svg"
+							<ChatRightTextFill
+								className="chat-icon"
+								size={27}
+								color="white"
 							/>
 						</Nav.Link>
 					</Nav>
-					{/* <Form inline className="nav-search-bar">
-						<FormControl
-							type="text"
-							placeholder="search"
-							className="mr-sm-2"
-						/>
-						<Button variant="dark">search</Button>
-					</Form> */}
-					<Nav>
-						{/* <NavDropdown
-							className="profile-dropdown"
-							title="Jordan29"
-							menuAlign="right"
-						>
-							<NavDropdown.Item>Jordan</NavDropdown.Item>
-							<NavDropdown.Item>
-								jordan@hotmail.com2
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item href="#logout">
-								Logout
-							</NavDropdown.Item>
-						</NavDropdown> */}
-
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<Nav className="justify-content-end">
 						<DropdownButton
 							menuAlign="right"
 							title="Jordan"
 							id="dropdown-menu-align-right"
 							variant="light"
+							className="navbar-profile"
 						>
 							<center>
 								<Dropdown.ItemText>
 									<Avatar
 										size="60"
-										src="images/man.jpg"
+										src="images/user1.jpg"
 										round={true}
 									/>
+
 									<img
 										className="edit-profile"
 										src="images/pen-fill.svg"
+										alt=""
 									/>
 								</Dropdown.ItemText>
 								<Dropdown.Divider />

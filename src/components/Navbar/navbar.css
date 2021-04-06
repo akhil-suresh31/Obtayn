@@ -1,7 +1,41 @@
+.brand-name{
+    color: #f5c265;
+    font-weight: bold;
+}
+
+.chat{
+    height: 5vh;
+    margin-left: 2vw;
+}
+
+.chat-icon{
+    margin-left: 1vw;
+}
+
+.create-post {
+	height: 5vh;
+    margin-left: 12vw;
+}
+
 .edit-profile{
     padding-top: 20%;
 }
 
-.chat{
-    height: 90%;
+.icons{
+    margin-left: 1vw;
+}
+
+.navbar-profile{
+    margin-right: 1vw;
+    margin-left: 3vw;
+}
+
+.search-group{
+    padding-top: 2vh;
+    padding-left: 5vw;
+    margin-right: 10vw;
+}
+
+.search-input{
+    width: 10vw !important;
 }
