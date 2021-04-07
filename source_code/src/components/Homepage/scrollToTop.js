@@ -1,37 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { ArrowUpCircleFill } from "react-bootstrap-icons";
+import "./homepage.css";
 
-export default function ScrollToTop() {
-	const [isVisible, setIsVisible] = useState(false);
+const ScrollToTop = () => {
+	const [showScroll, setShowScroll] = useState(false);
 
-	const toggleVisibility = () => {
-		if (window.pageYOffset > 150) {
-			setIsVisible(true);
-		} else {
-			setIsVisible(false);
+	const checkScrollTop = () => {
+		if (!showScroll && window.pageYOffset > 200) {
+			setShowScroll(true);
+		} else if (showScroll && window.pageYOffset <= 200) {
+			setShowScroll(false);
 		}
 	};
 
-	const scrollToTop = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: "smooth",
-		});
+	const scrollTop = () => {
+		console.log("****");
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
-	useEffect(() => {
-		window.addEventListener("scroll", toggleVisibility);
-	}, []);
+	window.addEventListener("scroll", checkScrollTop);
 
 	return (
-		<div className="scroll-to-top">
-			{isVisible && (
-				<div onClick={scrollToTop}>
-					<img
-						src="https://i.postimg.cc/44Ytsk8Z/top-arrow-emoj.png"
-						alt="Go to top"
-					/>
-				</div>
-			)}
-		</div>
+		<ArrowUpCircleFill
+			className="scrollTop"
+			onClick={scrollTop}
+			// style={{ height: 40, display: showScroll ? "flex" : "none" }}
+			style={{ height: 40, display: "flex" }}
+		/>
 	);
-}
+};
+
+export default ScrollToTop;

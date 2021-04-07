@@ -1,0 +1,21 @@
+h4 {
+	color: white;
+	padding-top: 5vh;
+}
+
+.homepage-activity {
+	height: 90vh;
+	width: 25vw;
+	background-color: var(--activityBg);
+	float: right;
+}
+
+.activity-notif {
+	min-height: 10vh;
+	width: 20vw;
+	border-radius: 5px;
+	margin-top: 4vh;
+	margin-left: 5vh;
+	background-color: var(--notifBg);
+	padding: 2%;
+}

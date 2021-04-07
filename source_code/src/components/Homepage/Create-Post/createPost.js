@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
+import {Modal, DropdownButton, Dropdown} from "react-bootstrap";
+import { FileEarmarkPlusFill } from "react-bootstrap-icons";
 import "../homepage.css";
 import CreateForm from "./createForm";
-import { FileEarmarkPlusFill } from "react-bootstrap-icons";
+
 
 function CreatePostModal() {
 	const [show, setShow] = useState(false);

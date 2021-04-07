@@ -3,11 +3,18 @@ import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
 import Avatar from "react-avatar";
 import { ChatRightTextFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
-import CreatePostModal from "../Homepage/Create-Post/createPost";
+import CreatePostModal from "../Create-Post/createPost";
 import SearchBar from "./searchBar";
 import "./navbar.css";
 
 export default function NavBar() {
+	const User = {
+		avatar: "images/user1.jpg",
+		name: "Jordan",
+		email: "jordan@hotmail.com",
+		contactNumber: "1234567890",
+	};
+
 	return (
 		<>
 			<Navbar
@@ -29,11 +36,15 @@ export default function NavBar() {
 
 				<Navbar.Collapse>
 					<Nav className="mr-auto justify-content-center">
-						<Nav.Link href="#home" style={{ color: "white" }}>
-							Feed
+						<Nav.Link>
+							<Link to="/home" style={{ color: "white" }}>
+								Feed
+							</Link>
 						</Nav.Link>
-						<Nav.Link href="#requests" style={{ color: "white" }}>
-							Requests
+						<Nav.Link>
+							<Link to="/requests" style={{ color: "white" }}>
+								My Requests
+							</Link>
 						</Nav.Link>
 					</Nav>
 					<SearchBar />
@@ -54,7 +65,7 @@ export default function NavBar() {
 					<Nav className="justify-content-end">
 						<DropdownButton
 							menuAlign="right"
-							title="Jordan"
+							title={User.name}
 							id="dropdown-menu-align-right"
 							variant="light"
 							className="navbar-profile"
@@ -63,7 +74,7 @@ export default function NavBar() {
 								<Dropdown.ItemText>
 									<Avatar
 										size="60"
-										src="images/user1.jpg"
+										src={User.avatar}
 										round={true}
 									/>
 
@@ -75,13 +86,13 @@ export default function NavBar() {
 								</Dropdown.ItemText>
 								<Dropdown.Divider />
 								<Dropdown.ItemText eventKey="1">
-									Jordan Fisher
+									{User.name}
 								</Dropdown.ItemText>
 								<Dropdown.ItemText eventKey="2">
-									jordan@hotmail.com
+									{User.email}
 								</Dropdown.ItemText>
 								<Dropdown.ItemText eventKey="2">
-									0987654321
+									{User.contactNumber}
 								</Dropdown.ItemText>
 								<Dropdown.Divider />
 								<Dropdown.Item eventKey="4" href="#logout">

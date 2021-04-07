@@ -1,13 +1,7 @@
-:root {
-	--feedContainerBg: #2b4f60;
-	/* --postBg: #ccddef; */
-	--postBg: #faf2e8;
-}
-
 .feed-container {
-	width: 69vw;
+	width: 65vw;
 	border-radius: 5px;
-	margin-left: 2vw;
+	margin-left: 5vw;
 	margin-top: 3vh;
 }
 
@@ -19,5 +13,5 @@
 	border-radius: 5px;
 	margin: 3%;
 	background-color: var(--postBg);
-	box-shadow: 5px 5px #79797971;
+	/* box-shadow: 5px 5px #79797971; */
 }
