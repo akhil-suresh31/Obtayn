@@ -1,22 +1,23 @@
-:root{
-    --feedContainerBg: #2b4f60;
-    /* --postBg: #ccddef; */
-    --postBg: #faf2e8;
+:root {
+	--feedContainerBg: #2b4f60;
+	/* --postBg: #ccddef; */
+	--postBg: #faf2e8;
 }
 
-.feed-container{    
-    width: 69vw;
-    border-radius: 5px;
-    margin-left: 2vw;
-    margin-top: 3vh;
+.feed-container {
+	width: 69vw;
+	border-radius: 5px;
+	margin-left: 2vw;
+	margin-top: 3vh;
 }
 
-.post-container{
-    padding: 2%;
+.post-container {
+	padding: 2%;
 }
 
-.feed-post{
-    border-radius: 5px;
-    margin: 3%;
-    background-color: var(--postBg);
+.feed-post {
+	border-radius: 5px;
+	margin: 3%;
+	background-color: var(--postBg);
+	box-shadow: 5px 5px #79797971;
 }

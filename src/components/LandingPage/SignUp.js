@@ -1,30 +1,27 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { auth, db, googleProvider } from "../../firebase/firebase";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Form, Button, Row, Col, Alert } from "react-bootstrap";
 
-function SignUp() {
+function SignUp({ setLogin }) {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
 	const [confirmPass, setConfirmPass] = useState("");
 	const [fullName, setFullName] = useState("");
 	const [phoneNo, setPhoneNo] = useState("");
 	const [disableButton, setDisableButton] = useState(false);
-	const [error, setError] = useState(false);
+	const [error, setError] = useState("");
 
 	var signInGoogle = async (e) => {
 		e.preventDefault();
 		setDisableButton(true);
-		var result = await auth
-			.signInWithPopup(googleProvider)
-			.catch((error) => {
-				console.log(error.code);
-				console.log(error.message);
-				setDisableButton(false);
-				return;
-			});
+		try {
+			setError("");
+			var result = await auth.signInWithPopup(googleProvider);
+		} catch (err) {
+			console.log(err.code);
+			setDisableButton(false);
+			return setError(err.message);
+		}
 		const user = result.user;
 		var docRef = db.collection("User").doc(user.uid);
 		var doc = await docRef.get();
@@ -45,7 +42,7 @@ function SignUp() {
 				});
 			console.log("Doc added with id :", user.uid);
 		}
-
+		setLogin(true);
 		setDisableButton(false);
 	};
 
@@ -53,29 +50,25 @@ function SignUp() {
 		e.preventDefault();
 		setDisableButton(true);
 		if (pass !== confirmPass) {
-			console.log("nope");
-			alert("noope");
 			setDisableButton(false);
-			return;
+			return setError("Password does not match,Try Again!");
 		}
 		if (pass.length < 6) {
-			alert("passwords needs to be more than 6 characters");
 			setDisableButton(false);
-			return;
+			return setError("passwords needs to be more than 6 characters");
 		}
-		var userCredentials = await auth
-			.createUserWithEmailAndPassword(email, pass)
-			.catch((error) => {
-				setError(true);
-				console.log(error.code);
-				console.log(error.message);
-				setDisableButton(false);
-				alert(error.message);
-				return;
-			});
-		if (error) {
-			return;
+		try {
+			setError("");
+			var userCredentials = await auth.createUserWithEmailAndPassword(
+				email,
+				pass
+			);
+		} catch (err) {
+			console.log(err.code);
+			setDisableButton(false);
+			return setError(err.message);
 		}
+
 		const user = userCredentials.user;
 		await user
 			.updateProfile({
@@ -103,6 +96,7 @@ function SignUp() {
 		console.log("Doc added with id :", user.uid);
 		user.sendEmailVerification();
 		setDisableButton(false);
+		setLogin(true);
 		console.log("sign up completed");
 	};
 
@@ -117,8 +111,9 @@ function SignUp() {
 							className="d-flex flex-column justify-content-center"
 						>
 							<Row className=" d-flex align-content-center ">
-								<h3>Join Us Now!</h3>
+								<h2>Join Us Now!</h2>
 							</Row>
+							{error && <Alert variant="danger">{error}</Alert>}
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput">
 									<Form.Control

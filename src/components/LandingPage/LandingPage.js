@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import Carousel from "react-bootstrap/Carousel";
-import Button from "react-bootstrap/Button";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
-import "./LandingPage.css";
+import { Carousel, Button, Jumbotron, Container } from "react-bootstrap";
+import { AnimatePresence, motion } from "framer-motion";
 import SignUp from "./SignUp";
 import Login from "./Login";
+import "./LandingPage.css";
 
 function LandingPage() {
 	const [login, setLogin] = useState(true);
@@ -47,7 +45,7 @@ function LandingPage() {
 							alt=""
 						/>
 					</Carousel.Item>
-					
+
 					<div className="contents">
 						<Jumbotron className="jumbotron-bg">
 							<Container>
@@ -89,9 +87,37 @@ function LandingPage() {
 								{login ? "Get Started" : "Login Instead"}
 							</Button>
 						</div>
-						<div className="Form-Container">
-							{login ? <Login /> : <SignUp />}
-						</div>
+						<AnimatePresence>
+							<div className="Form-Container">
+								{login ? (
+									<motion.div
+										key="login"
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{
+											ease: "easeIn",
+											duration: 0.75,
+										}}
+										exit={{ opacity: 0 }}
+									>
+										<Login />
+									</motion.div>
+								) : (
+									<motion.div
+										key="signup"
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{
+											ease: "easeIn",
+											duration: 0.75,
+										}}
+										exit={{ opacity: 0 }}
+									>
+										<SignUp setLogin={setLogin} />
+									</motion.div>
+								)}
+							</div>
+						</AnimatePresence>
 					</div>
 				</Carousel>
 			</div>

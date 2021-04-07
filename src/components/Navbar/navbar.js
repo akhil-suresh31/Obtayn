@@ -1,13 +1,11 @@
 import React from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
+import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
 import Avatar from "react-avatar";
-import "./navbar.css";
+import { ChatRightTextFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import CreatePostModal from "../Homepage/Create-Post/createPost";
 import SearchBar from "./searchBar";
-import { ChatRightTextFill } from "react-bootstrap-icons";
+import "./navbar.css";
 
 export default function NavBar() {
 	return (
@@ -31,8 +29,12 @@ export default function NavBar() {
 
 				<Navbar.Collapse>
 					<Nav className="mr-auto justify-content-center">
-						<Nav.Link href="#home" style={{color:'white'}}>Feed</Nav.Link>
-						<Nav.Link href="#requests" style={{color:'white'}}>Requests</Nav.Link>
+						<Nav.Link href="#home" style={{ color: "white" }}>
+							Feed
+						</Nav.Link>
+						<Nav.Link href="#requests" style={{ color: "white" }}>
+							Requests
+						</Nav.Link>
 					</Nav>
 					<SearchBar />
 					<Nav className="justify-content-end">
@@ -83,7 +85,7 @@ export default function NavBar() {
 								</Dropdown.ItemText>
 								<Dropdown.Divider />
 								<Dropdown.Item eventKey="4" href="#logout">
-									Logout
+									<Link to="/">Logout</Link>
 								</Dropdown.Item>
 							</center>
 						</DropdownButton>

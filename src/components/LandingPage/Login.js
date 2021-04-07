@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { auth, db, googleProvider } from "../../firebase/firebase";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Form, Button, Row, Col, Alert } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 function Login() {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
 	const [disableButton, setDisableButton] = useState(false);
-	const [error, setError] = useState(false);
+	const [error, setError] = useState("");
+	const history = useHistory();
 
 	var signInGoogle = async (e) => {
 		e.preventDefault();
 		setDisableButton(true);
-		var result = await auth
-			.signInWithPopup(googleProvider)
-			.catch((error) => {
-				console.log(error.code);
-				console.log(error.message);
-				setDisableButton(false);
-				return;
-			});
+		try {
+			setError("");
+			var result = await auth.signInWithPopup(googleProvider);
+		} catch (err) {
+			console.log(err.code);
+			console.log(err.message);
+			setDisableButton(false);
+			return setError(err.code);
+		}
 		const user = result.user;
 		var docRef = db.collection("User").doc(user.uid);
 		var doc = await docRef.get();
@@ -42,38 +42,35 @@ function Login() {
 				});
 			console.log("Doc added with id :", user.uid);
 		}
-
+		history.push("/home");
 		setDisableButton(false);
 	};
 
 	var handleSubmit = async (e) => {
 		e.preventDefault();
 		setDisableButton(true);
+		try {
+			setError("");
+			var userCredentials = await auth.signInWithEmailAndPassword(
+				email,
+				pass
+			);
+		} catch (err) {
+			console.log(err.code);
+			setDisableButton(false);
+			return setError(err.message);
+		}
 
-		var userCredentials = await auth
-			.signInWithEmailAndPassword(email, pass)
-			.catch((error) => {
-				setError(true);
-				console.log(error.code);
-				var errorMessage = error.message;
-				setDisableButton(false);
-				alert(errorMessage);
-				return ;
-			});
-		if (error) {
-			console.log('yup error');
-			return ;
-		}
 		const user = userCredentials.user;
-		if (!user.emailValidated) {
-			alert("Email Not validated please validate to continue")
-			
+		// if (!user.emailValidated) {
+		// 	alert("Email Not validated please validate to continue");
+
+		// 	setDisableButton(false);
+		// 	return;
+		// }
 		setDisableButton(false);
-			return;
-		}
-		setDisableButton(false);
-		console.log("login successful");
-		alert("welcomee");
+		console.log("login successful", user.uid);
+		history.push("/home");
 	};
 
 	return (
@@ -87,15 +84,9 @@ function Login() {
 							className="d-flex flex-column justify-content-center"
 						>
 							<Row className=" d-flex align-content-center ">
-								<Col className="d-flex flex-column justify-content-center">
-									<Row>
-										<h3>Welcome Back!</h3>
-									</Row>
-									<Row>
-										<h3>Login</h3>
-									</Row>
-								</Col>
+								<h2>Welcome Back!</h2>
 							</Row>
+							{error && <Alert variant="danger">{error}</Alert>}
 							<Row className="d-flex align-content-center">
 								<Form.Group
 									controlId="formBasicEmail"
