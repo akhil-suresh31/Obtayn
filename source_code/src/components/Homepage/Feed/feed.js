@@ -1,10 +1,8 @@
-import { React, useState } from "react";
-import { Media, NavItem } from "react-bootstrap";
+import { React } from "react";
+import { Media } from "react-bootstrap";
 import { motion } from "framer-motion";
 import { Posts } from "./feed-data.js";
 import "./feed.css";
-
-console.log(Posts);
 
 const Feed = () => {
 	return (
