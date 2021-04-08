@@ -1,17 +1,19 @@
-const initState = {
-	requests: [
-		{
-			title: "Well plis get me stuff",
-			message: "Plis guys plis someone get me jackfruit chips",
-		},
-		{
-			title: "hi plis saree",
-			message: "Plis me sarree whwerever tada tahnkssxx xoxoxo",
-		},
-	],
-};
+import { Posts } from "../../components/Homepage/Feed/feed-data";
+
+const initState = { requests: Posts };
 
 const requestReducer = (state = initState, action) => {
-	return state;
+	switch (action.type) {
+		case "CREATE_REQUEST":
+			console.log("created request", action.request);
+			return state;
+
+		case "CREATE_REQUEST_ERROR":
+			console.log("error to create reqquest", action.code);
+			return state;
+
+		default:
+			return state;
+	}
 };
 export default requestReducer;

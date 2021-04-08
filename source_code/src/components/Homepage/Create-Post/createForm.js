@@ -2,9 +2,11 @@ import { React, useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
+import { connect } from "react-redux";
+import { createRequest } from "../../../store/actions/requestActions";
 import "../homepage.css";
 
-function CreateForm({ selectedTag }) {
+function CreateForm({ selectedTag, createRequest, modalClose }) {
 	const [validated, setValidated] = useState(false);
 	const [file, setFile] = useState(null);
 	const [error, setError] = useState(null);
@@ -12,14 +14,16 @@ function CreateForm({ selectedTag }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const form = e.currentTarget;
+		setValidated(true);
+		const form = e.target;
 		if (form.checkValidity() === false) {
 			e.stopPropagation();
+			return;
 		}
-		setValidated(true);
-		const formData = new FormData(e.target);
+		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
-		console.log(formDataObj);
+		modalClose();
+		if (selectedTag === "Request") createRequest(formDataObj);
 	};
 
 	useEffect(() => {
@@ -90,7 +94,6 @@ function CreateForm({ selectedTag }) {
 							rows={3}
 							required
 							name="message"
-							// hasValidation
 						/>
 						<Form.Control.Feedback>
 							Looks good!
@@ -109,12 +112,13 @@ function CreateForm({ selectedTag }) {
 									required
 									name="category"
 								>
-									<option>Choose...</option>
+									<option disabled={true}>Choose...</option>
 									<option>Clothing</option>
 									<option>Electronics</option>
 									<option>Food</option>
 									<option>Hobbies</option>
 									<option>Home & Living</option>
+									<option>Other</option>
 								</Form.Control>
 								<Form.Control.Feedback>
 									Looks good!
@@ -128,7 +132,6 @@ function CreateForm({ selectedTag }) {
 							<Form.Group>
 								<Form.File
 									className="position-relative"
-									required
 									name="file"
 									label="Add Image"
 									onChange={handleChange}
@@ -194,7 +197,6 @@ function CreateForm({ selectedTag }) {
 							rows={3}
 							required
 							name="message"
-							// hasValidation
 						/>
 						<Form.Control.Feedback>
 							Looks good!
@@ -208,7 +210,6 @@ function CreateForm({ selectedTag }) {
 							<Form.Group>
 								<Form.File
 									className="position-relative"
-									required
 									name="file"
 									label="Add Image"
 								/>
@@ -236,5 +237,10 @@ function CreateForm({ selectedTag }) {
 		);
 	else return <div></div>;
 }
+const mapDispatchToProps = (dispatch) => {
+	return {
+		createRequest: (request) => dispatch(createRequest(request)),
+	};
+};
 
-export default CreateForm;
+export default connect(null, mapDispatchToProps)(CreateForm);

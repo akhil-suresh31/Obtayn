@@ -41,7 +41,7 @@ function CreatePostModal() {
 						</Dropdown.Item>
 						<Dropdown.Item eventKey="Post">Post</Dropdown.Item>
 					</DropdownButton>
-					<CreateForm selectedTag={tag} />
+					<CreateForm selectedTag={tag} modalClose={handleClose} />
 				</Modal.Body>
 			</Modal>
 		</>
