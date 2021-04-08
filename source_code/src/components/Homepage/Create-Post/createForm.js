@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
@@ -11,14 +11,23 @@ function CreateForm({ selectedTag }) {
 	const types = ["image/png", "image/jpeg"];
 
 	const handleSubmit = (e) => {
+		e.preventDefault();
 		const form = e.currentTarget;
 		if (form.checkValidity() === false) {
-			e.preventDefault();
 			e.stopPropagation();
 		}
-
 		setValidated(true);
+		const formData = new FormData(e.target);
+		const formDataObj = Object.fromEntries(formData.entries());
+		console.log(formDataObj);
 	};
+
+	useEffect(() => {
+		if (document.getElementsByName("form")[0]) {
+			document.getElementsByName("form")[0].reset();
+			setValidated(false);
+		}
+	}, [selectedTag]);
 
 	const handleChange = (e) => {
 		let selected = e.target.files[0];
@@ -36,14 +45,19 @@ function CreateForm({ selectedTag }) {
 		return (
 			<div>
 				<br />
-				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				<Form
+					noValidate
+					validated={validated}
+					onSubmit={handleSubmit}
+					name="form"
+				>
 					<Row>
 						<Col>
 							<Form.Control
 								required
 								type="text"
-								controlId="request-title"
 								placeholder="Title"
+								name="title"
 							/>
 							<Form.Control.Feedback>
 								Looks good!
@@ -57,8 +71,8 @@ function CreateForm({ selectedTag }) {
 							<Form.Control
 								type="text"
 								required
-								controlId="request-location"
 								placeholder="Location"
+								name="location"
 							/>
 							<Form.Control.Feedback>
 								Looks good!
@@ -69,13 +83,14 @@ function CreateForm({ selectedTag }) {
 						</Col>
 					</Row>
 					<br />
-					<Form.Group controlId="request-message">
+					<Form.Group>
 						<Form.Label>Message</Form.Label>
 						<Form.Control
 							as="textarea"
 							rows={3}
 							required
-							hasValidation
+							name="message"
+							// hasValidation
 						/>
 						<Form.Control.Feedback>
 							Looks good!
@@ -86,12 +101,13 @@ function CreateForm({ selectedTag }) {
 					</Form.Group>
 					<Row>
 						<Col>
-							<Form.Group as={Col} controlId="formGridCategory">
+							<Form.Group as={Col}>
 								<Form.Label>Category</Form.Label>
 								<Form.Control
 									as="select"
 									defaultValue="Choose..."
 									required
+									name="category"
 								>
 									<option>Choose...</option>
 									<option>Clothing</option>
@@ -146,17 +162,21 @@ function CreateForm({ selectedTag }) {
 		);
 	else if (selectedTag === "Post")
 		return (
-			//Add post form
 			<div>
 				<br />
-				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				<Form
+					noValidate
+					validated={validated}
+					onSubmit={handleSubmit}
+					name="form"
+				>
 					<Row>
 						<Col>
 							<Form.Control
 								required
 								type="text"
-								controlId="post-title"
 								placeholder="Title"
+								name="title"
 							/>
 							<Form.Control.Feedback>
 								Looks good!
@@ -167,13 +187,14 @@ function CreateForm({ selectedTag }) {
 						</Col>
 					</Row>
 					<br />
-					<Form.Group controlId="post-message">
+					<Form.Group>
 						<Form.Label>Message</Form.Label>
 						<Form.Control
 							as="textarea"
 							rows={3}
 							required
-							hasValidation
+							name="message"
+							// hasValidation
 						/>
 						<Form.Control.Feedback>
 							Looks good!

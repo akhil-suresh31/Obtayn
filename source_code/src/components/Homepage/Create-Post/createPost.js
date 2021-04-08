@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import {Modal, DropdownButton, Dropdown} from "react-bootstrap";
+import { Modal, DropdownButton, Dropdown } from "react-bootstrap";
 import { FileEarmarkPlusFill } from "react-bootstrap-icons";
 import "../homepage.css";
 import CreateForm from "./createForm";
-
 
 function CreatePostModal() {
 	const [show, setShow] = useState(false);
@@ -36,7 +35,7 @@ function CreatePostModal() {
 						variant="light"
 						onSelect={handleSelect}
 					>
-						<h6 class="dropdown-header">Select post tag</h6>
+						<h6 className="dropdown-header">Select post tag</h6>
 						<Dropdown.Item eventKey="Request">
 							Request
 						</Dropdown.Item>
