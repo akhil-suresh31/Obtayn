@@ -8,12 +8,15 @@ import {
 	Button,
 } from "react-bootstrap";
 import Avatar from "react-avatar";
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
+import { logOut } from "../../../store/actions/authActions";
+import { connect } from "react-redux";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-function UserProfile() {
+function UserProfile({ logOut }) {
 	const User = {
 		avatar: "images/user1.jpg",
 		name: "Jordan",
@@ -33,6 +36,7 @@ function UserProfile() {
 	const handleShow = () => setShow(true);
 	const [error, setError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
+	const history = useHistory();
 
 	const changleHandler = (e) => {
 		let selected = e.target.files[0];
@@ -49,6 +53,13 @@ function UserProfile() {
 			setFile(null);
 			setError("Please select an image file (png or jpg)");
 		}
+	};
+
+	const handleLogout = () => {
+		logOut();
+		setTimeout(() => {
+			history.push("/");
+		}, 2000);
 	};
 
 	const handleSubmit = (e) => {
@@ -175,7 +186,7 @@ function UserProfile() {
 						</Dropdown.ItemText>
 						<Dropdown.Divider />
 						<Dropdown.ItemText eventKey="4">
-							<Link to="/">Logout</Link>
+							<Link onClick={handleLogout}>Logout</Link>
 						</Dropdown.ItemText>
 					</center>
 				</DropdownButton>
@@ -184,4 +195,10 @@ function UserProfile() {
 	);
 }
 
-export default UserProfile;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		logOut: () => dispatch(logOut()),
+	};
+};
+
+export default connect(null, mapDispatchToProps)(UserProfile);

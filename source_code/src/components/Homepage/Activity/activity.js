@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
-import { format, compareAsc } from "date-fns";
 import "./activity.css";
 
 const Activity = ({ notifications }) => {

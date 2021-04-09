@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { auth, db, googleProvider } from "../../firebase/firebase";
 import { Form, Button, Row, Col, Alert } from "react-bootstrap";
+import { continueWithGoogle, signUp } from "../../store/actions/authActions";
+import { connect } from "react-redux";
 
-function SignUp({ setLogin }) {
+function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
 	const [confirmPass, setConfirmPass] = useState("");
@@ -11,43 +12,17 @@ function SignUp({ setLogin }) {
 	const [disableButton, setDisableButton] = useState(false);
 	const [error, setError] = useState("");
 
-	var signInGoogle = async (e) => {
+	var signInGoogle = (e) => {
 		e.preventDefault();
 		setDisableButton(true);
-		try {
-			setError("");
-			var result = await auth.signInWithPopup(googleProvider);
-		} catch (err) {
-			console.log(err.code);
-			setDisableButton(false);
-			return setError(err.message);
-		}
-		const user = result.user;
-		var docRef = db.collection("User").doc(user.uid);
-		var doc = await docRef.get();
-		if (!doc.exists) {
-			await db
-				.collection("User")
-				.doc(user.uid)
-				.set({
-					name: user.displayName,
-					profile_picture: user.photoURL,
-					phone_number: "",
-				})
-				.catch((error) => {
-					console.log(error.code);
-					console.log(error.message);
-					setDisableButton(false);
-					return;
-				});
-			console.log("Doc added with id :", user.uid);
-		}
-		setLogin(true);
+		continueWithGoogle();
+		// setLogin(true);
 		setDisableButton(false);
 	};
 
 	var handleSubmit = async (e) => {
 		e.preventDefault();
+		setError("");
 		setDisableButton(true);
 		if (pass !== confirmPass) {
 			setDisableButton(false);
@@ -57,46 +32,16 @@ function SignUp({ setLogin }) {
 			setDisableButton(false);
 			return setError("passwords needs to be more than 6 characters");
 		}
-		try {
-			setError("");
-			var userCredentials = await auth.createUserWithEmailAndPassword(
-				email,
-				pass
-			);
-		} catch (err) {
-			console.log(err.code);
-			setDisableButton(false);
-			return setError(err.message);
-		}
 
-		const user = userCredentials.user;
-		await user
-			.updateProfile({
-				displayName: fullName,
-				photoURL: "",
-			})
-			.catch((error) => {
-				console.log(error.code);
-				console.log(error.message);
-			});
+		signUp({
+			email: email,
+			name: fullName,
+			pass: pass,
+			phoneNo: phoneNo,
+		});
 
-		await db
-			.collection("User")
-			.doc(user.uid)
-			.set({
-				name: user.displayName,
-				profile_picture: user.photoURL,
-				phone_number: phoneNo,
-			})
-			.catch((error) => {
-				console.log(error.code);
-				console.log(error.message);
-			});
-
-		console.log("Doc added with id :", user.uid);
-		user.sendEmailVerification();
 		setDisableButton(false);
-		setLogin(true);
+		// setLogin(true);
 		console.log("sign up completed");
 	};
 
@@ -113,6 +58,9 @@ function SignUp({ setLogin }) {
 							<Row className=" d-flex align-content-center ">
 								<h2>Join Us Now!</h2>
 							</Row>
+							{authError && (
+								<Alert variant="danger">{authError}</Alert>
+							)}
 							{error && <Alert variant="danger">{error}</Alert>}
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput">
@@ -140,7 +88,6 @@ function SignUp({ setLogin }) {
 									/>
 								</Form.Group>
 							</Row>
-
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput">
 									<Form.Control
@@ -225,4 +172,17 @@ function SignUp({ setLogin }) {
 	);
 }
 
-export default SignUp;
+const mapStatetoProps = (state) => {
+	return {
+		authError: state.auth.error,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		signUp: (userInfo) => dispatch(signUp(userInfo)),
+		continueWithGoogle: () => dispatch(continueWithGoogle()),
+	};
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(SignUp);

@@ -1,67 +1,28 @@
 import React, { useState } from "react";
-import { auth, db, googleProvider } from "../../firebase/firebase";
 import { Form, Button, Row, Col, Alert } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { continueWithGoogle, login } from "../../store/actions/authActions";
 
-function Login() {
+function Login({ login, error, continueWithGoogle, authState }) {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
 	const [disableButton, setDisableButton] = useState(false);
-	const [error, setError] = useState("");
 	const history = useHistory();
 
-	var signInGoogle = async (e) => {
+	var signInGoogle = (e) => {
 		e.preventDefault();
 		setDisableButton(true);
-		try {
-			setError("");
-			var result = await auth.signInWithPopup(googleProvider);
-		} catch (err) {
-			console.log(err.code);
-			console.log(err.message);
-			setDisableButton(false);
-			return setError(err.code);
-		}
-		const user = result.user;
-		var docRef = db.collection("User").doc(user.uid);
-		var doc = await docRef.get();
-		if (!doc.exists) {
-			await db
-				.collection("User")
-				.doc(user.uid)
-				.set({
-					name: user.displayName,
-					profile_picture: user.photoURL,
-					phone_number: "",
-				})
-				.catch((error) => {
-					console.log(error.code);
-					console.log(error.message);
-					setDisableButton(false);
-					return;
-				});
-			console.log("Doc added with id :", user.uid);
-		}
+		continueWithGoogle();
 		history.push("/home");
 		setDisableButton(false);
 	};
 
-	var handleSubmit = async (e) => {
+	var handleSubmit = (e) => {
 		e.preventDefault();
 		setDisableButton(true);
-		try {
-			setError("");
-			var userCredentials = await auth.signInWithEmailAndPassword(
-				email,
-				pass
-			);
-		} catch (err) {
-			console.log(err.code);
-			setDisableButton(false);
-			return setError(err.message);
-		}
+		login({ email: email, pass: pass });
 
-		const user = userCredentials.user;
 		// if (!user.emailValidated) {
 		// 	alert("Email Not validated please validate to continue");
 
@@ -69,9 +30,10 @@ function Login() {
 		// 	return;
 		// }
 		setDisableButton(false);
-		console.log("login successful", user.uid);
-		history.push("/home");
+		//console.log("login successful", user.uid);
 	};
+
+	if (authState.uid) return <Redirect to="/home"></Redirect>;
 
 	return (
 		<div>
@@ -159,4 +121,19 @@ function Login() {
 	);
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+	console.log(state);
+	return {
+		error: state.auth.error,
+		authState: state.firebase.auth,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		login: (creds) => dispatch(login(creds)),
+		continueWithGoogle: () => dispatch(continueWithGoogle()),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

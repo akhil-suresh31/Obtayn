@@ -38,7 +38,7 @@ const Feed = ({ requests }) => {
 };
 
 const mapStatetoProps = (state) => {
-	console.log(state);
+	// console.log(state);
 	return {
 		requests: state.firestore.ordered.Request,
 	};
@@ -46,5 +46,5 @@ const mapStatetoProps = (state) => {
 
 export default compose(
 	connect(mapStatetoProps),
-	firestoreConnect(() => ["Request","User"])
+	firestoreConnect(() => ["Request"])
 )(Feed);
