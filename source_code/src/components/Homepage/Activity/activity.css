@@ -19,3 +19,7 @@ h4 {
 	background-color: var(--notifBg);
 	padding: 2%;
 }
+
+.notif {
+	color: white;
+}

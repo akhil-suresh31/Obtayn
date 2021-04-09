@@ -29,14 +29,32 @@
 	--feedContainerBg: #2b4f60;
 	--postBg: #faf2e8;*/
 
+	/*Dark mode*/
 	--navbarBg: #161724;
 	--feedBg: #161724;
 	--activityBg: #212333;
-	/* --createPost: #c9a24b; */
+	--createPost: #c9a24b;
 	--createPost: #4abaaa;
 	--feedContainerBg: #2b4f60;
 	--postBg: #faf2e8;
 	--notifBg: #d8bf95;
+
+	/* Light mode
+	 --navbarBg: #187894;
+	--feedBg: "black";
+	--activityBg: "black";
+	--createPost: #f7786b;
+	--feedContainerBg: #2b4f60;
+	--postBg: #faf2e8;
+	--notifBg: #632a67; */
+
+	/* Cool dream 
+	--navbarBg: #2b4f60;
+	--feedBg: #bdc7c9;
+	--activityBg: #9dacaf;
+	--createPost: #474847;
+	--postBg: #ead3cb;
+	--notifBg: #845460; */
 }
 
 .create-post-avatar {
@@ -93,7 +111,7 @@
 }
 
 .request-shortcut:hover {
-	color: #ffff66 !important;
+	color: #ffcc00 !important;
 }
 
 .post-shortcut {
