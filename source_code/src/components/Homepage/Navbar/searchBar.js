@@ -3,7 +3,6 @@ import Nav from "react-bootstrap/Nav";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Form, InputGroup } from "react-bootstrap";
-import Geosuggest from "react-geosuggest";
 import "./navbar.css";
 import { Search } from "react-bootstrap-icons";
 
@@ -73,13 +72,10 @@ function SearchBar() {
 							placeholder="Enter keywords.."
 							required
 						/>
-						<Geosuggest
-							onFocus={onFocus}
-							onBlur={onBlur}
-							onChange={onChange}
-							onSuggestSelect={onSuggestSelect}
-							onSuggestNoResults={onSuggestNoResults}
-							radius="20"
+						<Form.Control
+							type="text"
+							placeholder="Enter Location.."
+							required
 						/>
 						<InputGroup.Text className="search-button">
 							<Search />

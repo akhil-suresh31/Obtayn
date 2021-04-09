@@ -165,9 +165,9 @@ function UserProfile() {
 							{UserInfo.contactNumber}
 						</Dropdown.ItemText>
 						<Dropdown.Divider />
-						<Dropdown.Item eventKey="4" href="#logout">
+						<Dropdown.ItemText eventKey="4">
 							<Link to="/">Logout</Link>
-						</Dropdown.Item>
+						</Dropdown.ItemText>
 					</center>
 				</DropdownButton>
 			</Nav>

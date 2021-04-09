@@ -237,7 +237,7 @@ function CreateForm({ selectedTag, createRequest, modalClose }) {
 		);
 	else return <div></div>;
 }
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		createRequest: (request) => dispatch(createRequest(request)),
 	};

@@ -40,11 +40,11 @@ const Feed = ({ requests }) => {
 const mapStatetoProps = (state) => {
 	console.log(state);
 	return {
-		requests: state.request.requests,
+		requests: state.firestore.ordered.Request,
 	};
 };
 
 export default compose(
 	connect(mapStatetoProps),
-	firestoreConnect(() => ["Request"])
+	firestoreConnect(() => ["Request","User"])
 )(Feed);

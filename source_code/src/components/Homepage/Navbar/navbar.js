@@ -39,17 +39,13 @@ export default function NavBar() {
 					</Nav>
 					<SearchBar />
 					<Nav className="justify-content-end">
-						<Nav.Link href="#create-post">
-							<CreatePostModal />
-						</Nav.Link>
+						<CreatePostModal />
 
-						<Nav.Link href="#chat">
-							<ChatRightTextFill
-								className="chat-icon"
-								size={27}
-								color="white"
-							/>
-						</Nav.Link>
+						<ChatRightTextFill
+							className="chat-icon"
+							size={27}
+							color="white"
+						/>
 					</Nav>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<UserProfile />
