@@ -8,6 +8,7 @@ h4 {
 	width: 25vw;
 	background-color: var(--activityBg);
 	float: right;
+	overflow: scroll;
 }
 
 .activity-notif {
@@ -20,6 +21,13 @@ h4 {
 	padding: 2%;
 }
 
-.notif {
+.notif-message {
 	color: white;
+}
+
+.notif-timestamp {
+	font-size: 12px;
+	color: dimgrey;
+	margin-bottom: 0;
+	margin-left: 60%;
 }

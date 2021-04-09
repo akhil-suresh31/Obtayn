@@ -10,6 +10,8 @@ import {
 import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 function UserProfile() {
 	const User = {
@@ -74,6 +76,8 @@ function UserProfile() {
 		console.log(UserInfo);
 	};
 
+	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
+
 	return (
 		<div>
 			<Nav className="justify-content-end">
@@ -86,18 +90,23 @@ function UserProfile() {
 				>
 					<center>
 						<Dropdown.ItemText>
-							<motion.div
-								className="avatar-container"
-								whileHover={{ scale: 1.1 }}
+							<OverlayTrigger
+								placement="bottom"
+								overlay={renderTooltip("Edit Profile")}
 							>
-								<Avatar
-									className="profile-avatar"
-									size="60"
-									src={UserInfo.avatar}
-									round={true}
-									onClick={handleShow}
-								/>
-							</motion.div>
+								<motion.div
+									className="avatar-container"
+									whileHover={{ scale: 1.1 }}
+								>
+									<Avatar
+										className="profile-avatar"
+										size="60"
+										src={UserInfo.avatar}
+										round={true}
+										onClick={handleShow}
+									/>
+								</motion.div>
+							</OverlayTrigger>
 							<div className="edit-profile-modal">
 								<Modal show={show} onHide={handleClose}>
 									<Modal.Header closeButton>

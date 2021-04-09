@@ -2,12 +2,15 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { ChatRightTextFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import CreatePostModal from "../Create-Post/createPost";
 import SearchBar from "./searchBar";
 import UserProfile from "./userProfile";
 import "./navbar.css";
 
 export default function NavBar() {
+	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	return (
 		<>
 			<Navbar
@@ -29,23 +32,31 @@ export default function NavBar() {
 
 				<Navbar.Collapse>
 					<Nav className="mr-auto justify-content-center">
-						<Link to="/home" style={{ color: "white" }}>
-							Feed
-						</Link>
-
-						<Link to="/requests" style={{ color: "white" }}>
-							My Requests
-						</Link>
+						<Nav.Link>
+							<Link to="/home" style={{ color: "white" }}>
+								Feed
+							</Link>
+						</Nav.Link>
+						<Nav.Link>
+							<Link to="/requests" style={{ color: "white" }}>
+								My Requests
+							</Link>
+						</Nav.Link>
 					</Nav>
 					<SearchBar />
 					<Nav className="justify-content-end">
 						<CreatePostModal />
 
-						<ChatRightTextFill
-							className="chat-icon"
-							size={27}
-							color="white"
-						/>
+						<OverlayTrigger
+							placement="bottom"
+							overlay={renderTooltip("Chat")}
+						>
+							<ChatRightTextFill
+								className="chat-icon"
+								size={27}
+								color="white"
+							/>
+						</OverlayTrigger>
 					</Nav>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<UserProfile />

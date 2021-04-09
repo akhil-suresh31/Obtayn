@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Modal, DropdownButton, Dropdown } from "react-bootstrap";
 import { FileEarmarkPlusFill } from "react-bootstrap-icons";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import "../homepage.css";
 import CreateForm from "./createForm";
 
 function CreatePostModal() {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
-
 	const handleClose = () => setShow(false);
 
 	const handleShow = () => {
@@ -20,9 +21,20 @@ function CreatePostModal() {
 		setTag(e);
 	};
 
+	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
+
 	return (
 		<>
-			<FileEarmarkPlusFill size={27} color="white" onClick={handleShow} />
+			<OverlayTrigger
+				placement="bottom"
+				overlay={renderTooltip("Say something")}
+			>
+				<FileEarmarkPlusFill
+					size={27}
+					color="white"
+					onClick={handleShow}
+				/>
+			</OverlayTrigger>
 
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>

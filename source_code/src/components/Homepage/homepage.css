@@ -30,7 +30,7 @@
 	--postBg: #faf2e8;*/
 
 	/*Dark mode*/
-	--navbarBg: #161724;
+	--navbarBg: #27283f;
 	--feedBg: #161724;
 	--activityBg: #212333;
 	--createPost: #c9a24b;
@@ -102,16 +102,7 @@
 }
 
 .post-input {
-	width: 20vw;
-	padding-right: 10vw;
-}
-
-.request-shortcut {
-	color: white !important;
-}
-
-.request-shortcut:hover {
-	color: #ffcc00 !important;
+	size: 10vw;
 }
 
 .post-shortcut {
@@ -121,12 +112,19 @@
 .post-shortcut:hover {
 	color: #cc0000 !important;
 }
+.request-shortcut {
+	color: white !important;
+}
+
+.request-shortcut:hover {
+	color: #ffcc00 !important;
+}
 
 .scrollTop {
 	position: fixed;
 	width: 100%;
-	bottom: 20px;
-	right: 0px;
+	bottom: 7vh;
+	margin-left: 21vw;
 	align-items: center;
 	height: 20px;
 	justify-content: center;
@@ -136,10 +134,12 @@
 	transition: opacity 0.4s;
 	opacity: 0.5;
 	overflow: visible;
+	color: #2b4f60;
 }
 
 .scrollTop:hover {
 	opacity: 1;
+	color: #4abaaa;
 }
 
 /* scroll button */
