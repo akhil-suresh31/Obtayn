@@ -45,6 +45,7 @@ export const signUp = (userInfo) => {
 					name: userInfo.name,
 					profile_picture: user.photoURL,
 					phone_number: userInfo.phoneNo,
+					email: user.email,
 				});
 			})
 			.then(() => {
@@ -72,6 +73,7 @@ export const continueWithGoogle = () => {
 					name: user.displayName,
 					profile_picture: user.photoURL,
 					phone_number: "",
+					email: user.email,
 				});
 			})
 			.then(() => {
