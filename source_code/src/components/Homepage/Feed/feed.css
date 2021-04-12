@@ -15,3 +15,12 @@
 	background-color: var(--postBg);
 	/* box-shadow: 5px 5px #79797971; */
 }
+
+.text-left {
+	margin-right: auto;
+}
+
+.feed-timestamp {
+	font-size: 12px;
+	color: dimgrey;
+}

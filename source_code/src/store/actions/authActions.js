@@ -43,7 +43,8 @@ export const signUp = (userInfo) => {
 				user.sendEmailVerification();
 				return firestore.collection("User").doc(user.uid).set({
 					name: userInfo.name,
-					profile_picture: user.photoURL,
+					profile_picture:
+						"https://firebasestorage.googleapis.com/v0/b/obtayn-rd2931.appspot.com/o/Default-profile-pic.png?alt=media&token=540e79e2-661c-4f5f-a9d4-e7a8b6cffc01",
 					phone_number: userInfo.phoneNo,
 					email: user.email,
 				});
@@ -69,12 +70,17 @@ export const continueWithGoogle = () => {
 			.signInWithPopup(googleProvider)
 			.then((userCred) => {
 				const user = userCred.user;
-				return firestore.collection("User").doc(user.uid).set({
-					name: user.displayName,
-					profile_picture: user.photoURL,
-					phone_number: "",
-					email: user.email,
-				});
+				return firestore
+					.collection("User")
+					.doc(user.uid)
+					.set({
+						name: user.displayName,
+						profile_picture: user.photoURL
+							? user.photoURL
+							: "https://firebasestorage.googleapis.com/v0/b/obtayn-rd2931.appspot.com/o/Default-profile-pic.png?alt=media&token=540e79e2-661c-4f5f-a9d4-e7a8b6cffc01",
+						phone_number: "",
+						email: user.email,
+					});
 			})
 			.then(() => {
 				dispatch({ type: "GOOGLE_AUTH_SUCCESS" });
