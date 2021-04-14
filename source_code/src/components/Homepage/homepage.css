@@ -89,6 +89,7 @@
 	margin-top: 2vh;
 	margin-left: 1vw;
 	margin-right: 4vw;
+	width: 300px;
 }
 
 .homepage-navbar {
@@ -102,7 +103,7 @@
 }
 
 .post-input {
-	size: 10vw;
+	width: 100%;
 }
 
 .post-shortcut {

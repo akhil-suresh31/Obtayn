@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowUpCircleFill, HouseDoorFill } from "react-bootstrap-icons";
+import { HouseDoorFill } from "react-bootstrap-icons";
 import "./homepage.css";
 
 const ScrollToTop = ({ scrollToTop, scrollUp }) => {

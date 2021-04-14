@@ -5,6 +5,7 @@ import Activity from "./Activity/activity";
 import ScrollToTop from "./scrollToTop";
 import CreatePostDiv from "./Create-Post/createPostDiv";
 import "./homepage.css";
+import PostFilter from "./Create-Post/postFilter";
 
 const Homepage = () => {
 	const [scrollToTop, setscrollToTop] = useState(false);
@@ -33,6 +34,7 @@ const Homepage = () => {
 					<center>
 						<CreatePostDiv />
 					</center>
+					<PostFilter />
 					<Feed />
 					<div className="scroll">
 						<ScrollToTop

@@ -15,15 +15,13 @@ import { logOut } from "../../../store/actions/authActions";
 import { connect } from "react-redux";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import firebase from "../../../firebase/firebase";
+import "firebase/storage";
+import "firebase/firestore";
+//import { updateProfile } from "../../../store/actions/profileActions";
 
-function UserProfile({ logOut, User }) {
-	// const User = {
-	// 	avatar: "images/user1.jpg",
-	// 	name: "Jordan",
-	// 	email: "jordan@hotmail.com",
-	// 	contactNumber: "1234567890",
-	// };
-
+function UserProfile({ logOut, User, user_id }) {
+	console.log(User);
 	const [UserInfo, setUserInfo] = useState({
 		avatar: User.profile_picture,
 		name: User.name,
@@ -31,6 +29,9 @@ function UserProfile({ logOut, User }) {
 		contactNumber: User.phone_number,
 	});
 
+	const storage = firebase.storage();
+
+	const [url, setURL] = useState("");
 	const [show, setShow] = useState(false);
 	const [file, setFile] = useState(null);
 	const handleClose = () => setShow(false);
@@ -54,11 +55,6 @@ function UserProfile({ logOut, User }) {
 		if (selected && types.includes(selected.type)) {
 			setFile(selected);
 			setError("");
-			let newPhoto = "images/" + file.name;
-			setUserInfo({
-				...UserInfo,
-				avatar: newPhoto,
-			});
 		} else {
 			setFile(null);
 			setError("Please select an image file (png or jpg)");
@@ -74,27 +70,52 @@ function UserProfile({ logOut, User }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		const firestore = firebase.firestore();
+		const collectionRef = firestore.collection("User");
 		const form = e.target;
 		var formData = new FormData(form);
 		formData = Object.fromEntries(formData.entries());
-		console.log(formData);
 
-		if (formData["profile-name"] !== UserInfo.name) {
-			setUserInfo({
-				...UserInfo,
-				name: formData["profile-name"],
-			});
-			console.log("&&&&");
-		}
+		const uploadTask = storage.ref(`/avatars/${file.name}`).put(file);
+		//console.log(uploadTask);
+		uploadTask.on("state_changed", console.log, console.error, () => {
+			storage
+				.ref("avatars")
+				.child(file.name)
+				.getDownloadURL()
+				.then((url) => {
+					setFile(null);
+					// console.log(
+					// 	"URL-->",
+					// 	url,
+					// 	"\ndoc-->",
+					// 	collectionRef.doc(user_id)
+					//);
+					collectionRef.doc(user_id).update({
+						name: formData.profileName,
+						phone_number: formData.profileContact,
+						profile_picture: url,
+					});
+					setURL(url);
+				});
+		});
 
-		if (formData["profile-contact"] !== UserInfo.contactNumber)
-			setUserInfo({
-				...UserInfo,
-				contactNumber: formData["profile-contact"],
-			});
+		// firestore
+		// 	.collection("User")
+		// 	.doc(uid)
+		// 	.set({
+		// 		name: formData.profileName,
+		// 		phone_number: formData.profileContact,
+		// 		profile_picture: url,
+		// 	})
+		// 	.then(() => {
+		// 		console.log("success");
+		// 		console.log(User);
+		// 		console.log(formData);
+		// 	});
 
 		handleClose();
-		console.log(UserInfo);
 	};
 
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
@@ -120,7 +141,7 @@ function UserProfile({ logOut, User }) {
 										whileHover={{ scale: 1.1 }}
 									>
 										<Avatar
-											className="profile-avatar"
+											className="profileAvatar"
 											size="60"
 											src={UserInfo.avatar}
 											round={true}
@@ -143,7 +164,7 @@ function UserProfile({ logOut, User }) {
 												<Form.Control
 													type="text"
 													defaultValue={UserInfo.name}
-													name="profile-name"
+													name="profileName"
 												/>
 												<br />
 												<Form.Control
@@ -159,13 +180,13 @@ function UserProfile({ logOut, User }) {
 													defaultValue={
 														UserInfo.contactNumber
 													}
-													name="profile-contact"
+													name="profileContact"
 												/>
 												<br />
 												<Form.Group>
 													<Form.File
 														className="position-relative"
-														name="profile-pic"
+														name="profilePic"
 														label="Select new Profile Photo"
 														onChange={
 															changleHandler
@@ -221,6 +242,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		User: state.firebase.profile,
+		user_id: state.firebase.auth.uid,
 	};
 };
 
