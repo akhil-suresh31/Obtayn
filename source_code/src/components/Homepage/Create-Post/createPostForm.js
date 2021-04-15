@@ -17,15 +17,6 @@ function CreatePostForm({ createPost, modalClose }) {
 		e.preventDefault();
 		images = e.target.files;
 		console.log(images);
-
-		// for (let i = 0; i < images.length; i++) {
-		// 	if (images[i] && types.includes(images[i].type)) {
-		// 		setError("");
-		// 	} else {
-		// 		setError("Please select an image file (png or jpg)");
-		// 	}
-		// }
-		//console.log(images);
 	};
 
 	const handleSubmit = (e) => {
@@ -101,7 +92,6 @@ function CreatePostForm({ createPost, modalClose }) {
 								Please choose a valid image.
 							</Form.Control.Feedback>
 							{error && <div className="error">{error}</div>}
-							{/* {files && <div>{files.name}</div>} */}
 						</Form.Group>
 					</Col>
 					<Col>
