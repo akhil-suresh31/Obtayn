@@ -22,7 +22,7 @@ import "firebase/firestore";
 //import { updateProfile } from "../../../store/actions/profileActions";
 
 function UserProfile({ logOut, User, user_id }) {
-	console.log(User);
+	//console.log(User);
 	const [UserInfo, setUserInfo] = useState({
 		avatar: User.profile_picture,
 		name: User.name,
@@ -87,12 +87,6 @@ function UserProfile({ logOut, User, user_id }) {
 				.getDownloadURL()
 				.then((url) => {
 					setFile(null);
-					// console.log(
-					// 	"URL-->",
-					// 	url,
-					// 	"\ndoc-->",
-					// 	collectionRef.doc(user_id)
-					//);
 					collectionRef.doc(user_id).update({
 						name: formData.profileName,
 						phone_number: formData.profileContact,

@@ -56,11 +56,11 @@ function CreatePostModal() {
 					</DropdownButton>
 					{(() => {
 						if (tag == "Request") return <CreateRequestForm />;
-						else if (tag == "Post") return <CreatePostForm />;
+						else if (tag == "Post")
+							return <CreatePostForm modalClose={handleClose} />;
 						else return <div></div>;
 					})()}
 				</Modal.Body>
-				{/* {<img>{{if(tag=='Request')}}</img>} */}
 			</Modal>
 		</>
 	);

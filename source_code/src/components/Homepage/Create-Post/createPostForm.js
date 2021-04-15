@@ -3,14 +3,31 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
-import { createRequest } from "../../../store/actions/requestActions";
+
+import { createPost } from "../../../store/actions/postActions";
 import "../homepage.css";
 
-function CreatePostForm({ selectedTag, createRequest, modalClose }) {
+function CreatePostForm({ createPost, modalClose }) {
 	const [validated, setValidated] = useState(false);
-	const [file, setFile] = useState(null);
 	const [error, setError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
+	var images = [];
+
+	const handleChange = (e) => {
+		e.preventDefault();
+		images = e.target.files;
+		console.log(images);
+
+		// for (let i = 0; i < images.length; i++) {
+		// 	if (images[i] && types.includes(images[i].type)) {
+		// 		setError("");
+		// 	} else {
+		// 		setError("Please select an image file (png or jpg)");
+		// 	}
+		// }
+		//console.log(images);
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setValidated(true);
@@ -21,31 +38,12 @@ function CreatePostForm({ selectedTag, createRequest, modalClose }) {
 		}
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
-		var data;
-		if (formDataObj.file.name == "") data = { ...formDataObj, file: null };
-		console.log(data);
+		//console.log(formDataObj);
 		modalClose();
-		if (selectedTag === "Request") createRequest(data);
+		console.log(images);
+		createPost(formDataObj, images);
 	};
 
-	useEffect(() => {
-		if (document.getElementsByName("form")[0]) {
-			document.getElementsByName("form")[0].reset();
-			setValidated(false);
-		}
-	}, [selectedTag]);
-
-	const handleChange = (e) => {
-		let selected = e.target.files[0];
-
-		if (selected && types.includes(selected.type)) {
-			setFile(selected);
-			setError("");
-		} else {
-			setFile(null);
-			setError("Please select an image file (png or jpg)");
-		}
-	};
 	return (
 		<div>
 			<br />
@@ -88,10 +86,13 @@ function CreatePostForm({ selectedTag, createRequest, modalClose }) {
 				<Row>
 					<Col>
 						<Form.Group>
-							<Form.File
+							<input
+								type="file"
 								className="position-relative"
 								name="file"
 								label="Add Image"
+								onChange={handleChange}
+								multiple
 							/>
 							<Form.Control.Feedback>
 								Looks good!
@@ -99,6 +100,8 @@ function CreatePostForm({ selectedTag, createRequest, modalClose }) {
 							<Form.Control.Feedback type="invalid">
 								Please choose a valid image.
 							</Form.Control.Feedback>
+							{error && <div className="error">{error}</div>}
+							{/* {files && <div>{files.name}</div>} */}
 						</Form.Group>
 					</Col>
 					<Col>
@@ -118,7 +121,7 @@ function CreatePostForm({ selectedTag, createRequest, modalClose }) {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		createRequest: (request) => dispatch(createRequest(request)),
+		createPost: (data, images) => dispatch(createPost(data, images)),
 	};
 };
 
