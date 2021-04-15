@@ -1,6 +1,4 @@
-import { Posts } from "../../components/Homepage/Feed/feed-data";
-
-const initState = { requests: Posts };
+const initState = {};
 
 const requestReducer = (state = initState, action) => {
 	switch (action.type) {

@@ -11,7 +11,6 @@ function CreateForm({ selectedTag, createRequest, modalClose }) {
 	const [file, setFile] = useState(null);
 	const [error, setError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setValidated(true);
@@ -22,8 +21,11 @@ function CreateForm({ selectedTag, createRequest, modalClose }) {
 		}
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
+		var data;
+		if (formDataObj.file.name == "") data = { ...formDataObj, file: null };
+		console.log(data);
 		modalClose();
-		if (selectedTag === "Request") createRequest(formDataObj);
+		if (selectedTag === "Request") createRequest(data);
 	};
 
 	useEffect(() => {
@@ -237,7 +239,7 @@ function CreateForm({ selectedTag, createRequest, modalClose }) {
 		);
 	else return <div></div>;
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		createRequest: (request) => dispatch(createRequest(request)),
 	};

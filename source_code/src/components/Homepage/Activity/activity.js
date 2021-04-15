@@ -17,7 +17,7 @@ const Activity = ({ notifications, user }) => {
 			</center>
 
 			{notifications &&
-				notifications.slice(0, 6).map((item, index) => {
+				notifications.map((item, index) => {
 					if (item.to_user_id === user)
 						return (
 							<motion.div
@@ -50,6 +50,7 @@ export default compose(
 		{
 			collection: "Notification",
 			orderBy: ["timestamp", "desc"],
+			limit: 6,
 		},
 	])
 )(Activity);

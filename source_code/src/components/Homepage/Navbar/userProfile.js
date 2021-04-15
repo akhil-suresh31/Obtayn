@@ -10,6 +10,7 @@ import {
 import Avatar from "react-avatar";
 import { useHistory, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 import { logOut } from "../../../store/actions/authActions";
 import { connect } from "react-redux";
@@ -100,21 +101,12 @@ function UserProfile({ logOut, User, user_id }) {
 					setURL(url);
 				});
 		});
-
-		// firestore
-		// 	.collection("User")
-		// 	.doc(uid)
-		// 	.set({
-		// 		name: formData.profileName,
-		// 		phone_number: formData.profileContact,
-		// 		profile_picture: url,
-		// 	})
-		// 	.then(() => {
-		// 		console.log("success");
-		// 		console.log(User);
-		// 		console.log(formData);
-		// 	});
-
+		Swal.fire({
+			icon: "success",
+			title: "Profile updated!",
+			confirmButtonText: "Cool",
+			timer: 1000,
+		});
 		handleClose();
 	};
 

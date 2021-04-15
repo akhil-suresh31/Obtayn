@@ -4,7 +4,8 @@ import { FileEarmarkPlusFill } from "react-bootstrap-icons";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "../homepage.css";
-import CreateForm from "./createForm";
+import CreatePostForm from "./createPostForm";
+import CreateRequestForm from "./createRequestForm";
 
 function CreatePostModal() {
 	const [show, setShow] = useState(false);
@@ -53,8 +54,13 @@ function CreatePostModal() {
 						</Dropdown.Item>
 						<Dropdown.Item eventKey="Post">Post</Dropdown.Item>
 					</DropdownButton>
-					<CreateForm selectedTag={tag} modalClose={handleClose} />
+					{(() => {
+						if (tag == "Request") return <CreateRequestForm />;
+						else if (tag == "Post") return <CreatePostForm />;
+						else return <div></div>;
+					})()}
 				</Modal.Body>
+				{/* {<img>{{if(tag=='Request')}}</img>} */}
 			</Modal>
 		</>
 	);

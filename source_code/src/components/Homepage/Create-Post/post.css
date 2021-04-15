@@ -7,14 +7,6 @@
 	display: flex;
 }
 
-h6 {
-	color: white;
-}
-
 #filter {
 	color: blueviolet;
-}
-
-Col {
-	padding: 0px !important;
 }
