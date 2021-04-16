@@ -81,7 +81,7 @@ export const acceptRequest = (request) => {
   };
 };
 
-export const deleteReqeust = (request) => {
+export const deleteRequest = (request) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     firestore

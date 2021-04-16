@@ -10,7 +10,7 @@ import CreatePostDiv from "./Create-Post/createPostDiv";
 import "./homepage.css";
 import PostFilter from "./Create-Post/postFilter";
 
-const Homepage = ({ users }) => {
+const Homepage = ({ users, profile_pic }) => {
   const [scrollToTop, setscrollToTop] = useState(false);
   const [filter, setFilter] = useState({ post: false, request: false });
 
@@ -36,7 +36,7 @@ const Homepage = ({ users }) => {
           onScroll={(val) => checkScrollPos(val.target.scrollTop)}
         >
           <center>
-            <CreatePostDiv />
+            <CreatePostDiv dp={profile_pic} />
           </center>
           <PostFilter setFilter={setFilter} filter={filter} />
           <Feed users={users} filter={filter} />
@@ -53,6 +53,7 @@ const Homepage = ({ users }) => {
 const mapStatetoProps = (state) => {
   return {
     users: state.firestore.ordered.User,
+    profile_pic: state.firebase.profile.profile_picture,
   };
 };
 

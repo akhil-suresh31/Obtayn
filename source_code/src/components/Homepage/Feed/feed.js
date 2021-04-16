@@ -7,9 +7,10 @@ import Swal from "sweetalert2";
 import { firestoreConnect } from "react-redux-firebase";
 import {
   acceptRequest,
-  deleteReqeust,
+  deleteRequest,
 } from "../../../store/actions/requestActions";
 import "./feed.css";
+import { deletePost } from "../../../store/actions/postActions";
 
 const Feed = ({
   requests,
@@ -17,7 +18,8 @@ const Feed = ({
   users,
   posts,
   acceptRequest,
-  deleteReqeust,
+  deleteRequest,
+  deletePost,
   filter,
 }) => {
   const delRequest = (req) => {
@@ -27,9 +29,26 @@ const Feed = ({
       showDenyButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteReqeust(req);
+        deleteRequest(req);
         Swal.fire({
           title: "Request Deleted!",
+          text: "",
+          icon: "success",
+          timer: 1500,
+        });
+      }
+    });
+  };
+  const delPost = (post) => {
+    Swal.fire({
+      title: "Do you want to delete your post?",
+      showConfirmButton: true,
+      showDenyButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePost(post);
+        Swal.fire({
+          title: "Post Deleted!",
           text: "",
           icon: "success",
           timer: 1500,
@@ -55,8 +74,8 @@ const Feed = ({
     return (
       <div className="feed-container">
         {allPosts.map((item, index) => {
-          if (item.category)
-            return (
+          return (
+            <AnimatePresence>
               <motion.div
                 className="feed-post"
                 whileHover={{ scale: 1.05 }}
@@ -64,68 +83,7 @@ const Feed = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2 }}
-              >
-                <Media className="post-container">
-                  <img
-                    width={60}
-                    height={60}
-                    className="align-self-start mr-3 feed-img"
-                    src={avatarlist && avatarlist.get(item.from_user_id)}
-                    alt="user initials"
-                  />
-
-                  <Media.Body>
-                    <div className="d-flex w-100 mb-0 align-items-end">
-                      <h6 className="text-left font-weight-bold">
-                        {item.user}
-                      </h6>
-                      <h6>#request</h6>
-                    </div>
-                    <div className="d-flex w-100 mt-0 ">
-                      <h5 className="text-left">{item.title}</h5>
-                      <h6>{item.location}</h6>
-                    </div>
-
-                    <p>{item.message}</p>
-                    {(() => {
-                      if (item.file && item.file.length != 0)
-                        return (
-                          <div className="abc">
-                            <img
-                              src={item.file[0]}
-                              style={{
-                                height: "15vh",
-                                width: "15vh",
-                              }}
-                            />
-                          </div>
-                        );
-                    })()}
-                    <div className="d-flex w-100">
-                      <p className="feed-timestamp text-left">
-                        {item.timestamp.toDate().toDateString()}
-                      </p>
-                      {user === item.from_user_id ? (
-                        <Button onClick={() => delRequest(item)}>Delete</Button>
-                      ) : (
-                        <Button onClick={() => acceptRequest(item)}>
-                          Accept
-                        </Button>
-                      )}
-                    </div>
-                  </Media.Body>
-                </Media>
-              </motion.div>
-            );
-          else
-            return (
-              <motion.div
-                className="feed-post"
-                whileHover={{ scale: 1.05 }}
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
+                exit={{ opacity: 0 }}
               >
                 <Media className="post-container">
                   <img
@@ -140,10 +98,11 @@ const Feed = ({
                       <h6 className="text-left font-weight-bold">
                         {item.user}
                       </h6>
-                      <h6>#thanks</h6>
+                      <h6>{item.category ? "#request" : "#thanks"}</h6>
                     </div>
                     <div className="d-flex w-100 mt-0 ">
                       <h5 className="text-left">{item.title}</h5>
+                      <h6>{item.location ? item.location : null}</h6>
                     </div>
                     <p>{item.message}</p>
                     {(() => {
@@ -164,11 +123,26 @@ const Feed = ({
                       <p className="feed-timestamp text-left">
                         {item.timestamp.toDate().toDateString()}
                       </p>
+                      {item.category ? (
+                        user === item.from_user_id ? (
+                          <Button onClick={() => delRequest(item)}>
+                            Delete
+                          </Button>
+                        ) : (
+                          <Button onClick={() => acceptRequest(item)}>
+                            Accept
+                          </Button>
+                        )
+                      ) : user === item.from_user_id ? (
+                        <Button onClick={() => delPost(item)}>Delete</Button>
+                      ) : null}
+                      {}
                     </div>
                   </Media.Body>
                 </Media>
               </motion.div>
-            );
+            </AnimatePresence>
+          );
         })}
       </div>
     );
@@ -195,7 +169,8 @@ const mapStatetoProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     acceptRequest: (request) => dispatch(acceptRequest(request)),
-    deleteReqeust: (request) => dispatch(deleteReqeust(request)),
+    deleteRequest: (request) => dispatch(deleteRequest(request)),
+    deletePost: (post) => dispatch(deletePost(post)),
   };
 };
 
