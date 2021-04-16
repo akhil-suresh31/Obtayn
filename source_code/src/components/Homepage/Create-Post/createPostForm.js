@@ -15,6 +15,9 @@ function CreatePostForm({ createPost, modalClose }) {
 
 	const handleChange = (e) => {
 		e.preventDefault();
+		if (e.target.files.length > 3) {
+			setError("Cannot upload more than 3 images.");
+		}
 		images = e.target.files;
 		console.log(images);
 	};

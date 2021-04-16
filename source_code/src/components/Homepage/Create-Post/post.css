@@ -1,21 +1,17 @@
 .filter-div {
-  height: 5vh;
-  width: 30vw;
-  border-radius: 5px;
-  margin-top: 5vh;
-  margin-left: 39vw;
-  display: flex;
+	height: 5vh;
+	width: 30vw;
+	border-radius: 5px;
+	margin-top: 5vh;
+	margin-left: 48vw;
+	display: flex;
 }
 
 .filter-div h5,
 .filter-div h6 {
-  color: white;
+	color: white;
 }
 
 .filter-div Col {
-  padding: 0px !important;
-}
-
-#filter {
-  color: blueviolet;
+	padding: 0px !important;
 }

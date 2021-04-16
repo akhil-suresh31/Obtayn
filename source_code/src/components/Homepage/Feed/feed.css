@@ -24,3 +24,15 @@
 	font-size: 12px;
 	color: dimgrey;
 }
+
+.delete-button {
+	height: 4%;
+	width: 4%;
+	color: #4b4f68;
+}
+
+.image-grid {
+	/* margin: 20px auto; */
+	display: grid;
+	grid-template-columns: min-content min-content min-content;
+}

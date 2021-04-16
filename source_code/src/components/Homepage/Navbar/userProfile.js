@@ -76,22 +76,30 @@ function UserProfile({ logOut, User, user_id }) {
 		var formData = new FormData(form);
 		formData = Object.fromEntries(formData.entries());
 
-		const uploadTask = storage.ref(`/avatars/${file.name}`).put(file);
-		uploadTask.on("state_changed", console.log, console.error, () => {
-			storage
-				.ref("avatars")
-				.child(file.name)
-				.getDownloadURL()
-				.then((url) => {
-					setFile(null);
-					collectionRef.doc(user_id).update({
-						name: formData.profileName,
-						phone_number: formData.profileContact,
-						profile_picture: url,
+		if (formData.file) {
+			const uploadTask = storage.ref(`/avatars/${file.name}`).put(file);
+			uploadTask.on("state_changed", console.log, console.error, () => {
+				storage
+					.ref("avatars")
+					.child(file.name)
+					.getDownloadURL()
+					.then((url) => {
+						setFile(null);
+						collectionRef.doc(user_id).update({
+							name: formData.profileName,
+							phone_number: formData.profileContact,
+							profile_picture: url,
+						});
+						setURL(url);
 					});
-					setURL(url);
-				});
-		});
+			});
+		} else {
+			collectionRef.doc(user_id).update({
+				name: formData.profileName,
+				phone_number: formData.profileContact,
+				profile_picture: User.profile_picture,
+			});
+		}
 		Swal.fire({
 			icon: "success",
 			title: "Profile updated!",
@@ -213,7 +221,7 @@ function UserProfile({ logOut, User, user_id }) {
 				</Nav>
 			</div>
 		);
-	else return <div style={{ color: "white " }}>Loading....</div>;
+	else return <div style={{ color: "white" }}>Loading....</div>;
 }
 
 const mapDispatchToProps = (dispatch) => {
