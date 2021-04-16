@@ -1,27 +1,64 @@
+import "firebase/firestore";
+import "firebase/storage";
+import firebase from "../../firebase/firebase.js";
+
 import { reqeustAccepted } from "./notificationActions";
 
-export const createRequest = (request) => {
+export const createRequest = (request, images) => {
+  const storage = firebase.storage();
+  const URLList = [];
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     const uid = getState().firebase.auth.uid;
     const user = getState().firebase.profile.name;
-    const avatar = getState().firebase.profile.profile_picture;
+    var ref;
+
     firestore
       .collection("Request")
       .add({
         ...request,
+        file: URLList,
         from_user_id: uid,
         to_user_id: null,
         timestamp: new Date(),
         status: "not_accepted",
         user: user,
       })
-      .then(() => {
+      .then((docRef) => {
+        ref = docRef.id;
         dispatch({ type: "CREATE_REQUEST", request });
       })
       .catch((err) => {
         dispatch({ type: "CREATE_REQUEST_ERROR", err });
       });
+
+    for (let i = 0; i < images.length; i++) {
+      const uploadTask = storage
+        .ref(`/feedImages/${images[i].name}`)
+        .put(images[i]);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          if (snapshot.state === firebase.storage.TaskState.RUNNING) {
+            console.log(`Progress: ${progress}%`);
+          }
+        },
+        console.error,
+        () => {
+          storage
+            .ref("feedImages")
+            .child(images[i].name)
+            .getDownloadURL()
+            .then((url) => {
+              URLList.push(url);
+              firestore.collection("Post").doc(ref).update({ file: URLList });
+              console.log(url);
+            });
+        }
+      );
+    }
   };
 };
 

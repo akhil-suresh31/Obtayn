@@ -12,6 +12,7 @@ import PostFilter from "./Create-Post/postFilter";
 
 const Homepage = ({ users }) => {
   const [scrollToTop, setscrollToTop] = useState(false);
+  const [filter, setFilter] = useState({ post: false, request: false });
 
   function checkScrollPos(val) {
     if (val > 200 && !scrollToTop) setscrollToTop(true);
@@ -37,8 +38,8 @@ const Homepage = ({ users }) => {
           <center>
             <CreatePostDiv />
           </center>
-          <PostFilter />
-          <Feed users={users} />
+          <PostFilter setFilter={setFilter} filter={filter} />
+          <Feed users={users} filter={filter} />
           <div className="scroll">
             <ScrollToTop scrollToTop={scrollToTop} scrollUp={scrollUp} />
           </div>
