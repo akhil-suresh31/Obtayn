@@ -11,6 +11,7 @@ import "./navbar.css";
 
 export default function NavBar() {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
+	//console.log(window.location.pathname);
 	return (
 		<>
 			<Navbar
@@ -32,31 +33,53 @@ export default function NavBar() {
 
 				<Navbar.Collapse>
 					<Nav className="mr-auto justify-content-center">
-						<Nav.Link>
-							<Link to="/home" style={{ color: "white" }}>
-								Feed
-							</Link>
-						</Nav.Link>
-						<Nav.Link>
-							<Link to="/requests" style={{ color: "white" }}>
-								My Requests
-							</Link>
-						</Nav.Link>
+						{(() => {
+							if (window.location.pathname == "/requests")
+								return (
+									<Nav.Link>
+										<Link
+											to="/home"
+											style={{ color: "white" }}
+										>
+											Feed
+										</Link>
+									</Nav.Link>
+								);
+							else
+								return (
+									<Nav.Link>
+										<Link
+											to="/requests"
+											style={{ color: "white" }}
+										>
+											My Requests
+										</Link>
+									</Nav.Link>
+								);
+						})()}
 					</Nav>
-					<SearchBar />
+					{(() => {
+						if (window.location.pathname == "/home")
+							return <SearchBar />;
+					})()}
 					<Nav className="justify-content-end">
 						<CreatePostModal />
 
-						<OverlayTrigger
-							placement="bottom"
-							overlay={renderTooltip("Chat")}
-						>
-							<ChatRightTextFill
-								className="chat-icon"
-								size={27}
-								color="white"
-							/>
-						</OverlayTrigger>
+						{(() => {
+							if (window.location.pathname == "/home")
+								return (
+									<OverlayTrigger
+										placement="bottom"
+										overlay={renderTooltip("Chat")}
+									>
+										<ChatRightTextFill
+											className="chat-icon"
+											size={27}
+											color="white"
+										/>
+									</OverlayTrigger>
+								);
+						})()}
 					</Nav>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<UserProfile />

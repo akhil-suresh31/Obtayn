@@ -1,0 +1,7 @@
+.requests-container {
+	height: 90vh;
+	width: 75vw;
+	float: left;
+	/* overflow: scroll; */
+	background-color: #161724;
+}
