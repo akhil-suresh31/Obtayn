@@ -1,7 +1,11 @@
 .chat-container {
-	height: 90vh;
-	width: 25vw;
-	float: right;
-	/* overflow: scroll; */
-	background-color: #212333;
+  height: 90vh;
+  width: 25vw;
+  float: right;
+  /* overflow: scroll; */
+  background-color: #212333;
+}
+.chat-heading {
+  color: white;
+  padding-top: 5vh;
 }
