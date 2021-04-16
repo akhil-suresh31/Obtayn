@@ -1,33 +1,33 @@
-h4 {
-	color: white;
-	padding-top: 5vh;
+.activity-heading {
+  color: white;
+  padding-top: 5vh;
 }
 
 .homepage-activity {
-	height: 90vh;
-	width: 25vw;
-	background-color: var(--activityBg);
-	float: right;
-	overflow: scroll;
+  height: 90vh;
+  width: 25vw;
+  background-color: var(--activityBg);
+  float: right;
+  overflow: scroll;
 }
 
 .activity-notif {
-	min-height: 10vh;
-	width: 20vw;
-	border-radius: 5px;
-	margin-top: 4vh;
-	margin-left: 5vh;
-	background-color: var(--notifBg);
-	padding: 2%;
+  min-height: 10vh;
+  width: 20vw;
+  border-radius: 5px;
+  margin-top: 4vh;
+  margin-left: 5vh;
+  background-color: var(--notifBg);
+  padding: 2%;
 }
 
 .notif-message {
-	color: white;
+  color: white;
 }
 
 .notif-timestamp {
-	font-size: 12px;
-	color: dimgrey;
-	margin-bottom: 0;
-	margin-left: 60%;
+  font-size: 12px;
+  color: dimgrey;
+  margin-bottom: 0;
+  margin-left: 60%;
 }
