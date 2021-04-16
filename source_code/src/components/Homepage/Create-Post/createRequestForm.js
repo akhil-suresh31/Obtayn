@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
@@ -26,13 +26,6 @@ function CreateRequestForm({ selectedTag, createRequest, modalClose }) {
     createRequest(formDataObj, images);
     modalClose();
   };
-
-  useEffect(() => {
-    if (document.getElementsByName("form")[0]) {
-      document.getElementsByName("form")[0].reset();
-      setValidated(false);
-    }
-  }, [selectedTag]);
 
   const handleChange = (e) => {
     e.preventDefault();

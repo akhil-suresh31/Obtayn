@@ -7,7 +7,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "../homepage.css";
 
-const CreatePostDiv = ({ dp }) => {
+const CreatePostDiv = ({ dp, show, setShow, tag, setTag }) => {
   const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 
   return (
@@ -26,6 +26,10 @@ const CreatePostDiv = ({ dp }) => {
                 placeholder="Write something..."
                 className="post-input"
                 readOnly
+                onClick={() => {
+                  setTag("Tag");
+                  setShow(!show);
+                }}
               />
             </Form>
           </div>
@@ -36,12 +40,26 @@ const CreatePostDiv = ({ dp }) => {
             placement="top"
             overlay={renderTooltip("New Request")}
           >
-            <LightbulbFill className="request-shortcut icons" size={30} />
+            <LightbulbFill
+              className="request-shortcut icons"
+              size={30}
+              onClick={() => {
+                setTag("Request");
+                setShow(true);
+              }}
+            />
           </OverlayTrigger>
         </motion.div>
         <motion.div whileHover={{ scale: 1.4 }}>
           <OverlayTrigger placement="top" overlay={renderTooltip("New Post")}>
-            <SuitHeartFill className="post-shortcut icons" size={30} />
+            <SuitHeartFill
+              className="post-shortcut icons"
+              size={30}
+              onClick={() => {
+                setTag("Post");
+                setShow(true);
+              }}
+            />
           </OverlayTrigger>
         </motion.div>
       </Row>

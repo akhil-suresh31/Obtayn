@@ -7,9 +7,7 @@ import "../homepage.css";
 import CreatePostForm from "./createPostForm";
 import CreateRequestForm from "./createRequestForm";
 
-function CreatePostModal() {
-  const [show, setShow] = useState(false);
-  const [tag, setTag] = useState("Tag");
+function CreatePostModal({ tag, setTag, show, setShow }) {
   const handleClose = () => setShow(false);
 
   const handleShow = () => {
