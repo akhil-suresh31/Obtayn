@@ -31,6 +31,12 @@
 	color: #4b4f68;
 }
 
+.accept-button {
+	height: 4%;
+	width: 4%;
+	color: #4abaaa;
+}
+
 .image-grid {
 	/* margin: 20px auto; */
 	display: grid;

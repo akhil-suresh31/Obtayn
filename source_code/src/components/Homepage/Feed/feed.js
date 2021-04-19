@@ -13,7 +13,11 @@ import {
 } from "../../../store/actions/requestActions";
 import "./feed.css";
 import { deletePost } from "../../../store/actions/postActions";
-import { CheckCircleFill, TrashFill } from "react-bootstrap-icons";
+import {
+	CheckCircleFill,
+	HandThumbsUpFill,
+	TrashFill,
+} from "react-bootstrap-icons";
 import ImageModal from "./imageModal";
 
 const Feed = ({
@@ -86,9 +90,8 @@ const Feed = ({
 				{allPosts.map((item, index) => {
 					return (
 						<AnimatePresence>
-							<motion.div
+							<div
 								className="feed-post"
-								whileHover={{ scale: 1.05 }}
 								key={index}
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
@@ -139,28 +142,35 @@ const Feed = ({
 															(image, index) => {
 																return (
 																	<div>
-																		<img
-																			src={
-																				image
-																			}
-																			style={{
-																				height:
-																					"20vh",
-																				width:
-																					"20vh",
-																				padding:
-																					"10%",
-																			}}
-																			alt="Some image"
-																			onClick={() => {
-																				setSelectedImg(
+																		<OverlayTrigger
+																			placement="top"
+																			overlay={renderTooltip(
+																				"Click to expand"
+																			)}
+																		>
+																			<img
+																				src={
 																					image
-																				);
-																				setImage(
-																					!showImage
-																				);
-																			}}
-																		/>
+																				}
+																				style={{
+																					height:
+																						"20vh",
+																					width:
+																						"20vh",
+																					padding:
+																						"10%",
+																				}}
+																				alt="Some image"
+																				onClick={() => {
+																					setSelectedImg(
+																						image
+																					);
+																					setImage(
+																						!showImage
+																					);
+																				}}
+																			/>
+																		</OverlayTrigger>
 																		<ImageModal
 																			show={
 																				showImage
@@ -207,13 +217,13 @@ const Feed = ({
 															"Accept"
 														)}
 													>
-														<CheckCircleFill
+														<HandThumbsUpFill
 															onClick={() =>
 																acceptRequest(
 																	item
 																)
 															}
-															className="delete-button"
+															className="accept-button"
 														/>
 													</OverlayTrigger>
 												)
@@ -236,7 +246,7 @@ const Feed = ({
 										</div>
 									</Media.Body>
 								</Media>
-							</motion.div>
+							</div>
 						</AnimatePresence>
 					);
 				})}
