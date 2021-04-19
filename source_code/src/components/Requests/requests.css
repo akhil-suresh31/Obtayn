@@ -1,3 +1,8 @@
+:root {
+	--requestBg: #d8bf95;
+	--requestContainerBg: #161724;
+}
+
 .requests-body {
 	height: 90vh;
 	width: 100vw;
@@ -6,7 +11,65 @@
 .requests-container {
 	height: 90vh;
 	width: 75vw;
-	background-color: #161724;
+	background-color: var(--requestContainerBg);
 	float: left;
 	overflow-y: scroll;
+}
+
+.incoming-req {
+	min-height: 10vh;
+	width: 25vw;
+	border-radius: 5px;
+	margin-top: 4vh;
+	margin-left: 5vh;
+	background-color: var(--requestBg);
+	padding: 2%;
+}
+
+.outgoing-req {
+	min-height: 10vh;
+	width: 25vw;
+	border-radius: 5px;
+	margin-top: 4vh;
+	margin-left: 5vh;
+	background-color: #4abaaa;
+	padding: 2%;
+}
+
+.req-title {
+	color: black;
+	font-weight: bolder;
+}
+
+.req-message {
+	color: white;
+}
+
+.req-timestamp {
+	font-size: 12px;
+	color: dimgrey;
+	margin-bottom: 0;
+	margin-left: 68%;
+}
+
+.incoming-req-container {
+	overflow-y: scroll;
+	float: left;
+	height: 90vh;
+	width: 37vw;
+	padding: 2%;
+}
+
+.outgoing-req-container {
+	overflow-y: scroll;
+	float: right;
+	height: 90vh;
+	width: 37vw;
+	padding: 2%;
+}
+
+.req-heading {
+	color: white;
+	padding-top: 2vh;
+	margin-left: 3vw;
 }

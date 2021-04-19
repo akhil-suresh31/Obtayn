@@ -1,6 +1,6 @@
-import { React, useEffect, useState } from "react";
-import { Media, Button, Spinner } from "react-bootstrap";
-import { motion, AnimatePresence } from "framer-motion";
+import { React, useState } from "react";
+import { Media, Spinner } from "react-bootstrap";
+import { AnimatePresence } from "framer-motion";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import Swal from "sweetalert2";
@@ -13,11 +13,7 @@ import {
 } from "../../../store/actions/requestActions";
 import "./feed.css";
 import { deletePost } from "../../../store/actions/postActions";
-import {
-	CheckCircleFill,
-	HandThumbsUpFill,
-	TrashFill,
-} from "react-bootstrap-icons";
+import { HandThumbsUpFill, TrashFill } from "react-bootstrap-icons";
 import ImageModal from "./imageModal";
 
 const Feed = ({
