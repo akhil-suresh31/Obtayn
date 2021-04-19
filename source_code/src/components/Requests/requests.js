@@ -7,8 +7,10 @@ const Requests = () => {
 	return (
 		<>
 			<Navbar />
-			<div className="requests-container"></div>
-			<Chat />
+			<div className="requests-body">
+				<div className="requests-container"></div>
+				<Chat />
+			</div>
 		</>
 	);
 };

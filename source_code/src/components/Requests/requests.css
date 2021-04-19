@@ -1,7 +1,12 @@
+.requests-body {
+	height: 90vh;
+	width: 100vw;
+}
+
 .requests-container {
-  height: 90vh;
-  width: 75vw;
-  float: left;
-  /* overflow: scroll; */
-  background-color: #161724;
+	height: 90vh;
+	width: 75vw;
+	background-color: #161724;
+	float: left;
+	overflow-y: scroll;
 }
