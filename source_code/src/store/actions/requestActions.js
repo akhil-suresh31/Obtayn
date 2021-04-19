@@ -1,8 +1,8 @@
 import "firebase/firestore";
 import "firebase/storage";
 import firebase from "../../firebase/firebase.js";
-
-import { reqeustAccepted } from "./notificationActions";
+import { addUserChat } from "./chatActions.js";
+import { requestAccepted } from "./notificationActions";
 
 export const createRequest = (request, images) => {
   const storage = firebase.storage();
@@ -53,7 +53,10 @@ export const createRequest = (request, images) => {
             .getDownloadURL()
             .then((url) => {
               URLList.push(url);
-              firestore.collection("Post").doc(ref).update({ file: URLList });
+              firestore
+                .collection("Request")
+                .doc(ref)
+                .update({ file: URLList });
               console.log(url);
             });
         }
@@ -73,7 +76,9 @@ export const acceptRequest = (request) => {
         status: "accepted",
       })
       .then(() => {
-        dispatch(reqeustAccepted(request, uid));
+        dispatch(requestAccepted(request, uid));
+        const users = { from: request.from_user_id, to: uid };
+        dispatch(addUserChat(users));
       })
       .catch((err) => {
         dispatch({ type: "ACCEPT_REQUEST_ERROR", err });

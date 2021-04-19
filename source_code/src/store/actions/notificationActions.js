@@ -1,4 +1,4 @@
-export const reqeustAccepted = (request, acceptor) => {
+export const requestAccepted = (request, acceptor) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     const user = getState().firebase.profile.name;
@@ -9,7 +9,7 @@ export const reqeustAccepted = (request, acceptor) => {
         trigger_event_id: request.id,
         from_user_id: acceptor,
         to_user_id: request.from_user_id,
-        message: `${user} accepted ypur request`,
+        message: `${user} accepted your request`,
         timestamp: new Date(),
       })
       .then((ref) => {
