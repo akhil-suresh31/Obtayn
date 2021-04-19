@@ -1,5 +1,5 @@
 :root {
-	--requestBg: #d8bf95;
+	--requestBg: #98a7ac;
 	--requestContainerBg: #161724;
 }
 
@@ -18,7 +18,7 @@
 
 .incoming-req {
 	min-height: 10vh;
-	width: 25vw;
+	width: 28vw;
 	border-radius: 5px;
 	margin-top: 4vh;
 	margin-left: 5vh;
@@ -28,11 +28,11 @@
 
 .outgoing-req {
 	min-height: 10vh;
-	width: 25vw;
+	width: 28vw;
 	border-radius: 5px;
 	margin-top: 4vh;
 	margin-left: 5vh;
-	background-color: #4abaaa;
+	/* background-color: #4abaaa; */
 	padding: 2%;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .req-message {
-	color: white;
+	color: rgb(8, 8, 8);
 }
 
 .req-timestamp {
@@ -64,12 +64,26 @@
 	overflow-y: scroll;
 	float: right;
 	height: 90vh;
-	width: 37vw;
+	width: 36vw;
 	padding: 2%;
+	/* background-color: cornflowerblue; */
 }
 
 .req-heading {
 	color: white;
 	padding-top: 2vh;
 	margin-left: 3vw;
+}
+
+.fulfill-button {
+	height: 8%;
+	width: 8%;
+	margin-left: 85%;
+}
+
+.delete-button1 {
+	height: 8%;
+	width: 8%;
+	margin-left: 85%;
+	color: #4b4f68;
 }

@@ -3,6 +3,7 @@ import { Media, Spinner } from "react-bootstrap";
 import { AnimatePresence } from "framer-motion";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import Avatar from "react-avatar";
 import Swal from "sweetalert2";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -95,7 +96,7 @@ const Feed = ({
 								exit={{ opacity: 0 }}
 							>
 								<Media className="post-container">
-									<img
+									{/* <img
 										width={60}
 										height={60}
 										className="align-self-start mr-3 feed-img"
@@ -104,6 +105,15 @@ const Feed = ({
 											avatarlist.get(item.from_user_id)
 										}
 										alt="user initials"
+									/> */}
+									<Avatar
+										size="55"
+										className="align-self-start mr-3 feed-img"
+										src={
+											avatarlist &&
+											avatarlist.get(item.from_user_id)
+										}
+										round={true}
 									/>
 									<Media.Body>
 										<div className="d-flex w-100 mb-0 align-items-end">

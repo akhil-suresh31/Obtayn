@@ -41,4 +41,5 @@
 	/* margin: 20px auto; */
 	display: grid;
 	grid-template-columns: min-content min-content min-content;
+	overflow: hidden;
 }

@@ -76,7 +76,7 @@ function UserProfile({ logOut, User, user_id }) {
 		var formData = new FormData(form);
 		formData = Object.fromEntries(formData.entries());
 
-		if (formData.file) {
+		if (file) {
 			const uploadTask = storage.ref(`/avatars/${file.name}`).put(file);
 			uploadTask.on("state_changed", console.log, console.error, () => {
 				storage
@@ -91,6 +91,7 @@ function UserProfile({ logOut, User, user_id }) {
 							profile_picture: url,
 						});
 						setURL(url);
+						console.log(url);
 					});
 			});
 		} else {
