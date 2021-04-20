@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { ChatRightTextFill } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import CreatePostModal from "../Create-Post/createPost";
@@ -11,6 +11,7 @@ import "./navbar.css";
 
 export default function NavBar({ tag, setTag, show, setShow }) {
   const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
+  const history = useHistory();
   //console.log(window.location.pathname);
   return (
     <>
