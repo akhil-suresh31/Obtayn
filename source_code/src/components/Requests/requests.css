@@ -1,4 +1,5 @@
 :root {
+	--incomingBg: #ecdcdc;
 	--requestBg: #98a7ac;
 	--requestContainerBg: #161724;
 }
@@ -16,24 +17,34 @@
 	overflow-y: scroll;
 }
 
-.incoming-req {
-	min-height: 10vh;
+.incoming-req-acc {
+	min-height: 8vh;
 	width: 28vw;
 	border-radius: 5px;
 	margin-top: 4vh;
 	margin-left: 5vh;
-	background-color: var(--requestBg);
-	padding: 2%;
+	padding: 1%;
 }
 
-.outgoing-req {
-	min-height: 10vh;
+.incoming-req-card {
+	margin-bottom: 6%;
+	border-radius: 5px !important;
+	background-color: var(--incomingBg) !important;
+}
+
+.outgoing-req-acc {
+	min-height: 8vh;
 	width: 28vw;
 	border-radius: 5px;
 	margin-top: 4vh;
 	margin-left: 5vh;
-	/* background-color: #4abaaa; */
-	padding: 2%;
+	padding: 1%;
+}
+
+.outgoing-req-card {
+	margin-bottom: 6%;
+	border-radius: 5px !important;
+	/* background-color: var(--incomingBg) !important; */
 }
 
 .req-title {
@@ -45,11 +56,21 @@
 	color: rgb(8, 8, 8);
 }
 
+.req-sender {
+	font-size: 12px;
+	color: dimgrey;
+}
+
+.req-acceptor {
+	font-size: 12px;
+	color: dimgrey;
+}
+
 .req-timestamp {
 	font-size: 12px;
 	color: dimgrey;
 	margin-bottom: 0;
-	margin-left: 68%;
+	/* margin-left: 68%; */
 }
 
 .incoming-req-container {
@@ -59,6 +80,11 @@
 	width: 37vw;
 	padding: 2%;
 }
+
+/* .incoming-req-acc {
+	width: 30vw;
+	margin-left: 2%;
+} */
 
 .outgoing-req-container {
 	overflow-y: scroll;
@@ -76,14 +102,16 @@
 }
 
 .fulfill-button {
-	height: 8%;
-	width: 8%;
-	margin-left: 85%;
+	height: 4%;
+	width: 4%;
+	/* margin-left: 65%; */
+	position: fixed;
+	left: 64%;
 }
 
 .delete-button1 {
 	height: 8%;
 	width: 8%;
-	margin-left: 85%;
+	margin-left: 58%;
 	color: #4b4f68;
 }

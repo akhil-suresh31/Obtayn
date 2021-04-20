@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import { Tooltip, OverlayTrigger, Accordion, Card } from "react-bootstrap";
 import Swal from "sweetalert2";
+
 import Navbar from "../Homepage/Navbar/navbar";
 import Chat from "./Chat/chat";
 import "./requests.css";
 import { CheckCircleFill, TrashFill } from "react-bootstrap-icons";
 import { deleteRequest } from "../../store/actions/requestActions";
 
-const Requests = ({ requests, user, deleteRequest }) => {
+const Requests = ({ requests, user, users, deleteRequest }) => {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
 	const [open, setOpen] = useState(false);
@@ -60,6 +60,7 @@ const Requests = ({ requests, user, deleteRequest }) => {
 
 	var incomingReq = [];
 	var outgoingReq = [];
+	var acceptor = "";
 	requests &&
 		user &&
 		requests.map((item, index) => {
@@ -70,149 +71,203 @@ const Requests = ({ requests, user, deleteRequest }) => {
 		<div>
 			<Navbar tag={tag} setTag={setTag} show={show} setShow={setShow} />
 			<div className="requests-body">
-				{/* {console.log(requests)} */}
 				<div className="requests-container">
 					<div className="incoming-req-container">
-						<h6 className="req-heading">Incoming Requests</h6>
-						{incomingReq &&
-							incomingReq.map((req, index) => {
-								return (
-									<div className="incoming-req" key={index}>
-										<p
-											className="req-title"
-											onClick={(e) => handleOpen(e)}
-										>
-											{req.title}
-										</p>
+						<center>
+							<h6 className="req-heading">Incoming Requests</h6>
+						</center>
+						<Accordion className="incoming-req-acc">
+							{incomingReq &&
+								incomingReq.map((req, index) => {
+									return (
+										<Card className="incoming-req-card">
+											<Accordion.Toggle
+												as={Card.Header}
+												variant="link"
+												eventKey={index + 1}
+											>
+												<p className="req-title">
+													{req.title}
+												</p>
+												<p className="req-sender">
+													<b>From: </b>
+													{req.user}
+												</p>
+											</Accordion.Toggle>
 
-										{open ? (
-											<div className="extra-info">
-												<p className="req-message">
-													{req.message}
-												</p>
-												{req.file &&
-													req.file.map(
-														(image, index) => {
-															return (
-																<img
-																	src={image}
-																	style={{
-																		height:
-																			"20vh",
-																		width:
-																			"20vh",
-																		padding:
-																			"5%",
-																		borderRadius:
-																			"15%",
-																	}}
-																	alt=""
-																	// onClick={() => {
-																	// 	setSelectedImg(
-																	// 		image
-																	// 	);
-																	// 	setImage(
-																	// 		!showImage
-																	// 	);
-																	// }}
-																/>
-															);
-														}
-													)}
-												<p className="req-timestamp">
-													{req.timestamp
-														.toDate()
-														.toDateString()}
-												</p>
-											</div>
-										) : null}
-									</div>
-								);
-							})}
+											<Accordion.Collapse
+												eventKey={index + 1}
+											>
+												<Card.Body>
+													<p className="req-message">
+														{req.message}
+													</p>
+													{req.file &&
+														req.file.map(
+															(image, index) => {
+																return (
+																	<img
+																		src={
+																			image
+																		}
+																		style={{
+																			height:
+																				"20vh",
+																			width:
+																				"20vh",
+																			padding:
+																				"5%",
+																			borderRadius:
+																				"15%",
+																		}}
+																		alt=""
+																	/>
+																);
+															}
+														)}
+													<p className="req-timestamp">
+														{req.timestamp
+															.toDate()
+															.toDateString()}
+													</p>
+												</Card.Body>
+											</Accordion.Collapse>
+										</Card>
+
+										// 	key={index}
+										// 	className="incoming-req"
+										// 	id={index}
+										// >
+									);
+								})}
+						</Accordion>
 					</div>
 
 					<div className="outgoing-req-container">
-						<h6 className="req-heading">Outgoing Requests</h6>
-						{outgoingReq &&
-							outgoingReq.map((req, index) => {
-								return (
-									<div
-										className="outgoing-req"
-										key={index}
-										style={{
-											backgroundColor:
-												req.status == "accepted"
-													? "#729ca2"
-													: "#c2d7d0",
-										}}
-									>
-										<p className="req-title">
-											{req.title}
+						<center>
+							<h6 className="req-heading">Outgoing Requests</h6>
+						</center>
+						<Accordion className="outgoing-req-acc">
+							{outgoingReq &&
+								outgoingReq.map((req, index) => {
+									if (req.status == "accepted") {
+										acceptor =
+											users[
+												users.findIndex(
+													(x) =>
+														x.id == req.to_user_id
+												)
+											];
+										console.log(acceptor);
+									}
 
-											{req.status === "accepted" ? (
-												<OverlayTrigger
-													placement="top"
-													overlay={renderTooltip(
-														"Mark as Fulfilled"
-													)}
-												>
-													<CheckCircleFill
-														className="fulfill-button"
-														onClick={() =>
-															markFulfilled(req)
-														}
-													/>
-												</OverlayTrigger>
-											) : null}
-										</p>
-
-										<p className="req-message">
-											{req.message}
-										</p>
-
-										{req.file &&
-											req.file.map((image, index) => {
-												return (
-													<img
-														src={image}
-														style={{
-															height: "20vh",
-															width: "20vh",
-															padding: "5%",
-															borderRadius: "15%",
-														}}
-														alt=""
-														// onClick={() => {
-														// 	setSelectedImg(
-														// 		image
-														// 	);
-														// 	setImage(
-														// 		!showImage
-														// 	);
-														// }}
-													/>
-												);
-											})}
-										<br />
-										<OverlayTrigger
-											placement="top"
-											overlay={renderTooltip("Delete")}
+									return (
+										<Card
+											className="outgoing-req-card"
+											style={{
+												backgroundColor:
+													req.status == "accepted"
+														? "#9dc8cf"
+														: "#dbe9ee",
+											}}
 										>
-											<TrashFill
-												onClick={() => delRequest(req)}
-												className="delete-button1"
-											/>
-										</OverlayTrigger>
-										<br />
+											<Accordion.Toggle
+												as={Card.Header}
+												variant="link"
+												eventKey={index + 1}
+											>
+												<p className="req-title">
+													{req.title}
 
-										<p className="req-timestamp">
-											{req.timestamp
-												.toDate()
-												.toDateString()}
-										</p>
-									</div>
-								);
-							})}
+													{req.status ===
+													"accepted" ? (
+														<OverlayTrigger
+															placement="top"
+															overlay={renderTooltip(
+																"Mark as Fulfilled"
+															)}
+														>
+															<CheckCircleFill
+																className="fulfill-button"
+																onClick={() =>
+																	markFulfilled(
+																		req
+																	)
+																}
+															/>
+														</OverlayTrigger>
+													) : null}
+												</p>
+												{acceptor ? (
+													<p className="req-acceptor">
+														<b>Accepted: </b>{" "}
+														{acceptor.name}
+													</p>
+												) : (
+													<p className="req-acceptor">
+														<b>Pending</b>
+													</p>
+												)}
+											</Accordion.Toggle>
+											<Accordion.Collapse
+												eventKey={index + 1}
+											>
+												<Card.Body>
+													<p className="req-message">
+														{req.message}
+													</p>
+
+													{req.file &&
+														req.file.map(
+															(image, index) => {
+																return (
+																	<img
+																		src={
+																			image
+																		}
+																		style={{
+																			height:
+																				"20vh",
+																			width:
+																				"20vh",
+																			padding:
+																				"5%",
+																			borderRadius:
+																				"15%",
+																		}}
+																		alt=""
+																	/>
+																);
+															}
+														)}
+													<br />
+
+													<p className="req-timestamp">
+														{req.timestamp
+															.toDate()
+															.toDateString()}
+														<OverlayTrigger
+															placement="top"
+															overlay={renderTooltip(
+																"Delete"
+															)}
+														>
+															<TrashFill
+																onClick={() =>
+																	delRequest(
+																		req
+																	)
+																}
+																className="delete-button1"
+															/>
+														</OverlayTrigger>
+													</p>
+												</Card.Body>
+											</Accordion.Collapse>
+										</Card>
+									);
+								})}
+						</Accordion>
 					</div>
 				</div>
 				<Chat />
@@ -225,6 +280,7 @@ const mapStatetoProps = (state) => {
 	return {
 		requests: state.firestore.ordered.Request,
 		user: state.firebase.auth.uid,
+		users: state.firestore.ordered.User,
 	};
 };
 
@@ -241,5 +297,6 @@ export default compose(
 			collection: "Request",
 			orderBy: ["timestamp", "desc"],
 		},
+		{ collection: "User" },
 	])
 )(Requests);
