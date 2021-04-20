@@ -57,7 +57,7 @@ const Chat = ({
 											src={user && user.dp}
 											round={true}
 											className="mt-1 ml-1"
-											name={user.name}
+											name={user && user.name}
 										/>
 										<Media.Body>
 											<div className="d-flex w-100 align-tems-start mt-1">

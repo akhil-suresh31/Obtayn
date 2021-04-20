@@ -17,7 +17,7 @@ const DirectChat = ({ chat, auth, user, setOpenDM }) => {
 							size="65"
 							src={user && user.dp}
 							round={true}
-							name={user.name}
+							name={user && user.name}
 							onClick={() => {
 								setOpenDM(false);
 							}}
