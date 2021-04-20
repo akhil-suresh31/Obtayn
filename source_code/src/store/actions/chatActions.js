@@ -4,20 +4,25 @@ export const addUserChat = (users) => {
 
     const chatRef = firestore
       .collection("Chat")
-      .where("from", "==", users.from)
-      .where("to", "==", users.to);
+      .where("from", "in", [users.from, users.to]);
     chatRef
       .get()
       .then((doc) => {
-        console.log("length :", doc.docs.length);
-        if (doc.docs.length) {
-          dispatch({ type: "CHAT_EXISTS", doc: doc.docs });
-        } else {
+        let chat_exists = false;
+        doc.docs.forEach((ele) => {
+          ele = ele.data();
+          if ([users.from, users.to].includes(ele.to) && !chat_exists) {
+            chat_exists = true;
+            dispatch({ type: "CHAT_EXISTS", doc: doc.docs });
+          }
+        });
+        if (!chat_exists) {
           firestore
             .collection("Chat")
             .add({
               from: users.from,
               to: users.to,
+              timestamp: new Date(),
             })
             .then((ref) => {
               console.log(ref.id);

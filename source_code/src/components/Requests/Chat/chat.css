@@ -9,3 +9,26 @@
 	color: white;
 	padding-top: 5vh;
 }
+.chat-List {
+	background-color: #171924;
+	width: 100%;
+}
+
+.chat-user {
+	background-color: #171924;
+	color: white;
+	margin-top: 5%;
+}
+
+.chat-user::after {
+	border-bottom: 2px solid white;
+	display: block;
+	content: " ";
+	margin-left: 12.5%;
+	width: 75%;
+}
+
+.DM-heading {
+	color: white;
+	padding-top: 5vh;
+}

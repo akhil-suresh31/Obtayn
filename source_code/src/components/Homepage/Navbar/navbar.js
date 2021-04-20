@@ -71,6 +71,9 @@ export default function NavBar({ tag, setTag, show, setShow }) {
                       className="chat-icon"
                       size={27}
                       color="white"
+					  onClick={() => {
+						history.push("/requests");
+					  }}
                     />
                   </OverlayTrigger>
                 );
