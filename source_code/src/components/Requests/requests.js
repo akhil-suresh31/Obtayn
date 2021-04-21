@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 
 import Navbar from "../Homepage/Navbar/navbar";
 import Chat from "./Chat/chat";
+import DirectChat from "./Chat/directChat";
 import "./requests.css";
 import { CheckCircleFill, TrashFill } from "react-bootstrap-icons";
 import { deleteRequest } from "../../store/actions/requestActions";
@@ -21,6 +22,9 @@ const Requests = ({
 }) => {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
+	const [openDM, setOpenDM] = useState(false);
+	const [DMUser, setDMUser] = useState();
+	const [DMChat, setDMChat] = useState();
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 
 	const markFulfilled = (request) => {
@@ -283,7 +287,20 @@ const Requests = ({
 						</Accordion>
 					</div>
 				</div>
-				<Chat />
+				{!openDM && (
+					<Chat
+						setDMChat={setDMChat}
+						setDMUser={setDMUser}
+						setOpenDM={setOpenDM}
+					/>
+				)}
+				{openDM && (
+					<DirectChat
+						user={DMUser}
+						chat={DMChat}
+						setOpenDM={setOpenDM}
+					/>
+				)}
 			</div>
 		</div>
 	);
