@@ -102,11 +102,11 @@
 }
 
 .fulfill-button {
-	height: 4%;
-	width: 4%;
-	/* margin-left: 65%; */
-	position: fixed;
-	left: 64%;
+	height: 10%;
+	width: 10%;
+	/* position: fixed; */
+	color: black;
+	margin-right: 0;
 }
 
 .delete-button1 {

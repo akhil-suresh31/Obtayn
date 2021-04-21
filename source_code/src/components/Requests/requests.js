@@ -10,32 +10,35 @@ import Chat from "./Chat/chat";
 import "./requests.css";
 import { CheckCircleFill, TrashFill } from "react-bootstrap-icons";
 import { deleteRequest } from "../../store/actions/requestActions";
+import { requestFulfilledNotif } from "../../store/actions/notificationActions";
 
-const Requests = ({ requests, user, users, deleteRequest }) => {
+const Requests = ({
+	requests,
+	user,
+	users,
+	deleteRequest,
+	requestFulfilled,
+}) => {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
-	const [open, setOpen] = useState(false);
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
-
-	const handleOpen = (e) => {
-		setOpen(!open);
-	};
 
 	const markFulfilled = (request) => {
 		Swal.fire({
-			title:
-				"Do you want to mark this Request as fulfilled?	This will remove it from the database.",
+			title: "Do you want to mark this Request as fulfilled?	",
 			showConfirmButton: true,
 			showDenyButton: true,
 		}).then((result) => {
 			if (result.isConfirmed) {
-				deleteRequest(request);
+				console.log("calling");
+				requestFulfilledNotif(request);
 				Swal.fire({
 					title: "Marked as Fulfilled!",
 					text: "",
 					icon: "success",
 					timer: 1500,
 				});
+				console.log("called");
 			}
 		});
 	};
@@ -150,6 +153,12 @@ const Requests = ({ requests, user, users, deleteRequest }) => {
 						<Accordion className="outgoing-req-acc">
 							{outgoingReq &&
 								outgoingReq.map((req, index) => {
+									var bgcolor = "#dbe9ee";
+									if (req.status == "accepted")
+										bgcolor = "#9dc8cf";
+									if (req.status == "fulfilled")
+										bgcolor = "#1ac6ff";
+
 									if (req.status == "accepted") {
 										acceptor =
 											users[
@@ -158,17 +167,14 @@ const Requests = ({ requests, user, users, deleteRequest }) => {
 														x.id == req.to_user_id
 												)
 											];
-										console.log(acceptor);
+										// console.log(acceptor);
 									}
 
 									return (
 										<Card
 											className="outgoing-req-card"
 											style={{
-												backgroundColor:
-													req.status == "accepted"
-														? "#9dc8cf"
-														: "#dbe9ee",
+												backgroundColor: bgcolor,
 											}}
 										>
 											<Accordion.Toggle
@@ -178,29 +184,10 @@ const Requests = ({ requests, user, users, deleteRequest }) => {
 											>
 												<p className="req-title">
 													{req.title}
-
-													{req.status ===
-													"accepted" ? (
-														<OverlayTrigger
-															placement="top"
-															overlay={renderTooltip(
-																"Mark as Fulfilled"
-															)}
-														>
-															<CheckCircleFill
-																className="fulfill-button"
-																onClick={() =>
-																	markFulfilled(
-																		req
-																	)
-																}
-															/>
-														</OverlayTrigger>
-													) : null}
 												</p>
 												{acceptor ? (
 													<p className="req-acceptor">
-														<b>Accepted: </b>{" "}
+														<b>{req.status}: </b>{" "}
 														{acceptor.name}
 													</p>
 												) : (
@@ -208,6 +195,32 @@ const Requests = ({ requests, user, users, deleteRequest }) => {
 														<b>Pending</b>
 													</p>
 												)}
+												{req.status === "accepted" ? (
+													<div className="fulfill-button">
+														<OverlayTrigger
+															placement="top"
+															overlay={renderTooltip(
+																"Mark as Fulfilled"
+															)}
+														>
+															<CheckCircleFill
+																onClick={() => {
+																	markFulfilled(
+																		req
+																	);
+																}}
+																style={{
+																	color:
+																		"black",
+																	height:
+																		"80%",
+																	width:
+																		"80%",
+																}}
+															/>
+														</OverlayTrigger>
+													</div>
+												) : null}
 											</Accordion.Toggle>
 											<Accordion.Collapse
 												eventKey={index + 1}
@@ -287,6 +300,8 @@ const mapStatetoProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		deleteRequest: (request) => dispatch(deleteRequest(request)),
+		requestFulfilledNotif: (request) =>
+			dispatch(requestFulfilledNotif(request)),
 	};
 };
 
