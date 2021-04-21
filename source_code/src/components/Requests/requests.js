@@ -301,6 +301,8 @@ const Requests = ({
 						user={DMUser}
 						chat={DMChat}
 						setOpenDM={setOpenDM}
+						setDMChat={setDMChat}
+						setDMUser={setDMUser}
 					/>
 				)}
 			</div>

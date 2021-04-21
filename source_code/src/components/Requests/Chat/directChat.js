@@ -1,83 +1,147 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import Avatar from "react-avatar";
 import { motion } from "framer-motion";
 import "./chat.css";
-import { Media } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
+import {
+	ArrowLeft,
+	CardImage,
+	Cursor,
+	FileImage,
+	Image,
+} from "react-bootstrap-icons";
+import { sendChat } from "../../../store/actions/chatActions";
 
-const DirectChat = ({ chat, auth, user, setOpenDM, activeChat }) => {
+const DirectChat = ({
+	chat,
+	auth,
+	user,
+	setOpenDM,
+	activeChat,
+	sendChat,
+	setDMChat,
+	setDMUser,
+}) => {
+	const [message, setMessage] = useState();
+	const lastMessage = useRef();
+	const sendMessage = () => {
+		console.log(message);
+		const messageInfo = {
+			message: message,
+			to_user_id: user.id,
+		};
+		if (message) sendChat(messageInfo, chat);
+		setMessage("");
+	};
+
+	const goBack = () => {
+		setDMChat(null);
+		setDMUser(null);
+		setOpenDM(false);
+	};
+
+	useEffect(() => {
+		lastMessage.current.scrollIntoView({ behavior: "smooth" });
+	}, [activeChat[0].messages]);
+
 	if (chat && user && auth) {
-		if (activeChat) console.log(activeChat);
 		return (
-			<div className="chat-container">
-				<center>
-					<div className="DM-heading">
+			<div className="chat-container d-flex flex-column">
+				<div className="DM-heading d-flex justify-content-between align-items-center">
+					<ArrowLeft
+						className="chat-input-icon mt-1 ml-1 align-self-start"
+						onClick={goBack}
+					/>
+					<center>
 						<Avatar
+							className="DM-avatar"
 							size="65"
 							src={user && user.dp}
 							round={true}
 							name={user && user.name}
-							onClick={() => {
-								setOpenDM(false);
-							}}
 						/>
-						<h3 className="chat-heading">{user.name}</h3>
-					</div>
-					{/* <div className="chat-List">
-						{activeChat[0].messages,map((msg) => {
-							var user;
-							if (chat.to == auth.uid) user = chat.from;
-							else user = chat.to;
-							user = UserDetails.get(user);
+						<h4 className="DM-userName">{user.name}</h4>
+					</center>
+					<div vissible={false}> </div>
+				</div>
 
-							return (
-								<div className="chat-user">
-									<Media>
-										<Avatar
-											size="55"
-											src={user && user.dp}
-											round={true}
-											alt={user && user.name[0]}
-											className="mt-1 ml-1"
-										/>
-										<Media.Body>
-											<div className="d-flex w-100 align-tems-start mt-1">
-												<h4 className="ml-4">
-													{user && user.name}
-												</h4>
+				<div className="chat-List-DM d-flex align-items-start flex-column">
+					<div className="messages mb-auto w-100">
+						{activeChat[0].messages &&
+							activeChat[0].messages.map((msg) => {
+								const messageClass =
+									msg.from == user.id ? "received" : "sent";
+
+								return (
+									<div
+										className={`message ${messageClass} align-items-center`}
+									>
+										<p>
+											{msg.message}{" "}
+											<div className="chat-time">
+												{msg.timestamp
+													.toDate()
+													.toLocaleTimeString(
+														"en-US",
+														{
+															weekday: "short",
+															day: "numeric",
+															month: "numeric",
+															hour: "2-digit",
+															minute: "2-digit",
+														}
+													)}
 											</div>
-											<div className="d-flex ml-4 mb-2">
-												{chat.message ? (
-													<>{"some message"}</>
-												) : (
-													<>
-														Well whatcha waiting for
-														say hi!
-													</>
-												)}
-											</div>
-										</Media.Body>
-									</Media>
-								</div>
-							);
-						})}
-					</div> */}
-				</center>
+										</p>
+									</div>
+								);
+							})}
+						<div ref={lastMessage} />
+					</div>
+
+					<div className="chat-input">
+						<div className="d-flex justify-content-around align-items-center">
+							<Image className="chat-input-icon" />
+							<Form
+								onSubmit={(e) => {
+									e.preventDefault();
+									sendMessage();
+								}}
+								name="message-form"
+							>
+								<Form.Control
+									name="message"
+									type="text"
+									placeholder={
+										user && `Messasge ${user.name}`
+									}
+									value={message}
+									onChange={(e) => {
+										setMessage(e.target.value);
+									}}
+								/>
+							</Form>
+
+							<Cursor
+								type="submit"
+								className="chat-input-icon"
+								onClick={sendMessage}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	} else {
+		return (
+			<div className="chat-container">
+				<Spinner animation="border" variant="light" />;
 			</div>
 		);
 	}
-	// } else {
-	// 	return (
-	// 		<div className="chat-container">
-	// 			<center>
-	// 				<h4 className="chat-heading">Recent Messages</h4>
-	// 				<div style={{ color: "white" }}>Loading</div>
-	// 			</center>
-	// 		</div>
-	// 	);
-	// }
 };
 
 const mapStatetoProps = (state) => {
@@ -87,8 +151,14 @@ const mapStatetoProps = (state) => {
 	};
 };
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+		sendChat: (messageInfo, chat) => dispatch(sendChat(messageInfo, chat)),
+	};
+};
+
 export default compose(
-	connect(mapStatetoProps),
+	connect(mapStatetoProps, mapDispatchToProps),
 	firestoreConnect((props) => [
 		{ collection: "User" },
 		{

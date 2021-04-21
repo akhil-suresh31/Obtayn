@@ -65,21 +65,21 @@ const Chat = ({
 													{user && user.name}
 												</h5>
 											</div>
-											<div className="d-flex ml-4 mb-2">
+											<div className="d-flex ml-4 mb-1">
 												{chat.messages ? (
-													<div className="last-message">
+													<p className="last-message">
 														{
 															chat.messages[
 																chat.messages
 																	.length - 1
 															].message
 														}
-													</div>
+													</p>
 												) : (
-													<div className="last-message">
+													<p className="last-message">
 														Well whatcha waiting for
 														say hi!
-													</div>
+													</p>
 												)}
 												<p className="chat-List-time ">
 													{chat.timestamp

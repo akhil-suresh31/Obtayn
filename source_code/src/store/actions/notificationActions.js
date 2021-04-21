@@ -71,3 +71,27 @@ export const requestDeletedNotif = (request) => {
 			});
 	};
 };
+
+export const messageSent = (messageInfo, chat) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+		const user = getState().firebase.auth.uid;
+		const userName = getState().firebase.profile.name;
+		firestore
+			.collection("Notification")
+			.add({
+				trigger_event: "chat",
+				trigger_event_id: chat.id,
+				from_user_id: user,
+				to_user_id: messageInfo.to_user_id,
+				message: `${userName} sent you a message.`,
+				timestamp: new Date(),
+			})
+			.then((ref) => {
+				dispatch({ type: "NEW_MESSAGE_NOTIF", ref });
+			})
+			.catch((err) => {
+				dispatch({ type: "NEW_MESSAGE_NOTIF_ERROR", err });
+			});
+	};
+};

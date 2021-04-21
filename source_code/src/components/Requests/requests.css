@@ -14,7 +14,6 @@
 	width: 75vw;
 	background-color: var(--requestContainerBg);
 	float: left;
-	overflow-y: scroll;
 }
 
 .incoming-req-acc {

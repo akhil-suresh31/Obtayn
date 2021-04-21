@@ -31,6 +31,14 @@ const notificationReducer = (state = initState, action) => {
 			);
 			return state;
 
+		case "NEW_MESSAGE_NOTIF":
+			console.log("new message notification sent", action.ref.id);
+			return state;
+
+		case "NEW_MESSAGE_NOTIF_ERROR":
+			console.log("error sending new message notification", action.code);
+			return state;
+
 		default:
 			return state;
 	}
