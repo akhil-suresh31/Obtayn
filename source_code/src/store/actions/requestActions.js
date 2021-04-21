@@ -2,7 +2,7 @@ import "firebase/firestore";
 import "firebase/storage";
 import firebase from "../../firebase/firebase.js";
 import { addUserChat } from "./chatActions.js";
-import { requestAccepted } from "./notificationActions";
+import { requestAccepted, requestFulfilled } from "./notificationActions";
 
 export const createRequest = (request, images) => {
 	const storage = firebase.storage();
@@ -101,4 +101,19 @@ export const deleteRequest = (request) => {
 	};
 };
 
-//deleteAcceptedRequest
+export const fulfillRequest = (request) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+		const ref = firestore.collection("Request").doc(request.id);
+		// const uid = getState().firebase.auth.uid;
+		ref.update({
+			status: "fulfilled",
+		})
+			.then(() => {
+				dispatch({ type: "REQUEST_FULFILLED" });
+			})
+			.catch((err) => {
+				dispatch({ type: "REQUEST_FULFILL_ERROR", err });
+			});
+	};
+};
