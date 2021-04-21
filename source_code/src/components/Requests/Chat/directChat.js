@@ -7,8 +7,9 @@ import { motion } from "framer-motion";
 import "./chat.css";
 import { Media } from "react-bootstrap";
 
-const DirectChat = ({ chat, auth, user, setOpenDM }) => {
+const DirectChat = ({ chat, auth, user, setOpenDM, activeChat }) => {
 	if (chat && user && auth) {
+		if (activeChat) console.log(activeChat);
 		return (
 			<div className="chat-container">
 				<center>
@@ -25,7 +26,7 @@ const DirectChat = ({ chat, auth, user, setOpenDM }) => {
 						<h3 className="chat-heading">{user.name}</h3>
 					</div>
 					{/* <div className="chat-List">
-						{chatForUser.map((chat) => {
+						{activeChat[0].messages,map((msg) => {
 							var user;
 							if (chat.to == auth.uid) user = chat.from;
 							else user = chat.to;
@@ -82,10 +83,17 @@ const DirectChat = ({ chat, auth, user, setOpenDM }) => {
 const mapStatetoProps = (state) => {
 	return {
 		auth: state.firebase.auth,
+		activeChat: state.firestore.ordered.Chat,
 	};
 };
 
 export default compose(
 	connect(mapStatetoProps),
-	firestoreConnect([{ collection: "User" }])
+	firestoreConnect((props) => [
+		{ collection: "User" },
+		{
+			collection: "Chat",
+			doc: props.chat.id,
+		},
+	])
 )(DirectChat);

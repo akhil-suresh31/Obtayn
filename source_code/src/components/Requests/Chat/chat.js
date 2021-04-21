@@ -61,19 +61,31 @@ const Chat = ({
 										/>
 										<Media.Body>
 											<div className="d-flex w-100 align-tems-start mt-1">
-												<h4 className="ml-4">
+												<h5 className="ml-4">
 													{user && user.name}
-												</h4>
+												</h5>
 											</div>
 											<div className="d-flex ml-4 mb-2">
-												{chat.message ? (
-													<>{"some message"}</>
+												{chat.messages ? (
+													<div className="last-message">
+														{
+															chat.messages[
+																chat.messages
+																	.length - 1
+															].message
+														}
+													</div>
 												) : (
-													<>
+													<div className="last-message">
 														Well whatcha waiting for
 														say hi!
-													</>
+													</div>
 												)}
+												<p className="chat-List-time ">
+													{chat.timestamp
+														.toDate()
+														.toLocaleTimeString()}
+												</p>
 											</div>
 										</Media.Body>
 									</Media>
