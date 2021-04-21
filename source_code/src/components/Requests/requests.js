@@ -18,7 +18,7 @@ const Requests = ({
 	user,
 	users,
 	deleteRequest,
-	requestFulfilled,
+	requestFulfilledNotif,
 }) => {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
