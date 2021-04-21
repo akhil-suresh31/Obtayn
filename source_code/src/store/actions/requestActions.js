@@ -2,7 +2,7 @@ import "firebase/firestore";
 import "firebase/storage";
 import firebase from "../../firebase/firebase.js";
 import { addUserChat } from "./chatActions.js";
-import { requestAccepted, requestFulfilled } from "./notificationActions";
+import { requestAccepted, requestDeletedNotif } from "./notificationActions";
 
 export const createRequest = (request, images) => {
 	const storage = firebase.storage();
@@ -93,7 +93,10 @@ export const deleteRequest = (request) => {
 			.doc(request.id)
 			.delete()
 			.then(() => {
-				dispatch({ type: "DELETE_REQUEST", request });
+				if (request.status == "accepted")
+					dispatch(requestDeletedNotif(request));
+				else if (request.status == "pending")
+					dispatch({ type: "DELETE_REQUEST", request });
 			})
 			.catch((err) => {
 				dispatch({ type: "DELETE_REQUEST_ERROR", err });

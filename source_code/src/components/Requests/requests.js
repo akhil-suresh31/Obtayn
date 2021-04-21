@@ -188,10 +188,38 @@ const Requests = ({
 											>
 												<p className="req-title">
 													{req.title}
+
+													{req.status ===
+													"accepted" ? (
+														<div className="fulfill-button">
+															<OverlayTrigger
+																placement="top"
+																overlay={renderTooltip(
+																	"Mark as Fulfilled"
+																)}
+															>
+																<CheckCircleFill
+																	onClick={() => {
+																		markFulfilled(
+																			req
+																		);
+																	}}
+																	style={{
+																		color:
+																			"black",
+																		height:
+																			"80%",
+																		width:
+																			"80%",
+																	}}
+																/>
+															</OverlayTrigger>
+														</div>
+													) : null}
 												</p>
 												{acceptor ? (
 													<p className="req-acceptor">
-														<b>{req.status}: </b>{" "}
+														<b>{req.status}: </b>
 														{acceptor.name}
 													</p>
 												) : (
@@ -199,32 +227,6 @@ const Requests = ({
 														<b>Pending</b>
 													</p>
 												)}
-												{req.status === "accepted" ? (
-													<div className="fulfill-button">
-														<OverlayTrigger
-															placement="top"
-															overlay={renderTooltip(
-																"Mark as Fulfilled"
-															)}
-														>
-															<CheckCircleFill
-																onClick={() => {
-																	markFulfilled(
-																		req
-																	);
-																}}
-																style={{
-																	color:
-																		"black",
-																	height:
-																		"80%",
-																	width:
-																		"80%",
-																}}
-															/>
-														</OverlayTrigger>
-													</div>
-												) : null}
 											</Accordion.Toggle>
 											<Accordion.Collapse
 												eventKey={index + 1}

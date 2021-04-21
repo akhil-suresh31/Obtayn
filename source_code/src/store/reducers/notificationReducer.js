@@ -20,6 +20,17 @@ const notificationReducer = (state = initState, action) => {
 			);
 			return state;
 
+		case "DELETE_NOTIF":
+			console.log("request delete notification sent", action.ref);
+			return state;
+
+		case "DELETE_NOTIF_ERROR":
+			console.log(
+				"error sending request deleted notification",
+				action.code
+			);
+			return state;
+
 		default:
 			return state;
 	}
