@@ -298,12 +298,17 @@ const Feed = ({
 			);
 		} else {
 			return (
-				<div className="no-results">
-					<img src="images/tenor.gif" name="results-gif" />
-					<h4 style={{ color: "white", paddingTop: "2%" }}>
+				<>
+					<div className="no-results">
+						<img src="images/tenor.gif" name="results-gif" />
+					</div>
+					<h4
+						className="no-result-text"
+						style={{ color: "white", paddingTop: "2%" }}
+					>
 						Don't be mad, we couldn't find any results.
 					</h4>
-				</div>
+				</>
 			);
 		}
 	} else {

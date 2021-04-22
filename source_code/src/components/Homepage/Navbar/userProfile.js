@@ -215,7 +215,12 @@ function UserProfile({ logOut, User, user_id }) {
 							</Dropdown.ItemText>
 							<Dropdown.Divider />
 							<Dropdown.ItemText eventKey="4">
-								<Link onClick={handleLogout}>Logout</Link>
+								<Link
+									onClick={handleLogout}
+									style={{ color: "black" }}
+								>
+									Logout
+								</Link>
 							</Dropdown.ItemText>
 						</center>
 					</DropdownButton>

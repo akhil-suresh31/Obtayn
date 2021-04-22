@@ -13,6 +13,7 @@
 	border-radius: 5px;
 	margin: 3%;
 	background-color: var(--postBg);
+	border: 1px solid black;
 	/* box-shadow: 5px 5px #79797971; */
 }
 
@@ -45,11 +46,15 @@
 }
 
 .no-results {
-	margin-top: 10%;
+	margin-top: 5%;
 	height: min-content;
 	/* width: min-content; */
 	margin-left: 38%;
 	overflow: hidden;
+}
+
+.no-result-text {
+	margin-left: 28%;
 }
 
 .results-gif {

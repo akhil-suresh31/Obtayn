@@ -26,7 +26,12 @@ export default function NavBar({
 				expand="lg"
 				className="justify-content-between homepage-navbar"
 			>
-				<Navbar.Brand href="#home">
+				<Navbar.Brand
+					style={{
+						color: "#d8bf95",
+						fontFamily: "Lucida Console, Courier New, monospace",
+					}}
+				>
 					<img
 						alt="logo"
 						src="http://placekitten.com/200/200"
@@ -34,7 +39,7 @@ export default function NavBar({
 						height="30"
 						className="d-inline-block align-top"
 					/>{" "}
-					Obtayn
+					<b>Obtayn</b>
 				</Navbar.Brand>
 
 				<Navbar.Toggle />
@@ -102,7 +107,7 @@ export default function NavBar({
 								);
 						})()}
 					</Nav>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 					<UserProfile />
 				</Navbar.Collapse>
 			</Navbar>
