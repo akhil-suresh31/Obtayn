@@ -13,7 +13,7 @@ import {
 	FileImage,
 	Image,
 } from "react-bootstrap-icons";
-import { sendChat } from "../../../store/actions/chatActions";
+import { markAsRead, sendChat } from "../../../store/actions/chatActions";
 
 const DirectChat = ({
 	chat,
@@ -22,6 +22,7 @@ const DirectChat = ({
 	setOpenDM,
 	activeChat,
 	sendChat,
+	markAsRead,
 	setDMChat,
 	setDMUser,
 }) => {

@@ -52,6 +52,7 @@ export const sendChat = (messageInfo, chat) => {
 		const chatRef = firestore.collection("Chat").doc(chat.id);
 		chatRef
 			.update({
+				seen: false,
 				timestamp: new Date(),
 				messages: firestore.FieldValue.arrayUnion({
 					message: messageInfo.message,
@@ -66,6 +67,25 @@ export const sendChat = (messageInfo, chat) => {
 			.catch((err) => {
 				console.log(err.message);
 				dispatch({ type: "CHAT_SENT_ERROR", err });
+			});
+	};
+};
+
+export const markAsRead = (chat) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+
+		const chatRef = firestore.collection("Chat").doc(chat.id);
+		chatRef
+			.update({
+				seen: true,
+			})
+			.then(() => {
+				dispatch({ type: "CHAT_READ" });
+			})
+			.catch((err) => {
+				console.log(err.message);
+				dispatch({ type: "CHAT_READ_ERROR", err });
 			});
 	};
 };

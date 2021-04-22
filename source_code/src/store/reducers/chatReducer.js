@@ -17,6 +17,12 @@ const chatReducer = (state = initState, action) => {
 		case "CHAT_SENT_ERROR":
 			console.log("Error to send chat", action.code);
 			return state;
+		case "CHAT_READ":
+			console.log("chat status changed successfully");
+			return state;
+		case "CHAT_READ_ERROR":
+			console.log("Error to change read status", action.code);
+			return state;
 		default:
 			return state;
 	}

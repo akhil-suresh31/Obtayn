@@ -5,7 +5,8 @@ import { compose } from "redux";
 import Avatar from "react-avatar";
 import { motion } from "framer-motion";
 import "./chat.css";
-import { Col, Media, Row } from "react-bootstrap";
+import { Media } from "react-bootstrap";
+import { markAsRead } from "../../../store/actions/chatActions";
 
 const Chat = ({
 	chatList,
@@ -14,6 +15,7 @@ const Chat = ({
 	setDMChat,
 	setDMUser,
 	setOpenDM,
+	markAsRead,
 }) => {
 	const openDm = (chat, user) => {
 		setDMChat(chat);
@@ -49,6 +51,14 @@ const Chat = ({
 								<div className="chat-user">
 									<Media
 										onClick={() => {
+											if (
+												!chat.seen &&
+												chat.messages &&
+												chat.messages[
+													chat.messages.length - 1
+												].from == user.id
+											)
+												markAsRead(chat);
 											openDm(chat, user);
 										}}
 									>
@@ -65,18 +75,38 @@ const Chat = ({
 													{user && user.name}
 												</h5>
 											</div>
+
 											<div className="d-flex ml-4 mb-1">
 												{chat.messages ? (
-													<p className="last-message">
-														{
-															chat.messages[
-																chat.messages
-																	.length - 1
-															].message
-														}
-													</p>
+													chat.seen == false &&
+													chat.messages[
+														chat.messages.length - 1
+													].from ==
+														(user && user.id) ? (
+														<p className="last-message unread">
+															{
+																chat.messages[
+																	chat
+																		.messages
+																		.length -
+																		1
+																].message
+															}
+														</p>
+													) : (
+														<p className="last-message">
+															{
+																chat.messages[
+																	chat
+																		.messages
+																		.length -
+																		1
+																].message
+															}
+														</p>
+													)
 												) : (
-													<p className="last-message">
+													<p className="last-message unread">
 														Well whatcha waiting for
 														say hi!
 													</p>
@@ -84,7 +114,19 @@ const Chat = ({
 												<p className="chat-List-time ">
 													{chat.timestamp
 														.toDate()
-														.toLocaleTimeString()}
+														.toLocaleTimeString(
+															"en-US",
+															{
+																weekday:
+																	"short",
+																day: "numeric",
+																month:
+																	"numeric",
+																hour: "2-digit",
+																minute:
+																	"2-digit",
+															}
+														)}
 												</p>
 											</div>
 										</Media.Body>
@@ -108,6 +150,12 @@ const Chat = ({
 	}
 };
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+		markAsRead: (chat) => dispatch(markAsRead(chat)),
+	};
+};
+
 const mapStatetoProps = (state) => {
 	return {
 		chatList: state.firestore.ordered.Chat,
@@ -117,7 +165,7 @@ const mapStatetoProps = (state) => {
 };
 
 export default compose(
-	connect(mapStatetoProps),
+	connect(mapStatetoProps, mapDispatchToProps),
 	firestoreConnect([
 		{
 			collection: "Chat",

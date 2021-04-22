@@ -86,6 +86,7 @@
 }
 
 .chat-time {
+	padding-top: 0.25rem;
 	font-size: 12px;
 	color: rgb(36, 36, 36);
 	align-content: flex-end;
@@ -108,4 +109,8 @@
 	align-self: flex-end;
 	padding: 0.25rem;
 	border-radius: 12px 12px 0px 12px;
+}
+
+.unread {
+	font-weight: bold;
 }
