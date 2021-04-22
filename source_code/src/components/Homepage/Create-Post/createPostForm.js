@@ -6,8 +6,9 @@ import { connect } from "react-redux";
 
 import { createPost } from "../../../store/actions/postActions";
 import "../homepage.css";
+import "./post.css";
 
-function CreatePostForm({ createPost, modalClose }) {
+function CreatePostForm({ createPost, modalClose, uploadError }) {
 	const [validated, setValidated] = useState(false);
 	const [error, setError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
@@ -15,11 +16,20 @@ function CreatePostForm({ createPost, modalClose }) {
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		if (e.target.files.length > 3) {
-			setError("Cannot upload more than 3 images.");
-		}
-		images = e.target.files;
-		console.log(images);
+		var files = [e.target.files];
+		if (files.length > 3) setError("Cannot upload more than 3 images.");
+		else setError(null);
+
+		if (
+			files &&
+			files.map((file, index) => {
+				if (types.includes(file.type)) {
+					images.push(file);
+					setError("");
+				} else setError("Please select an image file (png or jpg)");
+			})
+		)
+			console.log(images);
 	};
 
 	const handleSubmit = (e) => {
@@ -33,9 +43,11 @@ function CreatePostForm({ createPost, modalClose }) {
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
 		//console.log(formDataObj);
-		modalClose();
+
 		console.log(images);
 		createPost(formDataObj, images);
+		if (uploadError) alert("Post cannot be uploaded!");
+		modalClose();
 	};
 
 	return (
@@ -88,34 +100,47 @@ function CreatePostForm({ createPost, modalClose }) {
 								onChange={handleChange}
 								multiple
 							/>
-							<Form.Control.Feedback>
-								Looks good!
-							</Form.Control.Feedback>
-							<Form.Control.Feedback type="invalid">
-								Please choose a valid image.
-							</Form.Control.Feedback>
 							{error && <div className="error">{error}</div>}
 						</Form.Group>
 					</Col>
 					<Col>
 						<br />
-						<Button
-							className="add-post-button"
-							variant="dark"
-							type="submit"
-						>
-							Add Post
-						</Button>
+						{error ? (
+							<Button
+								className="add-post-button"
+								variant="dark"
+								type="submit"
+								disabled
+							>
+								Add Post
+							</Button>
+						) : (
+							<Button
+								className="add-post-button"
+								variant="dark"
+								type="submit"
+							>
+								Add Post
+							</Button>
+						)}
 					</Col>
 				</Row>
 			</Form>
 		</div>
 	);
 }
+
+const mapStateToProps = (state) => {
+	console.log(state);
+	return {
+		uploadError: state.auth.error,
+	};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		createPost: (data, images) => dispatch(createPost(data, images)),
 	};
 };
 
-export default connect(null, mapDispatchToProps)(CreatePostForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePostForm);

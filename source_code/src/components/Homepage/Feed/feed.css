@@ -43,3 +43,17 @@
 	grid-template-columns: min-content min-content min-content;
 	overflow: hidden;
 }
+
+.no-results {
+	margin-top: 10%;
+	height: min-content;
+	/* width: min-content; */
+	margin-left: 38%;
+	overflow: hidden;
+}
+
+.results-gif {
+	align-self: center;
+	height: 40vh !important;
+	width: 50vw !important;
+}

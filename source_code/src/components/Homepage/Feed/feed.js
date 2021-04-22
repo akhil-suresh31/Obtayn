@@ -26,10 +26,16 @@ const Feed = ({
 	deleteRequest,
 	deletePost,
 	filter,
+	searchData,
+	searchButton,
+	setSearchButton,
 }) => {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const [showImage, setImage] = useState(false);
 	const [selectedImg, setSelectedImg] = useState(null);
+
+	console.log(searchData);
+
 	const delRequest = (req) => {
 		Swal.fire({
 			title: "Do you want to delete your request?",
@@ -82,127 +88,190 @@ const Feed = ({
 			allPosts = [...posts];
 		}
 
-		return (
-			<div className="feed-container">
-				{allPosts.map((item, index) => {
-					return (
-						<AnimatePresence>
-							<div
-								className="feed-post"
-								key={index}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ duration: 0.2 }}
-								exit={{ opacity: 0 }}
-							>
-								<Media className="post-container">
-									{/* <img
-										width={60}
-										height={60}
-										className="align-self-start mr-3 feed-img"
-										src={
-											avatarlist &&
-											avatarlist.get(item.from_user_id)
-										}
-										alt="user initials"
-									/> */}
-									<Avatar
-										size="55"
-										className="align-self-start mr-3 feed-img"
-										src={
-											avatarlist &&
-											avatarlist.get(item.from_user_id)
-										}
-										round={true}
-									/>
-									<Media.Body>
-										<div className="d-flex w-100 mb-0 align-items-end">
-											<h6 className="text-left font-weight-bold">
-												{item.user}
-											</h6>
-											<h6>
-												{item.category
-													? "#request"
-													: "#thanks"}
-											</h6>
-										</div>
-										<div className="d-flex w-100 mt-0 ">
-											<h5 className="text-left">
-												{item.title}
-											</h5>
-											<h6>
-												{item.location
-													? item.location
-													: null}
-											</h6>
-										</div>
-										<p>{item.message}</p>
-										{(() => {
-											if (
-												item.file &&
-												item.file.length != 0
-											)
-												return (
-													<div className="image-grid">
-														{item.file.map(
-															(image, index) => {
-																return (
-																	<div>
-																		<OverlayTrigger
-																			placement="top"
-																			overlay={renderTooltip(
-																				"Click to expand"
-																			)}
-																		>
-																			<img
-																				src={
-																					image
-																				}
-																				style={{
-																					height:
-																						"20vh",
-																					width:
-																						"20vh",
-																					padding:
-																						"10%",
-																				}}
-																				alt="Some image"
-																				onClick={() => {
-																					setSelectedImg(
+		if (searchData && searchButton) {
+			console.log("Searching...");
+			// var filteredPosts = allPosts;
+			// allPosts = allPosts.filter(
+			// 	(post) =>
+			// 		post.category == searchData.category &&
+			// 		post.title.includes(searchData.keyword) &&
+			// 		post.location == searchData.location
+			// );
+			if (searchData.category != "") {
+				allPosts = allPosts.filter(
+					(post) => post.category == searchData.category
+				);
+				console.log("Category filter -> ", allPosts);
+			}
+			if (searchData.keyword != "") {
+				allPosts = allPosts.filter(
+					(post) =>
+						post.title.includes(searchData.keyword) ||
+						post.message.includes(searchData.keyword)
+				);
+				console.log("Keyword filter -> ", allPosts);
+			}
+			if (searchData.location != "") {
+				allPosts = allPosts.filter(
+					(post) => post.location == searchData.location
+				);
+				console.log("Keyword filter -> ", allPosts);
+			}
+			console.log("FILTERED FEED-> ", allPosts);
+		} else setSearchButton(false);
+
+		if (allPosts.length > 0) {
+			return (
+				<div className="feed-container">
+					{allPosts.map((item, index) => {
+						return (
+							<AnimatePresence>
+								<div
+									className="feed-post"
+									key={index}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ duration: 0.2 }}
+									exit={{ opacity: 0 }}
+								>
+									<Media className="post-container">
+										<Avatar
+											size="55"
+											className="align-self-start mr-3 feed-img"
+											src={
+												avatarlist &&
+												avatarlist.get(
+													item.from_user_id
+												)
+											}
+											round={true}
+										/>
+										<Media.Body>
+											<div className="d-flex w-100 mb-0 align-items-end">
+												<h6 className="text-left font-weight-bold">
+													{item.user}
+												</h6>
+												<h6>
+													{item.category
+														? "#request"
+														: "#thanks"}
+												</h6>
+											</div>
+											<div className="d-flex w-100 mt-0 ">
+												<h5 className="text-left">
+													{item.title}
+												</h5>
+												<h6>
+													{item.location
+														? item.location
+														: null}
+												</h6>
+											</div>
+											<p>{item.message}</p>
+											{(() => {
+												if (
+													item.file &&
+													item.file.length != 0
+												)
+													return (
+														<div className="image-grid">
+															{item.file.map(
+																(
+																	image,
+																	index
+																) => {
+																	return (
+																		<div>
+																			<OverlayTrigger
+																				placement="top"
+																				overlay={renderTooltip(
+																					"Click to expand"
+																				)}
+																			>
+																				<img
+																					src={
 																						image
-																					);
-																					setImage(
-																						!showImage
-																					);
-																				}}
+																					}
+																					style={{
+																						height:
+																							"20vh",
+																						width:
+																							"20vh",
+																						padding:
+																							"10%",
+																					}}
+																					alt="Some image"
+																					onClick={() => {
+																						setSelectedImg(
+																							image
+																						);
+																						setImage(
+																							!showImage
+																						);
+																					}}
+																				/>
+																			</OverlayTrigger>
+																			<ImageModal
+																				show={
+																					showImage
+																				}
+																				setShow={
+																					setImage
+																				}
+																				image={
+																					selectedImg
+																				}
 																			/>
-																		</OverlayTrigger>
-																		<ImageModal
-																			show={
-																				showImage
-																			}
-																			setShow={
-																				setImage
-																			}
-																			image={
-																				selectedImg
-																			}
-																		/>
-																	</div>
-																);
-															}
-														)}
-													</div>
-												);
-										})()}
-										<div className="d-flex w-100">
-											<p className="feed-timestamp text-left">
-												{item.timestamp
-													.toDate()
-													.toDateString()}
-											</p>
-											{item.category ? (
-												user === item.from_user_id ? (
+																		</div>
+																	);
+																}
+															)}
+														</div>
+													);
+											})()}
+											<div className="d-flex w-100">
+												<p className="feed-timestamp text-left">
+													{item.timestamp
+														.toDate()
+														.toDateString()}
+												</p>
+												{item.category ? (
+													user ===
+													item.from_user_id ? (
+														<OverlayTrigger
+															placement="top"
+															overlay={renderTooltip(
+																"Delete"
+															)}
+														>
+															<TrashFill
+																onClick={() =>
+																	delRequest(
+																		item
+																	)
+																}
+																className="delete-button"
+															/>
+														</OverlayTrigger>
+													) : (
+														<OverlayTrigger
+															placement="top"
+															overlay={renderTooltip(
+																"Accept"
+															)}
+														>
+															<HandThumbsUpFill
+																onClick={() =>
+																	acceptRequest(
+																		item
+																	)
+																}
+																className="accept-button"
+															/>
+														</OverlayTrigger>
+													)
+												) : user ===
+												  item.from_user_id ? (
 													<OverlayTrigger
 														placement="top"
 														overlay={renderTooltip(
@@ -211,53 +280,32 @@ const Feed = ({
 													>
 														<TrashFill
 															onClick={() =>
-																delRequest(item)
+																delPost(item)
 															}
 															className="delete-button"
 														/>
 													</OverlayTrigger>
-												) : (
-													<OverlayTrigger
-														placement="top"
-														overlay={renderTooltip(
-															"Accept"
-														)}
-													>
-														<HandThumbsUpFill
-															onClick={() =>
-																acceptRequest(
-																	item
-																)
-															}
-															className="accept-button"
-														/>
-													</OverlayTrigger>
-												)
-											) : user === item.from_user_id ? (
-												<OverlayTrigger
-													placement="top"
-													overlay={renderTooltip(
-														"Delete"
-													)}
-												>
-													<TrashFill
-														onClick={() =>
-															delPost(item)
-														}
-														className="delete-button"
-													/>
-												</OverlayTrigger>
-											) : null}
-											{}
-										</div>
-									</Media.Body>
-								</Media>
-							</div>
-						</AnimatePresence>
-					);
-				})}
-			</div>
-		);
+												) : null}
+												{}
+											</div>
+										</Media.Body>
+									</Media>
+								</div>
+							</AnimatePresence>
+						);
+					})}
+				</div>
+			);
+		} else {
+			return (
+				<div className="no-results">
+					<img src="images/tenor.gif" name="results-gif" />
+					<h4 style={{ color: "white", paddingTop: "2%" }}>
+						Don't be mad, we couldn't find any results.
+					</h4>
+				</div>
+			);
+		}
 	} else {
 		return (
 			<div className="feed-container">

@@ -41,6 +41,10 @@
 	margin-left: 3vw;
 }
 
+.reset-btn .submit-btn {
+	border-radius: 0px !important;
+}
+
 .search-button {
 	height: 6vh;
 }
