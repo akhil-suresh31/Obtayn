@@ -41,7 +41,11 @@
 	margin-left: 3vw;
 }
 
-.reset-btn .submit-btn {
+.reset-btn {
+	border-radius: 0px 5px 5px 0px !important;
+}
+
+.submit-btn {
 	border-radius: 0px !important;
 }
 

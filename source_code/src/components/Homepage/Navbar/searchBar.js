@@ -54,9 +54,13 @@ function SearchBar({ setData, setSearchButton }) {
 							<Form.Control
 								as="select"
 								name="searchCategory"
-								defaultValue="Category"
+								// defaultValue="Category"
 							>
-								<option disabled={true} selected value="">
+								<option
+									disabled={true}
+									selected="selected"
+									value=""
+								>
 									Category
 								</option>
 								<option>Clothing</option>
@@ -79,12 +83,6 @@ function SearchBar({ setData, setSearchButton }) {
 							placeholder="Enter Location.."
 							name="searchLocation"
 						/>
-						{/* <InputGroup.Text
-							className="search-button"
-							type="submit"
-						>
-							<Search />
-						</InputGroup.Text> */}
 						<Button
 							variant="secondary"
 							type="submit"
@@ -98,7 +96,7 @@ function SearchBar({ setData, setSearchButton }) {
 							className="reset-btn"
 							onClick={handleReset}
 						>
-							Reset
+							Clear
 						</Button>
 					</InputGroup>
 				</Form>

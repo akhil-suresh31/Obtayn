@@ -27,7 +27,7 @@ function LandingPage() {
 					<Carousel.Item>
 						<img
 							className="w-100"
-							src="/images/artem-beliaikin-TYwEQGLiups-unsplash.jpg"
+							src="/images/roberto-lopez-UAiUNEv3USM-unsplash.jpg"
 							alt=""
 						/>
 					</Carousel.Item>
@@ -41,51 +41,64 @@ function LandingPage() {
 					<Carousel.Item>
 						<img
 							className="w-100"
-							src="/images/jezael-melgoza-layMbSJ3YOE-unsplash.jpg"
+							src="/images/marvin-kuhn-uHrRgJKPPAk-unsplash.jpg"
 							alt=""
 						/>
 					</Carousel.Item>
 
 					<div className="contents">
-						<Jumbotron className="jumbotron-bg">
-							<Container>
-								<h1 className="font-weight-bold">Obtayn</h1>
-								<p>Get stuff.</p>
-							</Container>
-						</Jumbotron>
-						<div className="FillerText">
-							<h2>Inspirational Text</h2>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur
-								adipiscing elit. Sed sagittis quam quam, at
-								consequat ligula rutrum eget. Cras bibendum
-								sagittis nisl, in sollicitudin dolor mollis id.
-								Fusce viverra pharetra ante vitae blandit. Etiam
-								sit amet laoreet dolor. Nullam sit amet nisl c
-								ondimentum, rutrum sem eu, bibendum ex.
-								Curabitur suscipit ex in lacus lobortis
-								suscipit. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit. Vivamus diam erat,
-								scelerisque a erat ut, molestie maximus erat.
-								Curabitur eget lacus at risus luctus porta quis
-								vitae risus.
-							</p>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur
-								adipiscing elit. Sed sagittis quam quam, at
-								consequat ligula rutrum eget. Cras bibendum
-								sagittis nisl, in sollicitudin dolor mollis id.
-								Fusce viverra pharetra ante vitae blandit. Etiam
-								sit amet laoreet dolor.
-							</p>
-							<Button
-								variant="dark"
-								onClick={() => {
-									setLogin(!login);
+						<div className="black-div">
+							<Jumbotron className="jumbotron-bg">
+								<Container>
+									<h1 className="font-weight-bold">Obtayn</h1>
+									<p>Get stuff.</p>
+								</Container>
+							</Jumbotron>
+							{/* <div className="FillerText">
+								<h2>New here?</h2>
+								<p>
+									We've created a community where people can
+									exchange souvenirs, hassle-free. Send
+									requests, chat with other awesome people,
+									post photos or say thanks via an
+									appreciation post!
+								</p>
+								<Button
+									variant="dark"
+									onClick={() => {
+										setLogin(!login);
+									}}
+								>
+									{login ? "Get Started" : "Login Instead"}
+								</Button>
+							</div> */}
+							<p
+								style={{
+									color: "white",
+									paddingLeft: "5%",
+									paddingRight: "5%",
 								}}
 							>
-								{login ? "Get Started" : "Login Instead"}
-							</Button>
+								<h2 style={{ color: "#4abaaa" }}>New here?</h2>
+								<p>
+									We've created a community where people can
+									exchange souvenirs, hassle-free. Send
+									requests, chat with other awesome people,
+									post photos or say thanks via an
+									appreciation post!
+								</p>
+								<Button
+									variant="dark"
+									onClick={() => {
+										setLogin(!login);
+									}}
+									style={{
+										backgroundColor: "rgb(74, 186, 170)",
+									}}
+								>
+									{login ? "Get Started" : "Login Instead"}
+								</Button>
+							</p>
 						</div>
 						<AnimatePresence>
 							<div className="Form-Container">
