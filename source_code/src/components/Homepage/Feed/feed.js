@@ -155,6 +155,10 @@ const Feed = ({
 														: "#thanks"}
 												</h6>
 											</div>
+											{item.category && (
+												<h6>{item.category}</h6>
+											)}
+
 											<div className="d-flex w-100 mt-0 ">
 												<h5 className="text-left">
 													{item.title}
