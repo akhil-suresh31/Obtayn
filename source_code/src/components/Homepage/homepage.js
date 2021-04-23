@@ -46,10 +46,7 @@ const Homepage = ({ users, profile_pic }) => {
 				/>
 
 				<div className="homepage-body">
-					<div
-						className="homepage-feed"
-						onScroll={(val) => checkScrollPos(val.target.scrollTop)}
-					>
+					<div className="homepage-sticky">
 						<center>
 							<SearchBar
 								setData={setData}
@@ -57,6 +54,11 @@ const Homepage = ({ users, profile_pic }) => {
 							/>
 						</center>
 						<PostFilter setFilter={setFilter} filter={filter} />
+					</div>
+					<div
+						className="homepage-feed"
+						onScroll={(val) => checkScrollPos(val.target.scrollTop)}
+					>
 						<Feed
 							users={users}
 							filter={filter}

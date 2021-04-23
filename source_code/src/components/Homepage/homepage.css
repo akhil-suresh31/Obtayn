@@ -69,6 +69,8 @@
 .homepage-body {
 	height: 90vh;
 	width: 100vw;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 .homepage-feed {
@@ -89,15 +91,21 @@
 	background-color: var(--navbarBg) !important;
 }
 
+.scroll {
+	/* height: min-content;
+	width: min-content; */
+	float: right;
+	margin-right: 10%;
+}
+
 .scrollTop {
+	size: 30px;
 	position: fixed;
-	width: 100%;
 	bottom: 7vh;
-	margin-left: 21vw;
+	/* margin-left: 21vw; */
 	align-items: center;
-	height: 20px;
 	justify-content: center;
-	z-index: 20;
+	/* z-index: 20; */
 	cursor: pointer;
 	animation: fadeIn 0.3s;
 	transition: opacity 0.4s;
@@ -161,4 +169,13 @@
 
 .search-input {
 	width: 10vw !important;
+}
+
+.homepage-sticky {
+	position: sticky;
+	height: 20vh;
+	width: 100vw;
+	background-color: #4abaaa;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
