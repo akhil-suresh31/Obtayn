@@ -36,7 +36,6 @@ const Homepage = ({ users, profile_pic }) => {
 	if (profile_pic)
 		return (
 			<div>
-				{console.log(data)}
 				<NavBar
 					tag={tag}
 					setTag={setTag}

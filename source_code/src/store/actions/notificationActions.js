@@ -5,18 +5,20 @@ export const requestAccepted = (request, acceptor) => {
 		const firestore = getFirestore();
 		const user = getState().firebase.profile.name;
 		const title = request.title;
+		const data = {
+			trigger_event: "request",
+			trigger_event_id: request.id,
+			from_user_id: acceptor,
+			to_user_id: request.from_user_id,
+			message: `${user} accepted your request - "${title}"`,
+			timestamp: new Date(),
+		};
 		firestore
 			.collection("Notification")
-			.add({
-				trigger_event: "request",
-				trigger_event_id: request.id,
-				from_user_id: acceptor,
-				to_user_id: request.from_user_id,
-				message: `${user} accepted your request - "${title}"`,
-				timestamp: new Date(),
-			})
+			.add(data)
 			.then((ref) => {
-				dispatch({ type: "ACCEPT_REQ", request });
+				console.log(ref);
+				dispatch({ type: "ACCEPT_REQ", notif: data });
 			})
 			.catch((err) => {
 				dispatch({ type: "ACCEPT_REQ_ERROR", err });
@@ -93,5 +95,18 @@ export const messageSent = (messageInfo, chat) => {
 			.catch((err) => {
 				dispatch({ type: "NEW_MESSAGE_NOTIF_ERROR", err });
 			});
+	};
+};
+
+export const clickNotif = (notif) => {
+	return {
+		type: "NOTIF_CLICK",
+		notif,
+	};
+};
+
+export const clearNotif = () => {
+	return {
+		type: "CLEAR_NOTIF",
 	};
 };

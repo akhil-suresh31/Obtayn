@@ -38,6 +38,8 @@ const DirectChat = ({
 		setMessage("");
 	};
 
+	if (user) console.log("User :", user);
+
 	const goBack = () => {
 		setDMChat(null);
 		setDMUser(null);
@@ -60,7 +62,9 @@ const DirectChat = ({
 						<Avatar
 							className="DM-avatar"
 							size="65"
-							src={user && user.dp}
+							src={
+								user && user.dp ? user.dp : user.profile_picture
+							}
 							round={true}
 							name={user && user.name}
 						/>

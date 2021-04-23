@@ -34,8 +34,6 @@ const Feed = ({
 	const [showImage, setImage] = useState(false);
 	const [selectedImg, setSelectedImg] = useState(null);
 
-	console.log(searchData);
-
 	const delRequest = (req) => {
 		Swal.fire({
 			title: "Do you want to delete your request?",
@@ -233,7 +231,19 @@ const Feed = ({
 												<p className="feed-timestamp text-left">
 													{item.timestamp
 														.toDate()
-														.toDateString()}
+														.toLocaleTimeString(
+															"en-US",
+															{
+																weekday:
+																	"short",
+																day: "numeric",
+																month:
+																	"numeric",
+																hour: "2-digit",
+																minute:
+																	"2-digit",
+															}
+														)}
 												</p>
 												{item.category ? (
 													user ===

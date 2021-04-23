@@ -3,7 +3,7 @@ const initState = {};
 const notificationReducer = (state = initState, action) => {
 	switch (action.type) {
 		case "ACCEPT_REQ":
-			console.log("accept request notification added", action.ref);
+			console.log("accept request notification added", action.notif);
 			return state;
 
 		case "ACCEPT_REQ_ERROR":
@@ -38,6 +38,17 @@ const notificationReducer = (state = initState, action) => {
 		case "NEW_MESSAGE_NOTIF_ERROR":
 			console.log("error sending new message notification", action.code);
 			return state;
+
+		case "NOTIF_CLICK":
+			console.log("notification clickd :", action.notif);
+			return {
+				...state,
+				...action.notif,
+			};
+
+		case "CLEAR_NOTIF":
+			console.log("cleared notif state");
+			return null;
 
 		default:
 			return state;

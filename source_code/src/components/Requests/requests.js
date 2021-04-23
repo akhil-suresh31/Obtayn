@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -11,21 +11,56 @@ import DirectChat from "./Chat/directChat";
 import "./requests.css";
 import { CheckCircleFill, TrashFill } from "react-bootstrap-icons";
 import { deleteRequest } from "../../store/actions/requestActions";
-import { requestFulfilledNotif } from "../../store/actions/notificationActions";
+import {
+	clearNotif,
+	requestFulfilledNotif,
+} from "../../store/actions/notificationActions";
 
 const Requests = ({
 	requests,
 	user,
 	users,
+	chats,
 	deleteRequest,
 	requestFulfilledNotif,
+	clearNotif,
+	highlight,
 }) => {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
 	const [openDM, setOpenDM] = useState(false);
 	const [DMUser, setDMUser] = useState();
 	const [DMChat, setDMChat] = useState();
+	const [highlightedReq, setHighlightedReq] = useState();
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
+
+	useEffect(() => {
+		if (highlight) {
+			if (highlight.trigger_event === "request") {
+				setHighlightedReq(highlight.trigger_event_id);
+				setTimeout(function () {
+					clearNotif();
+					setHighlightedReq();
+				}, 5000);
+			}
+
+			if (highlight.trigger_event === "chat") {
+				const user =
+					users &&
+					users.filter(
+						(user) => user.id === highlight.from_user_id
+					)[0];
+				const chat =
+					chats &&
+					chats.filter(
+						(chat) => chat.id === highlight.trigger_event_id
+					)[0];
+				setDMUser(user);
+				setDMChat(chat);
+				setOpenDM(true);
+			}
+		}
+	}, [highlight]);
 
 	const markFulfilled = (request) => {
 		Swal.fire({
@@ -86,8 +121,17 @@ const Requests = ({
 						<Accordion className="incoming-req-acc">
 							{incomingReq &&
 								incomingReq.map((req, index) => {
+									const style =
+										highlightedReq == req.id
+											? {
+													border: "5px solid #99ff99",
+											  }
+											: {};
 									return (
-										<Card className="incoming-req-card">
+										<Card
+											className="incoming-req-card"
+											style={style}
+										>
 											<Accordion.Toggle
 												as={Card.Header}
 												variant="link"
@@ -162,7 +206,15 @@ const Requests = ({
 										bgcolor = "#9dc8cf";
 									if (req.status == "fulfilled")
 										bgcolor = "#1ac6ff";
-
+									const style =
+										highlightedReq == req.id
+											? {
+													backgroundColor: "#99ff99",
+													border: "5px solid #99ff99",
+											  }
+											: {
+													backgroundColor: bgcolor,
+											  };
 									if (req.status == "accepted") {
 										acceptor =
 											users[
@@ -177,9 +229,7 @@ const Requests = ({
 									return (
 										<Card
 											className="outgoing-req-card"
-											style={{
-												backgroundColor: bgcolor,
-											}}
+											style={style}
 										>
 											<Accordion.Toggle
 												as={Card.Header}
@@ -315,11 +365,14 @@ const mapStatetoProps = (state) => {
 		requests: state.firestore.ordered.Request,
 		user: state.firebase.auth.uid,
 		users: state.firestore.ordered.User,
+		highlight: state.notification,
+		chats: state.firestore.ordered.Chat,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		clearNotif: () => dispatch(clearNotif()),
 		deleteRequest: (request) => dispatch(deleteRequest(request)),
 		requestFulfilledNotif: (request) =>
 			dispatch(requestFulfilledNotif(request)),
@@ -334,5 +387,6 @@ export default compose(
 			orderBy: ["timestamp", "desc"],
 		},
 		{ collection: "User" },
+		{ collection: "Chat" },
 	])
 )(Requests);
