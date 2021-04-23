@@ -7,29 +7,29 @@ import { connect } from "react-redux";
 import { createPost } from "../../../store/actions/postActions";
 import "../homepage.css";
 import "./post.css";
-
+var myImages = [];
 function CreatePostForm({ createPost, modalClose, uploadError }) {
 	const [validated, setValidated] = useState(false);
 	const [error, setError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
-	var images = [];
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		var files = [e.target.files];
-		if (files.length > 3) setError("Cannot upload more than 3 images.");
+		var files = e.target.files;
+		console.log("Target files ->", files);
+		var i;
+		if (files.length > 3) setError("Cannot upload more than 3 myImages.");
 		else setError(null);
-
-		if (
-			files &&
-			files.map((file, index) => {
-				if (types.includes(file.type)) {
-					images.push(file);
+		if (files.length > 0) {
+			for (i = 0; i < files.length; i++) {
+				if (types.includes(files[i].type)) {
+					console.log(files[i]);
+					myImages.push(files[i]);
 					setError("");
 				} else setError("Please select an image file (png or jpg)");
-			})
-		)
-			console.log(images);
+			}
+		}
+		console.log("temp->", myImages);
 	};
 
 	const handleSubmit = (e) => {
@@ -44,8 +44,8 @@ function CreatePostForm({ createPost, modalClose, uploadError }) {
 		const formDataObj = Object.fromEntries(formData.entries());
 		//console.log(formDataObj);
 
-		console.log(images);
-		createPost(formDataObj, images);
+		console.log(myImages);
+		createPost(formDataObj, myImages);
 		if (uploadError) alert("Post cannot be uploaded!");
 		modalClose();
 	};
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		createPost: (data, images) => dispatch(createPost(data, images)),
+		createPost: (data, myImages) => dispatch(createPost(data, myImages)),
 	};
 };
 

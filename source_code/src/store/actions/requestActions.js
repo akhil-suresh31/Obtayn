@@ -4,10 +4,11 @@ import firebase from "../../firebase/firebase.js";
 import { addUserChat } from "./chatActions.js";
 import { requestAccepted, requestDeletedNotif } from "./notificationActions";
 
-export const createRequest = (request, images) => {
+export const createRequest = (request, myImages) => {
 	const storage = firebase.storage();
 	const URLList = [];
 	return (dispatch, getState, { getFirestore }) => {
+		console.log("Received->", myImages);
 		const firestore = getFirestore();
 		const uid = getState().firebase.auth.uid;
 		const user = getState().firebase.profile.name;
@@ -32,10 +33,10 @@ export const createRequest = (request, images) => {
 				dispatch({ type: "CREATE_REQUEST_ERROR", err });
 			});
 
-		for (let i = 0; i < images.length; i++) {
+		for (let i = 0; i < myImages.length; i++) {
 			const uploadTask = storage
-				.ref(`/feedImages/${images[i].name}`)
-				.put(images[i]);
+				.ref(`/feedImages/${myImages[i].name}`)
+				.put(myImages[i]);
 			uploadTask.on(
 				"state_changed",
 				(snapshot) => {
@@ -49,7 +50,7 @@ export const createRequest = (request, images) => {
 				() => {
 					storage
 						.ref("feedImages")
-						.child(images[i].name)
+						.child(myImages[i].name)
 						.getDownloadURL()
 						.then((url) => {
 							URLList.push(url);

@@ -6,7 +6,7 @@ import ScrollToTop from "./scrollToTop";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
-import CreatePostDiv from "./Create-Post/createPostDiv";
+import SearchBar from "./searchBar";
 import "./homepage.css";
 import PostFilter from "./Create-Post/postFilter";
 import { Spinner } from "react-bootstrap";
@@ -15,7 +15,7 @@ const Homepage = ({ users, profile_pic }) => {
 	var initialSearchData = { category: null, keywords: null, location: null };
 	const [scrollToTop, setscrollToTop] = useState(false);
 	const [filter, setFilter] = useState({ post: false, request: false });
-
+	const [menuOpen, setMenuOpen] = useState(false);
 	const [data, setData] = useState(initialSearchData);
 	const [searchButton, setSearchButton] = useState(false); //search button in SearchBar component
 	const [show, setShow] = useState(false);
@@ -41,8 +41,8 @@ const Homepage = ({ users, profile_pic }) => {
 					setTag={setTag}
 					show={show}
 					setShow={setShow}
-					setData={setData}
-					setSearchButton={setSearchButton}
+					menuOpen={menuOpen}
+					setMenuOpen={setMenuOpen}
 				/>
 
 				<div className="homepage-body">
@@ -51,12 +51,9 @@ const Homepage = ({ users, profile_pic }) => {
 						onScroll={(val) => checkScrollPos(val.target.scrollTop)}
 					>
 						<center>
-							<CreatePostDiv
-								dp={profile_pic}
-								tag={tag}
-								setTag={setTag}
-								show={show}
-								setShow={setShow}
+							<SearchBar
+								setData={setData}
+								setSearchButton={setSearchButton}
 							/>
 						</center>
 						<PostFilter setFilter={setFilter} filter={filter} />
@@ -74,7 +71,7 @@ const Homepage = ({ users, profile_pic }) => {
 							/>
 						</div>
 					</div>
-					<Activity />
+					<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 				</div>
 			</div>
 		);

@@ -1,11 +1,10 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { ChatRightTextFill } from "react-bootstrap-icons";
+import { BellFill, ChatRightTextFill } from "react-bootstrap-icons";
 import { Link, useHistory } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import CreatePostModal from "../Create-Post/createPost";
-import SearchBar from "./searchBar";
 import UserProfile from "./userProfile";
 import "./navbar.css";
 
@@ -14,11 +13,12 @@ export default function NavBar({
 	setTag,
 	show,
 	setShow,
-	setData,
-	setSearchButton,
+	menuOpen,
+	setMenuOpen,
 }) {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const history = useHistory();
+
 	//console.log(window.location.pathname);
 	return (
 		<>
@@ -71,16 +71,21 @@ export default function NavBar({
 								);
 						})()}
 					</Nav>
-					{(() => {
-						if (window.location.pathname == "/home")
-							return (
-								<SearchBar
-									setData={setData}
-									setSearchButton={setSearchButton}
-								/>
-							);
-					})()}
+
 					<Nav className="justify-content-end">
+						<OverlayTrigger
+							placement="bottom"
+							overlay={renderTooltip("Notifications")}
+						>
+							<BellFill
+								className="notifications"
+								size={27}
+								onClick={() => {
+									setMenuOpen(!menuOpen);
+									console.log("Navbar->", menuOpen);
+								}}
+							/>
+						</OverlayTrigger>
 						<CreatePostModal
 							tag={tag}
 							setTag={setTag}

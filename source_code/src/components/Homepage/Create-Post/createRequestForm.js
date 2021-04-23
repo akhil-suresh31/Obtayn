@@ -6,12 +6,35 @@ import { connect } from "react-redux";
 import { createRequest } from "../../../store/actions/requestActions";
 import "../homepage.css";
 import "./post.css";
+var myImages = [];
 
 function CreateRequestForm({ selectedTag, createRequest, modalClose }) {
 	const [validated, setValidated] = useState(false);
 	const [error, setError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
-	var images = [];
+	//var initialImageState = [];
+	//const [images, setImages] = useState(initialImageState);
+
+	const handleChange = (e) => {
+		e.preventDefault();
+		var files = e.target.files;
+		console.log("Target files ->", files);
+		var i;
+		if (files.length > 3) setError("Cannot upload more than 3 images.");
+		else setError(null);
+		if (files.length > 0) {
+			for (i = 0; i < files.length; i++) {
+				if (types.includes(files[i].type)) {
+					console.log(files[i]);
+					myImages.push(files[i]);
+					setError("");
+					//setImages(myImages);
+				} else setError("Please select an image file (png or jpg)");
+			}
+		}
+		console.log("temp->", myImages);
+		//console.log("State-> ", images);
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -24,26 +47,9 @@ function CreateRequestForm({ selectedTag, createRequest, modalClose }) {
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
 		console.log(formDataObj);
-		createRequest(formDataObj, images);
+		//console.log(images);
+		createRequest(formDataObj, myImages);
 		modalClose();
-	};
-
-	const handleChange = (e) => {
-		e.preventDefault();
-		var files = [e.target.files];
-		if (files.length > 3) setError("Cannot upload more than 3 images.");
-		else setError(null);
-
-		if (
-			files &&
-			files.map((file, index) => {
-				if (types.includes(file.type)) {
-					images.push(file);
-					setError("");
-				} else setError("Please select an image file (png or jpg)");
-			})
-		)
-			console.log(images);
 	};
 
 	return (
@@ -170,8 +176,8 @@ function CreateRequestForm({ selectedTag, createRequest, modalClose }) {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		createRequest: (request, images) =>
-			dispatch(createRequest(request, images)),
+		createRequest: (request, myImages) =>
+			dispatch(createRequest(request, myImages)),
 	};
 };
 

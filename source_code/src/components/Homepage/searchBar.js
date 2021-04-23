@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import { Form, InputGroup, Button } from "react-bootstrap";
-import "./navbar.css";
+import "./homepage";
 
 function SearchBar({ setData, setSearchButton }) {
 	const searchFeed = (e) => {

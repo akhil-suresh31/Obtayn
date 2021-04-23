@@ -56,6 +56,7 @@ const Feed = ({
 			title: "Do you want to delete your post?",
 			showConfirmButton: true,
 			showDenyButton: true,
+			confirmButtonText: "Yes",
 		}).then((result) => {
 			if (result.isConfirmed) {
 				deletePost(post);
@@ -88,13 +89,6 @@ const Feed = ({
 
 		if (searchData && searchButton) {
 			console.log("Searching...");
-			// var filteredPosts = allPosts;
-			// allPosts = allPosts.filter(
-			// 	(post) =>
-			// 		post.category == searchData.category &&
-			// 		post.title.includes(searchData.keyword) &&
-			// 		post.location == searchData.location
-			// );
 			if (searchData.category != "") {
 				allPosts = allPosts.filter(
 					(post) => post.category == searchData.category

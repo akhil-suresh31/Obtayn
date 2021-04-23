@@ -73,7 +73,7 @@
 
 .homepage-feed {
 	height: 90vh;
-	width: 75vw;
+	width: 100vw;
 	background-color: var(--feedBg);
 	float: left;
 	overflow-y: scroll;
@@ -101,7 +101,7 @@
 	cursor: pointer;
 	animation: fadeIn 0.3s;
 	transition: opacity 0.4s;
-	opacity: 0.5;
+	opacity: 0.7;
 	overflow: visible;
 	color: #2b4f60;
 }
@@ -137,4 +137,28 @@
 
 ::-webkit-scrollbar-thumb:hover {
 	background: #4abaaa;
+}
+
+/* Search Bar */
+
+.reset-btn {
+	border-radius: 0px 5px 5px 0px !important;
+}
+
+.submit-btn {
+	border-radius: 0px !important;
+}
+
+.search-button {
+	height: 6vh;
+}
+
+.search-group {
+	padding-top: 2vh;
+	/* padding-left: 5vw; */
+	margin-right: 1vw;
+}
+
+.search-input {
+	width: 10vw !important;
 }

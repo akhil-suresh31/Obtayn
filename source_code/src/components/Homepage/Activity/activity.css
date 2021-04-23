@@ -1,13 +1,14 @@
 .activity-heading {
 	color: white;
 	padding-top: 5vh;
+	text-align: center;
+	width: 100%;
 }
 
 .homepage-activity {
 	height: 90vh;
-	width: 25vw;
+	width: 30vw;
 	background-color: var(--activityBg);
-	float: right;
 	overflow: scroll;
 }
 
@@ -29,5 +30,21 @@
 	font-size: 12px;
 	color: dimgrey;
 	margin-bottom: 0;
-	margin-left: 60%;
+	margin-left: 55%;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+	display: none;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+	height: 24px;
+	width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+	background: #bdc3c7;
 }
