@@ -74,7 +74,7 @@
 }
 
 .homepage-feed {
-	height: 90vh;
+	height: 70vh;
 	width: 100vw;
 	background-color: var(--feedBg);
 	float: left;

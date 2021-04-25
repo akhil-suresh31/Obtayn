@@ -15,6 +15,7 @@ import {
 	clearNotif,
 	requestFulfilledNotif,
 } from "../../store/actions/notificationActions";
+import Activity from "../Homepage/Activity/activity";
 
 const Requests = ({
 	requests,
@@ -28,6 +29,7 @@ const Requests = ({
 }) => {
 	const [show, setShow] = useState(false);
 	const [tag, setTag] = useState("Tag");
+	const [menuOpen, setMenuOpen] = useState(false);
 	const [openDM, setOpenDM] = useState(false);
 	const [DMUser, setDMUser] = useState();
 	const [DMChat, setDMChat] = useState();
@@ -111,8 +113,16 @@ const Requests = ({
 		});
 	return (
 		<div>
-			<Navbar tag={tag} setTag={setTag} show={show} setShow={setShow} />
+			<Navbar
+				tag={tag}
+				setTag={setTag}
+				show={show}
+				setShow={setShow}
+				menuOpen={menuOpen}
+				setMenuOpen={setMenuOpen}
+			/>
 			<div className="requests-body">
+				<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 				<div className="requests-container">
 					<div className="incoming-req-container">
 						<center>

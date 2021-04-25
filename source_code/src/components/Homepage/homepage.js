@@ -46,6 +46,8 @@ const Homepage = ({ users, profile_pic }) => {
 				/>
 
 				<div className="homepage-body">
+					<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+
 					<div className="homepage-sticky">
 						<center>
 							<SearchBar
@@ -73,7 +75,6 @@ const Homepage = ({ users, profile_pic }) => {
 							/>
 						</div>
 					</div>
-					<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 				</div>
 			</div>
 		);
@@ -96,5 +97,5 @@ const mapStatetoProps = (state) => {
 
 export default compose(
 	connect(mapStatetoProps),
-	firestoreConnect([{ collection: "User" }])
+	firestoreConnect([{ collection: "User" }, { collection: "Chat", limit: 1 }])
 )(Homepage);

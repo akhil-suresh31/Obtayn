@@ -27,7 +27,7 @@ const Activity = ({
 	};
 
 	return (
-		<Menu right isOpen={menuOpen}>
+		<Menu right isOpen={menuOpen} width={"25vw"}>
 			{/* {console.log("Activity->", menuOpen)} */}
 			<div className="homepage-activity">
 				<h4 className="activity-heading">Notifications</h4>

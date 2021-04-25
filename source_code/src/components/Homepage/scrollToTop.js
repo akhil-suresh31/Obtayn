@@ -7,7 +7,11 @@ const ScrollToTop = ({ scrollToTop, scrollUp }) => {
 		<ArrowUpCircleFill
 			className="scrollTop"
 			onClick={scrollUp}
-			style={{ height: 40, display: scrollToTop ? "flex" : "none" }}
+			style={{
+				height: 40,
+				width: 40,
+				display: scrollToTop ? "flex" : "none",
+			}}
 		/>
 	);
 };
