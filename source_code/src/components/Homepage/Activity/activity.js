@@ -42,6 +42,7 @@ const Activity = ({
 									key={index}
 									onClick={() => {
 										clickNotif(item);
+										closeMenu();
 										history.push("/requests");
 									}}
 								>
