@@ -57,9 +57,13 @@ const Requests = ({
 					chats.filter(
 						(chat) => chat.id === highlight.trigger_event_id
 					)[0];
+
 				setDMUser(user);
 				setDMChat(chat);
 				setOpenDM(true);
+				setTimeout(function () {
+					clearNotif();
+				}, 5000);
 			}
 		}
 	}, [highlight]);

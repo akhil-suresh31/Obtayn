@@ -3,17 +3,10 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import Avatar from "react-avatar";
-import { motion } from "framer-motion";
 import "./chat.css";
 import { Button, Form, Spinner } from "react-bootstrap";
-import {
-	ArrowLeft,
-	CardImage,
-	Cursor,
-	FileImage,
-	Image,
-} from "react-bootstrap-icons";
-import { markAsRead, sendChat } from "../../../store/actions/chatActions";
+import { ArrowLeft, Cursor, CursorFill, Image } from "react-bootstrap-icons";
+import { sendChat } from "../../../store/actions/chatActions";
 
 const DirectChat = ({
 	chat,
@@ -22,7 +15,6 @@ const DirectChat = ({
 	setOpenDM,
 	activeChat,
 	sendChat,
-	markAsRead,
 	setDMChat,
 	setDMUser,
 }) => {
@@ -37,8 +29,6 @@ const DirectChat = ({
 		if (message) sendChat(messageInfo, chat);
 		setMessage("");
 	};
-
-	if (user) console.log("User :", user);
 
 	const goBack = () => {
 		setDMChat(null);
@@ -129,12 +119,19 @@ const DirectChat = ({
 									}}
 								/>
 							</Form>
-
-							<Cursor
-								type="submit"
-								className="chat-input-icon"
-								onClick={sendMessage}
-							/>
+							{message ? (
+								<CursorFill
+									type="submit"
+									className="chat-input-icon"
+									onClick={sendMessage}
+								/>
+							) : (
+								<Cursor
+									type="submit"
+									className="chat-input-icon"
+									onClick={sendMessage}
+								/>
+							)}
 						</div>
 					</div>
 				</div>
