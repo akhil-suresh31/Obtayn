@@ -6,8 +6,10 @@
 	height: 5vh;
 	width: 30vw;
 	border-radius: 5px;
-	margin-top: 5vh;
-	margin-left: 48vw;
+	margin-top: 3vh;
+	margin-right: 11%;
+	/* margin-left: 48vw; */
+	float: right;
 	display: flex;
 }
 

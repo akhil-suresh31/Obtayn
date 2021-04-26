@@ -39,31 +39,13 @@
 	--postBg: #faf2e8;
 	--notifBg: #d8bf95;
 
-	/*Terracotta*/
-	/* --navbarBg: #4abaaa;
-	--feedBg: #faf2e8;
+	/* --navbarBg: #31326f;
+	--feedBg: #161724;
 	--activityBg: #212333;
-	--createPost: #212333;
-	--feedContainerBg: #2b4f60;
-	--postBg: black;
-	--notifBg: #d8bf95; */
-
-	/* Light mode */
-	/* --navbarBg: #187894;
-	--feedBg: "black";
-	--activityBg: "black";
-	--createPost: #f7786b;
+	--createPost: #9ddfd3;
 	--feedContainerBg: #2b4f60;
 	--postBg: #faf2e8;
-	--notifBg: #632a67; */
-
-	/* Cool dream 
-	--navbarBg: #2b4f60;
-	--feedBg: #bdc7c9;
-	--activityBg: #9dacaf;
-	--createPost: #474847;
-	--postBg: #ead3cb;
-	--notifBg: #845460; */
+	--notifBg: #d8bf95;*/
 }
 
 .homepage-body {
@@ -161,8 +143,11 @@
 	height: 6vh;
 }
 
+.search-category {
+	border-radius: 5px 0px 0px 5px !important;
+}
 .search-group {
-	padding-top: 2vh;
+	padding-top: 3vh;
 	/* padding-left: 5vw; */
 	margin-right: 1vw;
 }
@@ -173,9 +158,10 @@
 
 .homepage-sticky {
 	position: sticky;
+	min-height: min-content;
 	height: 20vh;
 	width: 100vw;
-	background-color: #4abaaa;
+	background-color: var(--createPost);
 	overflow-y: hidden;
 	overflow-x: hidden;
 }

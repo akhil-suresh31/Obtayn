@@ -26,17 +26,37 @@
 	color: dimgrey;
 }
 
+.feed-user {
+	font-size: 17pt;
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+		sans-serif;
+}
+
+.feed-category {
+	font-size: 13pt;
+}
+
+.feed-title {
+	font-size: 14pt;
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+		sans-serif;
+	font-weight: bolder;
+}
+
 .delete-button {
 	height: 3%;
 	width: 3%;
 	color: #4b4f68;
-	margin-right: 2%;
+	margin-left: auto;
+	/* margin-left: 90%; */
 }
 
 .accept-button {
 	height: 4%;
 	width: 4%;
 	color: #4abaaa;
+	margin-left: auto;
+	/* margin-left: 95%; */
 }
 
 .image-grid {

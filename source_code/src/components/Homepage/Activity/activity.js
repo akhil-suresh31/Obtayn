@@ -34,7 +34,8 @@ const Activity = ({
 
 				{notifications &&
 					notifications.map((item, index) => {
-						if (item.to_user_id === user)
+						var notifCount = 0;
+						if (item.to_user_id === user && notifCount < 5) {
 							return (
 								<motion.div
 									className="activity-notif"
@@ -70,6 +71,8 @@ const Activity = ({
 									</p>
 								</motion.div>
 							);
+							++notifCount;
+						}
 					})}
 			</div>
 		</Menu>
@@ -95,7 +98,7 @@ export default compose(
 		{
 			collection: "Notification",
 			orderBy: ["timestamp", "desc"],
-			limit: 6,
+			// limit: 6,
 		},
 	])
 )(Activity);

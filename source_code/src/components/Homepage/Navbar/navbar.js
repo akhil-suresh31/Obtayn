@@ -19,7 +19,6 @@ export default function NavBar({
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const history = useHistory();
 
-	//console.log(window.location.pathname);
 	return (
 		<>
 			<Navbar
@@ -73,19 +72,22 @@ export default function NavBar({
 					</Nav>
 
 					<Nav className="justify-content-end">
-						<OverlayTrigger
-							placement="bottom"
-							overlay={renderTooltip("Notifications")}
-						>
-							<BellFill
-								className="notifications"
-								size={27}
-								onClick={() => {
-									setMenuOpen(!menuOpen);
-									console.log("Navbar->", menuOpen);
-								}}
-							/>
-						</OverlayTrigger>
+						<div className="notif-div">
+							<OverlayTrigger
+								placement="bottom"
+								overlay={renderTooltip("Notifications")}
+							>
+								<BellFill
+									className="notifications"
+									size={27}
+									onClick={() => {
+										setMenuOpen(!menuOpen);
+										console.log("Navbar->", menuOpen);
+									}}
+								/>
+							</OverlayTrigger>
+							{/* <span className="notif-badge"></span> */}
+						</div>
 						<CreatePostModal
 							tag={tag}
 							setTag={setTag}

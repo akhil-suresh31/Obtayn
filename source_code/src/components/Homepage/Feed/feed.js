@@ -14,7 +14,7 @@ import {
 } from "../../../store/actions/requestActions";
 import "./feed.css";
 import { deletePost } from "../../../store/actions/postActions";
-import { HandThumbsUpFill, TrashFill } from "react-bootstrap-icons";
+import { GeoAltFill, HandThumbsUpFill, TrashFill } from "react-bootstrap-icons";
 import ImageModal from "./imageModal";
 
 const Feed = ({
@@ -140,28 +140,48 @@ const Feed = ({
 										/>
 										<Media.Body>
 											<div className="d-flex w-100 mb-0 align-items-end">
-												<h6 className="text-left font-weight-bold">
+												<h6 className="text-left font-weight-bold feed-user">
 													{item.user}
 												</h6>
-												<h6>
-													{item.category
-														? "#request"
-														: "#thanks"}
-												</h6>
+
+												{item.category && (
+													<p className="feed-category">
+														{item.category}
+													</p>
+												)}
 											</div>
-											{item.category && (
-												<h6>{item.category}</h6>
-											)}
+											<p className="feed-timestamp text-left">
+												{item.timestamp
+													.toDate()
+													.toLocaleTimeString(
+														"en-US",
+														{
+															weekday: "short",
+															day: "numeric",
+															month: "numeric",
+															hour: "2-digit",
+															minute: "2-digit",
+														}
+													)}
+											</p>
 
 											<div className="d-flex w-100 mt-0 ">
-												<h5 className="text-left">
+												<p className="text-left feed-title">
 													{item.title}
-												</h5>
-												<h6>
-													{item.location
-														? item.location
-														: null}
-												</h6>
+												</p>
+
+												{item.location ? (
+													<h6>
+														{item.location}
+														<GeoAltFill
+															size={22}
+															style={{
+																color:
+																	"#cc0000",
+															}}
+														/>
+													</h6>
+												) : null}
 											</div>
 											<p>{item.message}</p>
 											{(() => {
@@ -225,24 +245,8 @@ const Feed = ({
 														</div>
 													);
 											})()}
-											<div className="d-flex w-100">
-												<p className="feed-timestamp text-left">
-													{item.timestamp
-														.toDate()
-														.toLocaleTimeString(
-															"en-US",
-															{
-																weekday:
-																	"short",
-																day: "numeric",
-																month:
-																	"numeric",
-																hour: "2-digit",
-																minute:
-																	"2-digit",
-															}
-														)}
-												</p>
+											<div className="d-flex w-100 mt-0 ">
+												<p></p>
 												{item.category ? (
 													user ===
 													item.from_user_id ? (
@@ -294,7 +298,6 @@ const Feed = ({
 														/>
 													</OverlayTrigger>
 												) : null}
-												{}
 											</div>
 										</Media.Body>
 									</Media>
