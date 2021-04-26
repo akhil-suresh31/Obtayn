@@ -97,5 +97,5 @@ const mapStatetoProps = (state) => {
 
 export default compose(
 	connect(mapStatetoProps),
-	firestoreConnect([{ collection: "User" }, { collection: "Chat", limit: 1 }])
+	firestoreConnect([{ collection: "User" }])
 )(Homepage);
