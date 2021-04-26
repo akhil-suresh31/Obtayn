@@ -1,4 +1,5 @@
 import { messageSent } from "./notificationActions";
+import firebase from "../../firebase/firebase.js";
 
 export const addUserChat = (users) => {
 	return (dispatch, getState, { getFirestore }) => {
@@ -44,19 +45,59 @@ export const addUserChat = (users) => {
 	};
 };
 
+const uploadTaskPromise = async (image) => {
+	return new Promise((resolve, reject) => {
+		const storage = firebase.storage();
+		const uploadTask = storage.ref(`/chatImages/${image.name}`).put(image);
+		uploadTask.on(
+			"state_changed",
+			(snapshot) => {
+				const progress =
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				if (snapshot.state === firebase.storage.TaskState.RUNNING) {
+					console.log(`Progress: ${progress}%`);
+				}
+			},
+			(error) => {
+				console.log(error);
+				reject();
+			},
+			() => {
+				storage
+					.ref("chatImages")
+					.child(image.name)
+					.getDownloadURL()
+					.then((url) => {
+						resolve(url);
+					});
+			}
+		);
+	});
+};
+
 export const sendChat = (messageInfo, chat) => {
-	return (dispatch, getState, { getFirestore }) => {
+	return async (dispatch, getState, { getFirestore }) => {
 		const firestore = getFirestore();
 		const user = getState().firebase.auth.uid;
-
+		const message = messageInfo.message ? messageInfo.message : "";
 		const chatRef = firestore.collection("Chat").doc(chat.id);
+		const images = messageInfo.images;
+		console.log(images);
+		var imagesUrl = [];
+		for (let i = 0; i < images.length; i++) {
+			let url = await uploadTaskPromise(images[i]);
+			imagesUrl.push(url);
+		}
+
+		console.log(imagesUrl);
 		chatRef
 			.update({
 				seen: false,
 				timestamp: new Date(),
 				messages: firestore.FieldValue.arrayUnion({
-					message: messageInfo.message,
+					message: message,
 					from: user,
+					images: imagesUrl,
 					timestamp: new Date(),
 				}),
 			})

@@ -4,9 +4,11 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import Avatar from "react-avatar";
 import "./chat.css";
-import { Button, Form, Spinner } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import { ArrowLeft, Cursor, CursorFill, Image } from "react-bootstrap-icons";
 import { sendChat } from "../../../store/actions/chatActions";
+
+var myImages = [];
 
 const DirectChat = ({
 	chat,
@@ -19,17 +21,40 @@ const DirectChat = ({
 	setDMUser,
 }) => {
 	const [message, setMessage] = useState();
+	const [error, setError] = useState(null);
 	const lastMessage = useRef();
 	const sendMessage = () => {
+		setError("");
 		console.log(message);
 		const messageInfo = {
 			message: message,
 			to_user_id: user.id,
+			images: myImages,
 		};
-		if (message) sendChat(messageInfo, chat);
+		if (message || myImages.length) sendChat(messageInfo, chat);
 		setMessage("");
+		myImages = [];
 	};
 
+	const handleChange = (e) => {
+		e.preventDefault();
+		var files = e.target.files;
+		console.log("Target files ->", files);
+		var i;
+		if (files.length > 3) setError("Cannot upload more than 3 images.");
+		else setError(null);
+		if (files.length > 0) {
+			for (i = 0; i < files.length; i++) {
+				if (["image/png", "image/jpeg"].includes(files[i].type)) {
+					myImages.push(files[i]);
+
+					setError("");
+					//setImages(myImages);
+				} else setError("Please select an image file (png or jpg)");
+			}
+		}
+		console.log("temp->", myImages);
+	};
 	const goBack = () => {
 		setDMChat(null);
 		setDMUser(null);
@@ -75,7 +100,20 @@ const DirectChat = ({
 										className={`message ${messageClass} align-items-center`}
 									>
 										<p>
-											{msg.message}{" "}
+											{msg.images &&
+												msg.images.map((image) => (
+													<img
+														src={image}
+														style={{
+															width: "100%",
+															aspectRatio: "1/1",
+															padding: "3px",
+															borderRadius: "5%",
+														}}
+													></img>
+												))}
+											{msg.images?.length && <br />}
+											{msg.message}
 											<div className="chat-time">
 												{msg.timestamp
 													.toDate()
@@ -99,7 +137,22 @@ const DirectChat = ({
 
 					<div className="chat-input">
 						<div className="d-flex justify-content-around align-items-center">
-							<Image className="chat-input-icon" />
+							<label
+								for="file-input"
+								style={{ cursor: "pointer" }}
+							>
+								<Image className="chat-input-icon" />
+							</label>
+							<input
+								style={{ display: "none" }}
+								type="file"
+								id="file-input"
+								className="position-relative"
+								name="file"
+								onChange={handleChange}
+								multiple
+							/>
+
 							<Form
 								onSubmit={(e) => {
 									e.preventDefault();
@@ -133,6 +186,7 @@ const DirectChat = ({
 								/>
 							)}
 						</div>
+						{error && <div className="error">{error}</div>}
 					</div>
 				</div>
 			</div>
