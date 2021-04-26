@@ -90,10 +90,11 @@ const mapStatetoProps = (state) => {
 
 export default compose(
 	connect(mapStatetoProps, mapDispatchToProps),
-	firestoreConnect([
+	firestoreConnect((props) => [
 		{
 			collection: "Notification",
 			orderBy: ["timestamp", "desc"],
+			where: [["to_user_id", "==", props.user]],
 			limit: 6,
 		},
 	])
