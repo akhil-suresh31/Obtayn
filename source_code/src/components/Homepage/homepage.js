@@ -11,7 +11,7 @@ import "./homepage.css";
 import PostFilter from "./postFilter";
 import { Spinner } from "react-bootstrap";
 
-const Homepage = ({ users, profile_pic }) => {
+const Homepage = ({ users, auth }) => {
 	var initialSearchData = { category: null, keywords: null, location: null };
 	const [scrollToTop, setscrollToTop] = useState(false);
 	const [filter, setFilter] = useState({ post: false, request: false });
@@ -33,7 +33,7 @@ const Homepage = ({ users, profile_pic }) => {
 			behavior: "smooth",
 		});
 	}
-	if (profile_pic)
+	if (auth.uid)
 		return (
 			<div>
 				<NavBar
@@ -91,7 +91,7 @@ const Homepage = ({ users, profile_pic }) => {
 const mapStatetoProps = (state) => {
 	return {
 		users: state.firestore.ordered.User,
-		profile_pic: state.firebase.profile.profile_picture,
+		auth: state.firebase.auth,
 	};
 };
 
