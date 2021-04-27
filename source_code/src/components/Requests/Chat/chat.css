@@ -115,3 +115,8 @@
 .unread {
 	font-weight: bold;
 }
+
+.file-names {
+	color: white;
+	margin-left: 0;
+}

@@ -4,7 +4,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import Avatar from "react-avatar";
 import "./chat.css";
-import { Form, Spinner } from "react-bootstrap";
+import { Form, Spinner, Button } from "react-bootstrap";
 import { ArrowLeft, Cursor, CursorFill, Image } from "react-bootstrap-icons";
 import { sendChat } from "../../../store/actions/chatActions";
 
@@ -136,6 +136,20 @@ const DirectChat = ({
 					</div>
 
 					<div className="chat-input">
+						{error && <div className="error">{error}</div>}
+						{myImages && myImages.length == 0 ? null : (
+							<div className="file-names">
+								{myImages.map((image) => image.name)}
+								<Button
+									variant="danger"
+									onClick={() => {
+										myImages = [];
+									}}
+								>
+									cancel
+								</Button>
+							</div>
+						)}
 						<div className="d-flex justify-content-around align-items-center">
 							<label
 								for="file-input"
