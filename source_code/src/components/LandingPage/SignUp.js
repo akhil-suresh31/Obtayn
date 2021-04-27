@@ -55,7 +55,7 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 							style={{ height: "100%" }}
 							className="d-flex flex-column justify-content-center"
 						>
-							<Row className=" d-flex align-content-center ">
+							<Row className=" d-flex align-content-center justify-content-center">
 								<h2>Join Us Now!</h2>
 							</Row>
 							{authError && (
@@ -103,7 +103,9 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 							</Row>
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput mt-0">
-									<Form.Text>
+									<Form.Text
+										style={{ margin: "0 auto 0 auto" }}
+									>
 										<b>
 											Your password must be 6-20
 											characters long.
@@ -142,14 +144,18 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 										variant="dark"
 										type="submit"
 										disabled={disableButton}
+										style={{
+											width: "100%",
+											fontWeight: "bold",
+											fontSize: "16px",
+											padding: "0.5em 0",
+										}}
 									>
 										Sign Up
 									</Button>
 								</Form.Group>
 							</Row>
-							<center>
-								<p>Or</p>
-							</center>
+							<div className="separator mb-3">or</div>
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput justify-content-center">
 									<Button
@@ -171,6 +177,14 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 							</Row>
 						</Col>
 					</Form>
+					<center>
+						<div
+							className="signUp-link"
+							onClick={() => setLogin(true)}
+						>
+							Already a member? Login
+						</div>
+					</center>
 				</Col>
 			</Row>
 		</div>

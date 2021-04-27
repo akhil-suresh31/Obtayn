@@ -4,7 +4,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { continueWithGoogle, login } from "../../store/actions/authActions";
 
-function Login({ login, error, continueWithGoogle, authState }) {
+function Login({ login, error, continueWithGoogle, authState, setLogin }) {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
 	const [disableButton, setDisableButton] = useState(false);
@@ -45,11 +45,6 @@ function Login({ login, error, continueWithGoogle, authState }) {
 							style={{ height: "100%" }}
 							className="d-flex flex-column justify-content-center"
 						>
-							<Row className=" d-flex align-content-center ">
-								<center>
-									<h2>Welcome!</h2>
-								</center>
-							</Row>
 							{error && <Alert variant="danger">{error}</Alert>}
 							<Row className="d-flex align-content-center">
 								<Form.Group
@@ -71,7 +66,7 @@ function Login({ login, error, continueWithGoogle, authState }) {
 							<Row className="d-flex align-content-center">
 								<Form.Group
 									controlId="formBasicPassword"
-									className="formInput"
+									className="formInput mb-1"
 								>
 									<Form.Control
 										required={true}
@@ -83,6 +78,16 @@ function Login({ login, error, continueWithGoogle, authState }) {
 										}}
 									/>
 								</Form.Group>
+								<Form.Text
+									className="forgot-pass mb-3 mt=0"
+									onClick={() =>
+										console.log(
+											"lmao loser forgtot his/her password"
+										)
+									}
+								>
+									<b>Forgot password ?</b>
+								</Form.Text>
 							</Row>
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput justify-content-center">
@@ -90,20 +95,19 @@ function Login({ login, error, continueWithGoogle, authState }) {
 										type="submit"
 										disabled={disableButton}
 										variant="dark"
-										// style={{
-										// 	backgroundColor: "white",
-										// 	color: "#389486",
-										// 	border: "none",
-										// }}
+										style={{
+											width: "100%",
+											fontWeight: "bold",
+											fontSize: "16px",
+											padding: "0.5em 0",
+										}}
 									>
 										Login
 									</Button>
 								</Form.Group>
 							</Row>
-							<center>
-								<p>Or</p>
-							</center>
-							<Row className="d-flex align-content-center">
+							<div className="separator">or</div>
+							<Row className="d-flex align-content-center mt-3">
 								<Form.Group className="formInput justify-content-center">
 									<Button
 										variant="light"
@@ -126,6 +130,14 @@ function Login({ login, error, continueWithGoogle, authState }) {
 							</Row>
 						</Col>
 					</Form>
+					<center>
+						<div
+							className="signUp-link"
+							onClick={() => setLogin(false)}
+						>
+							New to Obtayn? Sign up
+						</div>
+					</center>
 				</Col>
 			</Row>
 		</div>
