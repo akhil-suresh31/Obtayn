@@ -112,7 +112,7 @@ const DirectChat = ({
 														}}
 													></img>
 												))}
-											{msg.images?.length && <br />}
+
 											{msg.message}
 											<div className="chat-time">
 												{msg.timestamp
