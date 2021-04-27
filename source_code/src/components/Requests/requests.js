@@ -223,11 +223,7 @@ const Requests = ({
 							<Accordion className="outgoing-req-acc">
 								{pendingReq &&
 									pendingReq.map((req, index) => {
-										var bgcolor = "#dbe9ee";
-										if (req.status == "accepted")
-											bgcolor = "#9dc8cf";
-										if (req.status == "fulfilled")
-											bgcolor = "#1ac6ff";
+										var bgcolor = "#F9C762";
 										const style =
 											highlightedReq == req.id
 												? {
@@ -375,11 +371,8 @@ const Requests = ({
 							<Accordion className="outgoing-req-acc">
 								{fulfilledReq &&
 									fulfilledReq.map((req, index) => {
-										var bgcolor = "#dbe9ee";
-										if (req.status == "accepted")
-											bgcolor = "#9dc8cf";
-										if (req.status == "fulfilled")
-											bgcolor = "#1ac6ff";
+										var bgcolor = "#b5e477";
+
 										const style =
 											highlightedReq == req.id
 												? {

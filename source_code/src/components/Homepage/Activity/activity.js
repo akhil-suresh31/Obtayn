@@ -52,7 +52,7 @@ const Activity = ({
 											float: "right",
 											height: "8%",
 											width: "8%",
-											color: "dimgrey",
+											color: "black",
 										}}
 									/>
 									<p className="notif-message">
@@ -71,7 +71,6 @@ const Activity = ({
 									</p>
 								</motion.div>
 							);
-							++notifCount;
 						}
 					})}
 			</div>

@@ -3,7 +3,7 @@
 	width: 25vw;
 	float: right;
 	overflow: scroll;
-	background-color: #212333;
+	background-color: var(--chatContainerBg);
 }
 .chat-heading {
 	color: white;
@@ -14,7 +14,7 @@
 	width: 100%;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
-	background-color: #212333;
+	background-color: var(--chatListBackground);
 }
 
 .chat-input-icon {
@@ -26,11 +26,11 @@
 }
 
 .chat-List {
-	background-color: #171924;
+	background-color: var(--chatListBackground);
 	width: 100%;
 }
 .chat-List-DM {
-	background-color: #171924;
+	background-color: white;
 	width: 100%;
 	min-height: 75%;
 	max-height: 75%;
@@ -38,12 +38,12 @@
 
 .chat-List-time {
 	font-size: 12px;
-	color: dimgrey;
+	color: black;
 	align-content: flex-end;
 }
 
 .chat-user {
-	background-color: #171924;
+	background-color: var(--chatListBackground);
 	color: white;
 	margin-top: 5%;
 }
@@ -59,6 +59,7 @@
 .DM-heading {
 	color: white;
 	height: 25%;
+	background-color: var(--chatListBackground);
 }
 
 .DM-userName {
@@ -97,7 +98,7 @@
 }
 
 .received p {
-	background: #e5e5ea;
+	background: #d4d4d6;
 	color: black;
 	padding: 0.25rem;
 	border-radius: 12px 12px 12px 0px;
@@ -105,7 +106,7 @@
 
 .sent p {
 	color: white;
-	background: #0b93f6;
+	background: var(--chatListBackground);
 	align-self: flex-end;
 	padding: 0.25rem;
 	border-radius: 12px 12px 0px 12px;

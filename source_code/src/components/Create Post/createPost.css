@@ -1,0 +1,18 @@
+.create-post-body {
+	height: min-content;
+	max-height: max-content;
+	width: 50%;
+}
+
+.create-post-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 90vh;
+	width: 100%;
+	/* background-color: cadetblue; */
+}
+
+/* .pink-form {
+	background-color: #f47c98;
+} */

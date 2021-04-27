@@ -3,8 +3,8 @@ import { Navbar, Nav } from "react-bootstrap";
 import { BellFill, ChatRightTextFill } from "react-bootstrap-icons";
 import { Link, useHistory } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import { FileEarmarkPlusFill } from "react-bootstrap-icons";
 import Tooltip from "react-bootstrap/Tooltip";
-import CreatePostModal from "../Create-Post/createPost";
 import UserProfile from "./userProfile";
 import "./navbar.css";
 
@@ -57,7 +57,7 @@ export default function NavBar({
 										</Link>
 									</Nav.Link>
 								);
-							else
+							else if (window.location.pathname == "/home")
 								return (
 									<Nav.Link>
 										<Link
@@ -67,6 +67,27 @@ export default function NavBar({
 											My Requests
 										</Link>
 									</Nav.Link>
+								);
+							else
+								return (
+									<Nav>
+										<Nav.Link>
+											<Link
+												to="/home"
+												style={{ color: "white" }}
+											>
+												Feed
+											</Link>
+										</Nav.Link>
+										<Nav.Link>
+											<Link
+												to="/requests"
+												style={{ color: "white" }}
+											>
+												My Requests
+											</Link>
+										</Nav.Link>
+									</Nav>
 								);
 						})()}
 					</Nav>
@@ -86,14 +107,21 @@ export default function NavBar({
 									}}
 								/>
 							</OverlayTrigger>
-							{/* <span className="notif-badge"></span> */}
 						</div>
-						<CreatePostModal
+						{/* <CreatePostModal
 							tag={tag}
 							setTag={setTag}
 							show={show}
 							setShow={setShow}
-						/>
+						/> */}
+						<OverlayTrigger
+							placement="bottom"
+							overlay={renderTooltip("Say something")}
+						>
+							<Link to="/createPost">
+								<FileEarmarkPlusFill size={27} color="white" />
+							</Link>
+						</OverlayTrigger>
 
 						{(() => {
 							if (window.location.pathname == "/home")

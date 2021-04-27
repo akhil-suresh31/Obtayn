@@ -31,21 +31,21 @@
 	--postBg: #faf2e8; */
 
 	/*Dark mode*/
-	--navbarBg: #27283f;
+	/* --navbarBg: #27283f;
 	--feedBg: #161724;
 	--activityBg: #212333;
 	--createPost: #4abaaa;
 	--feedContainerBg: #2b4f60;
 	--postBg: #faf2e8;
-	--notifBg: #d8bf95;
+	--notifBg: #d8bf95; */
 
-	/* --navbarBg: #31326f;
-	--feedBg: #161724;
-	--activityBg: #212333;
-	--createPost: #9ddfd3;
+	--navbarBg: #0b4047;
+	--feedBg: #adcad6;
+	--activityBg: #0b4047;
+	--createPost: #adcad6;
 	--feedContainerBg: #2b4f60;
-	--postBg: #faf2e8;
-	--notifBg: #d8bf95;*/
+	--postBg: white;
+	--notifBg: #298591;
 }
 
 .homepage-body {

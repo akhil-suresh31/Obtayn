@@ -33,6 +33,7 @@ const Feed = ({
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const [showImage, setImage] = useState(false);
 	const [selectedImg, setSelectedImg] = useState(null);
+	const [actionBtn, setActionBtn] = useState("none");
 
 	const delRequest = (req) => {
 		Swal.fire({
@@ -125,6 +126,7 @@ const Feed = ({
 									animate={{ opacity: 1 }}
 									transition={{ duration: 0.2 }}
 									exit={{ opacity: 0 }}
+									//onMouseOver={setActionBtn("block")}
 								>
 									<Media className="post-container">
 										<Avatar
@@ -263,6 +265,11 @@ const Feed = ({
 																	)
 																}
 																className="delete-button"
+																style={{
+																	display: {
+																		actionBtn,
+																	},
+																}}
 															/>
 														</OverlayTrigger>
 													) : (
@@ -279,6 +286,11 @@ const Feed = ({
 																	)
 																}
 																className="accept-button"
+																style={{
+																	display: {
+																		actionBtn,
+																	},
+																}}
 															/>
 														</OverlayTrigger>
 													)
@@ -295,6 +307,11 @@ const Feed = ({
 																delPost(item)
 															}
 															className="delete-button"
+															style={{
+																display: {
+																	actionBtn,
+																},
+															}}
 														/>
 													</OverlayTrigger>
 												) : null}
