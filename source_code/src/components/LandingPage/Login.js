@@ -4,7 +4,14 @@ import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { continueWithGoogle, login } from "../../store/actions/authActions";
 
-function Login({ login, error, continueWithGoogle, authState, setLogin }) {
+function Login({
+	login,
+	error,
+	continueWithGoogle,
+	authState,
+	setLogin,
+	setFrgtPass,
+}) {
 	const [email, setEmail] = useState("");
 	const [pass, setpass] = useState("");
 	const [disableButton, setDisableButton] = useState(false);
@@ -80,11 +87,12 @@ function Login({ login, error, continueWithGoogle, authState, setLogin }) {
 								</Form.Group>
 								<Form.Text
 									className="forgot-pass mb-3 mt=0"
-									onClick={() =>
+									onClick={() => {
 										console.log(
 											"lmao loser forgtot his/her password"
-										)
-									}
+										);
+										setFrgtPass(true);
+									}}
 								>
 									<b>Forgot password ?</b>
 								</Form.Text>

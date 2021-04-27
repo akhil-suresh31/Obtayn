@@ -96,3 +96,19 @@ export const continueWithGoogle = () => {
 			});
 	};
 };
+
+export const forgotPass = (userInfo) => {
+	return (dispatch, getState, { getFirebase }) => {
+		const firebase = getFirebase();
+
+		firebase
+			.auth()
+			.sendPasswordResetEmail(userInfo.email)
+			.then(() => {
+				dispatch({ type: "PASSWORD_RESET" });
+			})
+			.catch((err) => {
+				dispatch({ type: "PASSWORD_RESET_ERROR", err });
+			});
+	};
+};

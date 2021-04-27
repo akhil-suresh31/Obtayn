@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Jumbotron, Container } from "react-bootstrap";
 import { AnimatePresence, motion } from "framer-motion";
 import SignUp from "./SignUp";
 import Login from "./Login";
 import "./LandingPage.css";
+import ForgotPassword from "./ForgotPassword";
 
 function LandingPage() {
 	const [login, setLogin] = useState(true);
-	var style = {};
+	const [frgtPass, setFrgtPass] = useState(false);
 	return (
 		<div className="contents">
 			<div className="black-div">
@@ -47,18 +48,39 @@ function LandingPage() {
 							</Container>
 						</Jumbotron>
 						{login ? (
-							<motion.div
-								key="login"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{
-									ease: "easeIn",
-									duration: 0.75,
-								}}
-								exit={{ opacity: 0 }}
-							>
-								<Login setLogin={setLogin} />
-							</motion.div>
+							frgtPass ? (
+								<motion.div
+									key="login"
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{
+										ease: "easeIn",
+										duration: 0.75,
+									}}
+									exit={{ opacity: 0 }}
+								>
+									<ForgotPassword
+										setLogin={setLogin}
+										setFrgtPass={setFrgtPass}
+									/>
+								</motion.div>
+							) : (
+								<motion.div
+									key="login"
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{
+										ease: "easeIn",
+										duration: 0.75,
+									}}
+									exit={{ opacity: 0 }}
+								>
+									<Login
+										setLogin={setLogin}
+										setFrgtPass={setFrgtPass}
+									/>
+								</motion.div>
+							)
 						) : (
 							<motion.div
 								key="signup"
