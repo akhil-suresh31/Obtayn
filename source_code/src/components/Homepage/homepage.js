@@ -8,7 +8,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import SearchBar from "./searchBar";
 import "./homepage.css";
-import PostFilter from "./Create-Post/postFilter";
+import PostFilter from "./postFilter";
 import { Spinner } from "react-bootstrap";
 
 const Homepage = ({ users, profile_pic }) => {
