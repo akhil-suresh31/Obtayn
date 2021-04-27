@@ -5,6 +5,15 @@
 	background-color: black;
 }
 
+.image-div {
+	height: 100vh;
+	width: 50%;
+	float: right;
+	background-image: url("./shyam-O7_Pp4fjDVY-unsplash.jpg");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
 .Brand {
 	z-index: 10;
 	position: relative;
@@ -40,26 +49,23 @@
 .FillerText {
 	width: 40%;
 	color: white;
-	/* margin-top: 10%; */
 	margin-right: 10vw;
 	height: min-content;
 	padding: 1%;
 	border-radius: 2%;
 	background-color: rgb(74, 186, 170);
 	float: right;
-	/* background-color: black;*/
 }
 
 .Form-Container {
-	background-color: rgba(245, 245, 245, 0.555);
+	background-color: rgba(245, 245, 245, 0.8);
 	width: 18%;
-	padding: 1%;
+	padding: 3%;
 	border-radius: 2%;
-	margin-top: 10%;
-	margin-left: auto;
-	margin-right: 13%;
-	min-height: 320px;
-	height: max-content;
+	margin: 3% 30%;
+	min-height: min-content;
+	width: 20vw;
+	max-height: max-content;
 }
 .formInput {
 	display: flex;

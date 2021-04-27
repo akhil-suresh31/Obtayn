@@ -46,13 +46,16 @@ function Login({ login, error, continueWithGoogle, authState }) {
 							className="d-flex flex-column justify-content-center"
 						>
 							<Row className=" d-flex align-content-center ">
-								<h2>Welcome Back!</h2>
+								<center>
+									<h2>Welcome!</h2>
+								</center>
 							</Row>
 							{error && <Alert variant="danger">{error}</Alert>}
 							<Row className="d-flex align-content-center">
 								<Form.Group
 									controlId="formBasicEmail"
 									className="formInput"
+									style={{ marginTop: "3vh" }}
 								>
 									<Form.Control
 										required={true}
@@ -84,6 +87,25 @@ function Login({ login, error, continueWithGoogle, authState }) {
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput justify-content-center">
 									<Button
+										type="submit"
+										disabled={disableButton}
+										variant="dark"
+										// style={{
+										// 	backgroundColor: "white",
+										// 	color: "#389486",
+										// 	border: "none",
+										// }}
+									>
+										Login
+									</Button>
+								</Form.Group>
+							</Row>
+							<center>
+								<p>Or</p>
+							</center>
+							<Row className="d-flex align-content-center">
+								<Form.Group className="formInput justify-content-center">
+									<Button
 										variant="light"
 										style={{ padding: 0, border: 0 }}
 										onClick={signInGoogle}
@@ -99,21 +121,6 @@ function Login({ login, error, continueWithGoogle, authState }) {
 											src="/images/google-button.png"
 											alt=""
 										></img>
-									</Button>
-								</Form.Group>
-							</Row>
-							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput justify-content-center">
-									<Button
-										type="submit"
-										disabled={disableButton}
-										style={{
-											backgroundColor: "white",
-											color: "#389486",
-											border: "none",
-										}}
-									>
-										<b>Login</b>
 									</Button>
 								</Form.Group>
 							</Row>

@@ -13,9 +13,82 @@ function LandingPage() {
 	};
 
 	return (
-		<div>
-			<div className="LandingPage">
-				<Carousel
+		<div className="contents">
+			<div className="black-div">
+				<Jumbotron className="jumbotron-bg">
+					<Container>
+						<h1 className="font-weight-bold">Obtayn</h1>
+						<p>Get stuff.</p>
+					</Container>
+				</Jumbotron>
+
+				<p
+					style={{
+						color: "white",
+						paddingLeft: "5%",
+						paddingRight: "5%",
+					}}
+				>
+					<h2 style={{ color: "#4abaaa" }}>New here?</h2>
+					<p>
+						We've created a community where people can exchange
+						souvenirs, hassle-free. Send requests, chat with other
+						awesome people, post photos or say thanks via an
+						appreciation post!
+					</p>
+					<Button
+						variant="dark"
+						onClick={() => {
+							setLogin(!login);
+						}}
+						style={{
+							backgroundColor: "rgb(74, 186, 170)",
+						}}
+					>
+						{login ? "Get Started" : "Login Instead"}
+					</Button>
+				</p>
+			</div>
+			<div className="image-div">
+				<AnimatePresence>
+					<div className="Form-Container">
+						{login ? (
+							<motion.div
+								key="login"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{
+									ease: "easeIn",
+									duration: 0.75,
+								}}
+								exit={{ opacity: 0 }}
+							>
+								<Login />
+							</motion.div>
+						) : (
+							<motion.div
+								key="signup"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{
+									ease: "easeIn",
+									duration: 0.75,
+								}}
+								exit={{ opacity: 0 }}
+							>
+								<SignUp setLogin={setLogin} />
+							</motion.div>
+						)}
+					</div>
+				</AnimatePresence>
+			</div>
+		</div>
+	);
+}
+
+export default LandingPage;
+
+/* <Carousel
 					pause={false}
 					className="carousal"
 					controls={false}
@@ -44,98 +117,4 @@ function LandingPage() {
 							src="/images/marvin-kuhn-uHrRgJKPPAk-unsplash.jpg"
 							alt=""
 						/>
-					</Carousel.Item>
-
-					<div className="contents">
-						<div className="black-div">
-							<Jumbotron className="jumbotron-bg">
-								<Container>
-									<h1 className="font-weight-bold">Obtayn</h1>
-									<p>Get stuff.</p>
-								</Container>
-							</Jumbotron>
-							{/* <div className="FillerText">
-								<h2>New here?</h2>
-								<p>
-									We've created a community where people can
-									exchange souvenirs, hassle-free. Send
-									requests, chat with other awesome people,
-									post photos or say thanks via an
-									appreciation post!
-								</p>
-								<Button
-									variant="dark"
-									onClick={() => {
-										setLogin(!login);
-									}}
-								>
-									{login ? "Get Started" : "Login Instead"}
-								</Button>
-							</div> */}
-							<p
-								style={{
-									color: "white",
-									paddingLeft: "5%",
-									paddingRight: "5%",
-								}}
-							>
-								<h2 style={{ color: "#4abaaa" }}>New here?</h2>
-								<p>
-									We've created a community where people can
-									exchange souvenirs, hassle-free. Send
-									requests, chat with other awesome people,
-									post photos or say thanks via an
-									appreciation post!
-								</p>
-								<Button
-									variant="dark"
-									onClick={() => {
-										setLogin(!login);
-									}}
-									style={{
-										backgroundColor: "rgb(74, 186, 170)",
-									}}
-								>
-									{login ? "Get Started" : "Login Instead"}
-								</Button>
-							</p>
-						</div>
-						<AnimatePresence>
-							<div className="Form-Container">
-								{login ? (
-									<motion.div
-										key="login"
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										transition={{
-											ease: "easeIn",
-											duration: 0.75,
-										}}
-										exit={{ opacity: 0 }}
-									>
-										<Login />
-									</motion.div>
-								) : (
-									<motion.div
-										key="signup"
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										transition={{
-											ease: "easeIn",
-											duration: 0.75,
-										}}
-										exit={{ opacity: 0 }}
-									>
-										<SignUp setLogin={setLogin} />
-									</motion.div>
-								)}
-							</div>
-						</AnimatePresence>
-					</div>
-				</Carousel>
-			</div>
-		</div>
-	);
-}
-
-export default LandingPage;
+					</Carousel.Item> */

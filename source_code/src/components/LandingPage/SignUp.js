@@ -103,9 +103,11 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 							</Row>
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput mt-0">
-									<Form.Text className="text-muted">
-										Your password must be 6-20 characters
-										long.
+									<Form.Text>
+										<b>
+											Your password must be 6-20
+											characters long.
+										</b>
 									</Form.Text>
 								</Form.Group>
 							</Row>
@@ -137,6 +139,20 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 							<Row className="d-flex align-content-center">
 								<Form.Group className="formInput justify-content-center">
 									<Button
+										variant="dark"
+										type="submit"
+										disabled={disableButton}
+									>
+										Sign Up
+									</Button>
+								</Form.Group>
+							</Row>
+							<center>
+								<p>Or</p>
+							</center>
+							<Row className="d-flex align-content-center">
+								<Form.Group className="formInput justify-content-center">
+									<Button
 										variant="light"
 										style={{ padding: 0, border: 0 }}
 										onClick={signInGoogle}
@@ -150,17 +166,6 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 											src="/images/google-button.png"
 											alt=""
 										></img>
-									</Button>
-								</Form.Group>
-							</Row>
-							<Row className="d-flex align-content-center">
-								<Form.Group className="formInput justify-content-center">
-									<Button
-										variant="dark"
-										type="submit"
-										disabled={disableButton}
-									>
-										Sign Up
 									</Button>
 								</Form.Group>
 							</Row>
