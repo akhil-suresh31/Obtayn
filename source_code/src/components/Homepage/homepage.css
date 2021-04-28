@@ -133,10 +133,30 @@
 
 .reset-btn {
 	border-radius: 0px 5px 5px 0px !important;
+	background-color: #f9c762 !important;
+	border: none !important;
+	color: black !important;
+}
+
+.reset-btn:hover {
+	border-radius: 0px 5px 5px 0px !important;
+	background-color: #daab4d !important;
+	border: none !important;
+	color: black !important;
 }
 
 .submit-btn {
 	border-radius: 0px !important;
+	background-color: #f8b4c5 !important;
+	border: none !important;
+	color: black !important;
+}
+
+.submit-btn:hover {
+	border-radius: 0px !important;
+	background-color: #f594ac !important;
+	border: none !important;
+	color: black !important;
 }
 
 .search-button {

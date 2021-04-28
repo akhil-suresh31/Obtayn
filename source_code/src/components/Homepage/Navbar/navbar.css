@@ -10,6 +10,12 @@
 
 .chat-icon {
 	margin-left: 2vw;
+	color: white;
+}
+
+.chat-icon:hover {
+	margin-left: 2vw;
+	color: #298591 !important;
 }
 
 .create-post {
@@ -44,4 +50,24 @@
 .notifications {
 	margin-right: 2vw;
 	color: white !important;
+}
+.notifications:hover {
+	margin-right: 2vw;
+	color: #298591 !important;
+}
+
+.create-post-icon {
+	color: white !important;
+}
+
+.create-post-icon:hover {
+	color: #298591 !important;
+}
+
+.logout-link {
+	background-color: white;
+}
+
+.logout-link:hover {
+	background-color: #298591;
 }

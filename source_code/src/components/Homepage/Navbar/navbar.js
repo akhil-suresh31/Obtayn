@@ -119,7 +119,10 @@ export default function NavBar({
 							overlay={renderTooltip("Say something")}
 						>
 							<Link to="/createPost">
-								<FileEarmarkPlusFill size={27} color="white" />
+								<FileEarmarkPlusFill
+									className="create-post-icon"
+									size={27}
+								/>
 							</Link>
 						</OverlayTrigger>
 
@@ -133,7 +136,6 @@ export default function NavBar({
 										<ChatRightTextFill
 											className="chat-icon"
 											size={27}
-											color="white"
 											onClick={() => {
 												history.push("/requests");
 											}}

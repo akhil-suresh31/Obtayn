@@ -33,7 +33,7 @@ const Feed = ({
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const [showImage, setImage] = useState(false);
 	const [selectedImg, setSelectedImg] = useState(null);
-	const [actionBtn, setActionBtn] = useState("none");
+	const [actionBtn, setActionBtn] = useState(false);
 
 	const delRequest = (req) => {
 		Swal.fire({
@@ -126,7 +126,6 @@ const Feed = ({
 									animate={{ opacity: 1 }}
 									transition={{ duration: 0.2 }}
 									exit={{ opacity: 0 }}
-									//onMouseOver={setActionBtn("block")}
 								>
 									<Media className="post-container">
 										<Avatar
@@ -141,7 +140,23 @@ const Feed = ({
 											round={true}
 										/>
 										<Media.Body>
-											<div className="d-flex w-100 mb-0 align-items-end">
+											<div
+												className="d-flex w-100 mb-0 align-items-end"
+												onMouseEnter={() => {
+													setActionBtn(true);
+													console.log(
+														"Display->",
+														actionBtn
+													);
+												}}
+												onMouseOut={() => {
+													setActionBtn(false);
+													console.log(
+														"Display->",
+														actionBtn
+													);
+												}}
+											>
 												<h6 className="text-left font-weight-bold feed-user">
 													{item.user}
 												</h6>
@@ -166,7 +181,6 @@ const Feed = ({
 														}
 													)}
 											</p>
-
 											<div className="d-flex w-100 mt-0 ">
 												<p className="text-left feed-title">
 													{item.title}
@@ -247,8 +261,10 @@ const Feed = ({
 														</div>
 													);
 											})()}
+											{/* {actionBtn ? ( */}
 											<div className="d-flex w-100 mt-0 ">
 												<p></p>
+
 												{item.category ? (
 													user ===
 													item.from_user_id ? (
@@ -265,11 +281,6 @@ const Feed = ({
 																	)
 																}
 																className="delete-button"
-																style={{
-																	display: {
-																		actionBtn,
-																	},
-																}}
 															/>
 														</OverlayTrigger>
 													) : (
@@ -286,11 +297,6 @@ const Feed = ({
 																	)
 																}
 																className="accept-button"
-																style={{
-																	display: {
-																		actionBtn,
-																	},
-																}}
 															/>
 														</OverlayTrigger>
 													)
@@ -307,15 +313,11 @@ const Feed = ({
 																delPost(item)
 															}
 															className="delete-button"
-															style={{
-																display: {
-																	actionBtn,
-																},
-															}}
 														/>
 													</OverlayTrigger>
 												) : null}
 											</div>
+											{/* ) : null} */}
 										</Media.Body>
 									</Media>
 								</div>

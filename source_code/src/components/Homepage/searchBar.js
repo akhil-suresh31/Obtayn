@@ -83,15 +83,10 @@ function SearchBar({ setData, setSearchButton }) {
 							placeholder="Enter Location.."
 							name="searchLocation"
 						/>
-						<Button
-							variant="secondary"
-							type="submit"
-							className="submit-btn"
-						>
+						<Button type="submit" className="submit-btn">
 							Search
 						</Button>
 						<Button
-							variant="secondary"
 							type="reset"
 							className="reset-btn"
 							onClick={handleReset}

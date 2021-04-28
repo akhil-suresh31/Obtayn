@@ -202,11 +202,6 @@ const Requests = ({
 												</Card.Body>
 											</Accordion.Collapse>
 										</Card>
-
-										// 	key={index}
-										// 	className="incoming-req"
-										// 	id={index}
-										// >
 									);
 								})}
 						</Accordion>

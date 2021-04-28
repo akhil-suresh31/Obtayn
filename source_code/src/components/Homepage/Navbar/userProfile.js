@@ -214,10 +214,16 @@ function UserProfile({ logOut, User, user_id }) {
 								{UserInfo.contactNumber}
 							</Dropdown.ItemText>
 							<Dropdown.Divider />
-							<Dropdown.ItemText eventKey="4">
+							<Dropdown.ItemText
+								className="logout-link"
+								eventKey="4"
+							>
 								<Link
 									onClick={handleLogout}
-									style={{ color: "black" }}
+									style={{
+										color: "black",
+										textDecoration: "none",
+									}}
 								>
 									Logout
 								</Link>

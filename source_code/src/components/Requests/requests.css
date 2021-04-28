@@ -4,7 +4,7 @@
 	--requestContainerBg: #adcad6;
 	--chatContainerBg: #0b4047;
 	--chatListBackground: #1c6c77;
-	--acceptedReqBg: #ee6b8a;
+	--acceptedReqBg: #f8b4c5;
 	--pendingReqBg: #f7b32b;
 	--fulfilledReqBg: #b5e477;
 }
@@ -35,6 +35,7 @@
 	border-radius: 5px !important;
 	background-color: var(--acceptedReqBg) !important;
 	transition: background-color 0.5s ease;
+	border: 1px solid black !important;
 }
 
 .pending-req-container {
@@ -67,6 +68,7 @@
 	border-radius: 5px !important;
 	transition: all 0.5s ease-out;
 	/* background-color: var(--incomingBg) !important; */
+	border: 1px solid black !important;
 }
 
 .req-title {

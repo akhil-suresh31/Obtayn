@@ -25,6 +25,7 @@ const Activity = ({
 	const closeMenu = () => {
 		setMenuOpen(false);
 	};
+	var notifCount = 0;
 
 	return (
 		<Menu right isOpen={menuOpen} width={"25vw"}>
@@ -34,8 +35,10 @@ const Activity = ({
 
 				{notifications &&
 					notifications.map((item, index) => {
-						var notifCount = 0;
 						if (item.to_user_id === user && notifCount < 5) {
+							++notifCount;
+							//console.log(notifCount);
+
 							return (
 								<motion.div
 									className="activity-notif"
