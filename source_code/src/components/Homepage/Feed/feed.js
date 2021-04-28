@@ -33,7 +33,6 @@ const Feed = ({
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const [showImage, setImage] = useState(false);
 	const [selectedImg, setSelectedImg] = useState(null);
-	const [actionBtn, setActionBtn] = useState(false);
 
 	const delRequest = (req) => {
 		Swal.fire({
@@ -90,6 +89,7 @@ const Feed = ({
 
 		if (searchData && searchButton) {
 			console.log("Searching...");
+			console.log(searchData);
 			if (searchData.category != "") {
 				allPosts = allPosts.filter(
 					(post) => post.category == searchData.category
@@ -105,8 +105,8 @@ const Feed = ({
 				console.log("Keyword filter -> ", allPosts);
 			}
 			if (searchData.location != "") {
-				allPosts = allPosts.filter(
-					(post) => post.location == searchData.location
+				allPosts = allPosts.filter((post) =>
+					post.location?.includes(searchData.location)
 				);
 				console.log("Keyword filter -> ", allPosts);
 			}
@@ -140,23 +140,7 @@ const Feed = ({
 											round={true}
 										/>
 										<Media.Body>
-											<div
-												className="d-flex w-100 mb-0 align-items-end"
-												onMouseEnter={() => {
-													setActionBtn(true);
-													console.log(
-														"Display->",
-														actionBtn
-													);
-												}}
-												onMouseOut={() => {
-													setActionBtn(false);
-													console.log(
-														"Display->",
-														actionBtn
-													);
-												}}
-											>
+											<div className="d-flex w-100 mb-0 align-items-end">
 												<h6 className="text-left font-weight-bold feed-user">
 													{item.user}
 												</h6>

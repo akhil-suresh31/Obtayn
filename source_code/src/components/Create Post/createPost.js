@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import "./createPost.css";
 import { createRequest } from "../../store/actions/requestActions";
 import { createPost } from "../../store/actions/postActions";
+import LocationAutoComplete from "../Homepage/LocationAutoComplete";
 var myImages = [];
 
 function CreatePost({ createRequest, createPost }) {
@@ -15,13 +16,11 @@ function CreatePost({ createRequest, createPost }) {
 	const [error, setError] = useState(null);
 	const [requestForm, setRequestForm] = useState(false);
 	const types = ["image/png", "image/jpeg"];
-
+	const [location, setLocation] = useState();
 	const history = useHistory();
 
 	const handleChange = (e) => {
 		setRequestForm(!requestForm);
-		console.log(e.target);
-		console.log("Request from visibilty-> ", requestForm);
 	};
 
 	const handleImageChange = (e) => {
@@ -53,6 +52,7 @@ function CreatePost({ createRequest, createPost }) {
 		}
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
+		formDataObj.location = location?.formatted;
 		console.log(formDataObj);
 		console.log(myImages);
 		if (!requestForm) createRequest(formDataObj, myImages);
@@ -140,20 +140,13 @@ function CreatePost({ createRequest, createPost }) {
 										Please enter a title.
 									</Form.Control.Feedback>
 								</Col>
+							</Row>
+							<Row>
 								{!requestForm ? (
 									<Col>
-										<Form.Control
-											type="text"
-											required
-											placeholder="Location"
-											name="location"
+										<LocationAutoComplete
+											getLocation={setLocation}
 										/>
-										<Form.Control.Feedback>
-											Looks good!
-										</Form.Control.Feedback>
-										<Form.Control.Feedback type="invalid">
-											Please enter a location.
-										</Form.Control.Feedback>
 									</Col>
 								) : null}
 							</Row>

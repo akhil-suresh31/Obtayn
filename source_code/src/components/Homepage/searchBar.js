@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import Nav from "react-bootstrap/Nav";
 import { Form, InputGroup, Button } from "react-bootstrap";
+import LocationAutoComplete from "./LocationAutoComplete";
 import "./homepage";
 
 function SearchBar({ setData, setSearchButton }) {
+	const [location, setLocation] = useState();
 	const searchFeed = (e) => {
 		e.preventDefault();
 		const form = e.target;
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
+		console.log(location); // lcoation text
 		console.log(formDataObj);
 		if (
 			!formDataObj["searchCategory"] &&
 			!formDataObj["searchKeywords"] &&
-			!formDataObj["searchLocation"]
+			!location
 		) {
 			alert("EMPTY FORM!");
 			setSearchButton(false);
@@ -27,7 +29,7 @@ function SearchBar({ setData, setSearchButton }) {
 			setData({
 				category: formDataObj["searchCategory"],
 				keyword: formDataObj["searchKeywords"],
-				location: formDataObj["searchLocation"],
+				location: location.formatted,
 			});
 			setSearchButton(true);
 			console.log("Submitting!");
@@ -41,61 +43,54 @@ function SearchBar({ setData, setSearchButton }) {
 	};
 
 	return (
-		<div>
-			<Nav className="mr-auto justify-content-center">
-				<Form
-					inline
-					className="nav-search-bar search-group"
-					onSubmit={searchFeed}
-					name="searchForm"
-				>
-					<InputGroup className="mb-2 mr-sm-2" hasValidation>
-						<InputGroup.Prepend>
-							<Form.Control
-								as="select"
-								name="searchCategory"
-								// defaultValue="Category"
-							>
-								<option
-									disabled={true}
-									selected="selected"
-									value=""
-								>
-									Category
-								</option>
-								<option>Clothing</option>
-								<option>Electronics</option>
-								<option>Food</option>
-								<option>Hobbies</option>
-								<option>Home & Living</option>
-								<option>Other</option>
-								<option>None</option>
-							</Form.Control>
-						</InputGroup.Prepend>
-
+		<div className="d-flex justify-content-center">
+			<Form
+				className="nav-search-bar search-group"
+				onSubmit={searchFeed}
+				name="searchForm"
+			>
+				<InputGroup className="mb-2 mr-sm-2" hasValidation>
+					<InputGroup.Prepend>
 						<Form.Control
-							type="text"
-							placeholder="Enter keywords.."
-							name="searchKeywords"
-						/>
-						<Form.Control
-							type="text"
-							placeholder="Enter Location.."
-							name="searchLocation"
-						/>
-						<Button type="submit" className="submit-btn">
-							Search
-						</Button>
-						<Button
-							type="reset"
-							className="reset-btn"
-							onClick={handleReset}
+							as="select"
+							name="searchCategory"
+							// defaultValue="Category"
 						>
-							Clear
-						</Button>
-					</InputGroup>
-				</Form>
-			</Nav>
+							<option
+								disabled={true}
+								selected="selected"
+								value=""
+							>
+								Category
+							</option>
+							<option>Clothing</option>
+							<option>Electronics</option>
+							<option>Food</option>
+							<option>Hobbies</option>
+							<option>Home & Living</option>
+							<option>Other</option>
+							<option>None</option>
+						</Form.Control>
+					</InputGroup.Prepend>
+
+					<Form.Control
+						type="text"
+						placeholder="Enter keywords.."
+						name="searchKeywords"
+					/>
+					<LocationAutoComplete getLocation={setLocation} />
+					<Button type="submit" className="submit-btn">
+						Search
+					</Button>
+					<Button
+						type="reset"
+						className="reset-btn"
+						onClick={handleReset}
+					>
+						Clear
+					</Button>
+				</InputGroup>
+			</Form>
 		</div>
 	);
 }

@@ -105,8 +105,8 @@ const DirectChat = ({
 													<img
 														src={image}
 														style={{
-															width: "100%",
-															aspectRatio: "1/1",
+															width: "80%",
+															aspectRatio: "auto",
 															padding: "3px",
 															borderRadius: "5%",
 														}}
@@ -114,7 +114,15 @@ const DirectChat = ({
 												))}
 
 											{msg.message}
-											<div className="chat-time">
+											<div
+												className="chat-time"
+												style={{
+													textAlign:
+														messageClass == "sent"
+															? "right"
+															: "left",
+												}}
+											>
 												{msg.timestamp
 													.toDate()
 													.toLocaleTimeString(
