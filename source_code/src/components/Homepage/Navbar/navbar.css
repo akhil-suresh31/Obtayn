@@ -71,3 +71,13 @@
 .logout-link:hover {
 	background-color: #298591;
 }
+
+.navbar-collapse.collapse.show {
+	background-color: var(--navbarBg);
+	z-index: 10;
+}
+
+.navbar {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}

@@ -29,6 +29,7 @@ export default function NavBar({
 					style={{
 						color: "#d8bf95",
 						fontFamily: "Lucida Console, Courier New, monospace",
+						paddingLeft: "2%",
 					}}
 				>
 					<img
@@ -108,12 +109,8 @@ export default function NavBar({
 								/>
 							</OverlayTrigger>
 						</div>
-						{/* <CreatePostModal
-							tag={tag}
-							setTag={setTag}
-							show={show}
-							setShow={setShow}
-						/> */}
+					</Nav>
+					<Nav className="justify-content-end">
 						<OverlayTrigger
 							placement="bottom"
 							overlay={renderTooltip("Say something")}
@@ -125,10 +122,11 @@ export default function NavBar({
 								/>
 							</Link>
 						</OverlayTrigger>
-
-						{(() => {
-							if (window.location.pathname == "/home")
-								return (
+					</Nav>
+					{(() => {
+						if (window.location.pathname == "/home")
+							return (
+								<Nav className="justify-content-end">
 									<OverlayTrigger
 										placement="bottom"
 										overlay={renderTooltip("Chat")}
@@ -141,9 +139,9 @@ export default function NavBar({
 											}}
 										/>
 									</OverlayTrigger>
-								);
-						})()}
-					</Nav>
+								</Nav>
+							);
+					})()}
 
 					<UserProfile />
 				</Navbar.Collapse>

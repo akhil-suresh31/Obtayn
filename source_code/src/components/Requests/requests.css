@@ -35,14 +35,13 @@
 	border-radius: 5px !important;
 	background-color: var(--acceptedReqBg) !important;
 	transition: background-color 0.5s ease;
-	border: 1px solid black !important;
+	border: 1px solid white !important;
 }
 
 .pending-req-container {
-	height: min-content;
+	height: 100%;
 	overflow-y: scroll;
 	width: 100%;
-	max-height: 50%;
 	float: top;
 }
 
@@ -50,7 +49,7 @@
 	height: min-content;
 	overflow-y: scroll;
 	width: 100%;
-	max-height: 50%;
+	height: 100%;
 	/* float: bottom; */
 }
 
@@ -68,7 +67,7 @@
 	border-radius: 5px !important;
 	transition: all 0.5s ease-out;
 	/* background-color: var(--incomingBg) !important; */
-	border: 1px solid black !important;
+	border: 1px solid white !important;
 }
 
 .req-title {
@@ -140,4 +139,8 @@
 	width: 8%;
 	margin-left: 58%;
 	color: #4b4f68;
+}
+
+.sticky-div {
+	position: sticky;
 }

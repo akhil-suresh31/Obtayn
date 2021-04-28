@@ -40,7 +40,7 @@ const notificationReducer = (state = initState, action) => {
 			return state;
 
 		case "NOTIF_CLICK":
-			console.log("notification clickd :", action.notif);
+			console.log("notification clicked :", action.notif.id);
 			return {
 				...state,
 				...action.notif,
@@ -49,6 +49,14 @@ const notificationReducer = (state = initState, action) => {
 		case "CLEAR_NOTIF":
 			console.log("cleared notif state");
 			return null;
+
+		case "DELETED_NOTIF":
+			console.log("notification deleted", action.notif.id);
+			return state;
+
+		case "DELETED_NOTIF_ERROR":
+			console.log("error deleting notification", action.code);
+			return state;
 
 		default:
 			return state;

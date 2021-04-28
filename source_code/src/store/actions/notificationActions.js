@@ -110,3 +110,20 @@ export const clearNotif = () => {
 		type: "CLEAR_NOTIF",
 	};
 };
+
+export const deleteNotif = (notif) => {
+	return (dispatch, getState, { getFirestore }) => {
+		console.log("Inside notif actions");
+		const firestore = getFirestore();
+		firestore
+			.collection("Notification")
+			.doc(notif.id)
+			.delete()
+			.then(() => {
+				dispatch({ type: "DELETED_NOTIF", notif });
+			})
+			.catch((err) => {
+				dispatch({ type: "DELETED_NOTIF_ERROR", err });
+			});
+	};
+};
