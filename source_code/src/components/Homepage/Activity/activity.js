@@ -54,16 +54,14 @@ const Activity = ({
 						Dismiss All
 					</Button>
 				)}
-
-				{notifications &&
-					notifications.map((item, index) => {
-						//console.log("Notif length: ", notifications.length);
-						if (item.to_user_id === user && notifCount < 5) {
-							++notifCount;
-
-							return (
-								<AnimatePresence>
-									{showNotif && (
+				<AnimatePresence>
+					{notifications &&
+						notifications.map((item, index) => {
+							//console.log("Notif length: ", notifications.length);
+							if (item.to_user_id === user && notifCount < 5) {
+								++notifCount;
+								if (showNotif)
+									return (
 										<motion.div
 											className="activity-notif"
 											whileHover={{ scale: 1.05 }}
@@ -73,6 +71,10 @@ const Activity = ({
 											exit={{
 												x: -1000,
 												opacity: 0,
+												transition: {
+													duration:
+														0.75 + index * 0.2,
+												},
 											}}
 										>
 											<div
@@ -117,12 +119,11 @@ const Activity = ({
 													)}
 											</p>
 										</motion.div>
-									)}
-								</AnimatePresence>
-							);
-						}
-						//if (notifCount == 0) setEmptyNotif(true);
-					})}
+									);
+							}
+							//if (notifCount == 0) setEmptyNotif(true);
+						})}
+				</AnimatePresence>
 				{/* {notifCount == 0 ? setEmptyNotif(true) : setEmptyNotif(false)} */}
 			</div>
 		</Menu>
