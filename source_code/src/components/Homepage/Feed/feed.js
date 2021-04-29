@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Media, Spinner } from "react-bootstrap";
+import { Media, Spinner, Button } from "react-bootstrap";
 import { AnimatePresence } from "framer-motion";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -268,21 +268,16 @@ const Feed = ({
 															/>
 														</OverlayTrigger>
 													) : (
-														<OverlayTrigger
-															placement="top"
-															overlay={renderTooltip(
-																"Accept"
-															)}
+														<Button
+															className="accept-button"
+															onClick={() =>
+																acceptRequest(
+																	item
+																)
+															}
 														>
-															<HandThumbsUpFill
-																onClick={() =>
-																	acceptRequest(
-																		item
-																	)
-																}
-																className="accept-button"
-															/>
-														</OverlayTrigger>
+															Accept
+														</Button>
 													)
 												) : user ===
 												  item.from_user_id ? (

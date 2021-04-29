@@ -53,9 +53,11 @@
 
 .accept-button {
 	height: 4%;
-	width: 4%;
-	color: #4abaaa;
+	width: min-content;
+	background-color: #fbd589 !important;
 	margin-left: auto;
+	border: 1px solid #f7b226 !important;
+	color: black !important;
 	/* margin-left: 95%; */
 }
 
