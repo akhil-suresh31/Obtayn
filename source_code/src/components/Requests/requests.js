@@ -46,6 +46,9 @@ const Requests = ({
 	useEffect(() => {
 		if (highlight) {
 			if (highlight.trigger_event === "request") {
+				highlight.message.includes("accepted")
+					? setRequestView(true)
+					: setRequestView(false);
 				setHighlightedReq(highlight.trigger_event_id);
 				setTimeout(function () {
 					clearNotif();
