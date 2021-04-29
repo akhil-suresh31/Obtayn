@@ -36,6 +36,7 @@ function UserProfile({ logOut, User, user_id }) {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const [error, setError] = useState(null);
+	const [contactError, setContactError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
 	const history = useHistory();
 
@@ -48,6 +49,18 @@ function UserProfile({ logOut, User, user_id }) {
 		});
 	}, [User]);
 
+	const changeContact = (e) => {
+		let contact = e.target.value;
+		console.log(contact);
+		if (contact != "") {
+			if (isNaN(contact))
+				setContactError("Contact number must be numeric.");
+			else if (contact.length < 10)
+				setContactError("Contact number must be 10 digits long.");
+			else setContactError(null);
+		} else setContactError(null);
+	};
+
 	const changleHandler = (e) => {
 		let selected = e.target.files[0];
 
@@ -58,6 +71,7 @@ function UserProfile({ logOut, User, user_id }) {
 			setFile(null);
 			setError("Please select an image file (png or jpg)");
 		}
+		if (!selected) setError(null);
 	};
 
 	const handleLogout = () => {
@@ -69,7 +83,6 @@ function UserProfile({ logOut, User, user_id }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
 		const firestore = firebase.firestore();
 		const collectionRef = firestore.collection("User");
 		const form = e.target;
@@ -167,13 +180,21 @@ function UserProfile({ logOut, User, user_id }) {
 													readOnly
 												/>
 												<br />
-												<Form.Control
-													type="text"
-													defaultValue={
-														UserInfo.contactNumber
-													}
-													name="profileContact"
-												/>
+												<Form.Group>
+													<Form.Control
+														type="text"
+														defaultValue={
+															UserInfo.contactNumber
+														}
+														name="profileContact"
+														onChange={changeContact}
+													/>
+													{contactError && (
+														<div className="error">
+															{contactError}
+														</div>
+													)}
+												</Form.Group>
 												<br />
 												<Form.Group>
 													<Form.File
@@ -195,6 +216,11 @@ function UserProfile({ logOut, User, user_id }) {
 													className="add-request-button"
 													variant="dark"
 													type="submit"
+													disabled={
+														error || contactError
+															? true
+															: false
+													}
 												>
 													Update
 												</Button>

@@ -72,7 +72,7 @@
 	background-color: #298591;
 }
 
-.navbar-collapse.show {
+.navbar-collapse.collapse.show {
 	background-color: var(--navbarBg);
 	z-index: 10;
 }

@@ -21,7 +21,7 @@ const Activity = ({
 }) => {
 	const history = useHistory();
 	const [showNotif, setShowNotif] = useState(true);
-	const [emptyNotif, setEmptyNotif] = useState(false);
+	//const [emptyNotif, setEmptyNotif] = useState(false);
 	const closeMenu = () => {
 		setMenuOpen(false);
 	};
@@ -34,8 +34,8 @@ const Activity = ({
 				console.log("Deleted: ", notif);
 			}
 		});
-		//setShowNotif(true);
-		setEmptyNotif(true);
+		setShowNotif(true);
+		//setEmptyNotif(true);
 	};
 
 	const handleDelete = (notif) => {
@@ -49,17 +49,17 @@ const Activity = ({
 		<Menu right isOpen={menuOpen} width={"25vw"}>
 			<div className="homepage-activity">
 				<h4 className="activity-heading">Notifications</h4>
-				{!emptyNotif && (
-					<Button className="dismiss-button" onClick={handleClick}>
-						Dismiss All
-					</Button>
-				)}
+				<Button className="dismiss-button" onClick={handleClick}>
+					Dismiss All
+				</Button>
+				)
 				<AnimatePresence>
 					{notifications &&
 						notifications.map((item, index) => {
 							//console.log("Notif length: ", notifications.length);
 							if (item.to_user_id === user && notifCount < 5) {
 								++notifCount;
+
 								if (showNotif)
 									return (
 										<motion.div
@@ -72,8 +72,7 @@ const Activity = ({
 												x: -1000,
 												opacity: 0,
 												transition: {
-													duration:
-														0.75 + index * 0.2,
+													duration: 0.5 + index * 0.2,
 												},
 											}}
 										>
