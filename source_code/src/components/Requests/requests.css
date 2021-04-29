@@ -43,6 +43,7 @@
 	overflow-y: scroll;
 	width: 100%;
 	float: top;
+	scrollbar-width: none;
 }
 
 .fulfilled-req-container {

@@ -38,7 +38,7 @@ export const requestFulfilledNotif = (request) => {
 				trigger_event_id: request.id,
 				from_user_id: request.from_user_id,
 				to_user_id: request.to_user_id,
-				message: `${user} fulfilled your request - "${title}"`,
+				message: `${user} marked their request as Fulfilled - "${title}"`,
 				timestamp: new Date(),
 			})
 			.then((ref) => {
