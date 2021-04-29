@@ -186,3 +186,7 @@
 	overflow-y: hidden;
 	overflow-x: hidden;
 }
+
+.location-search {
+	min-width: 350px;
+}

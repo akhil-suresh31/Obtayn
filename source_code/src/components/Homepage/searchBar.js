@@ -29,7 +29,7 @@ function SearchBar({ setData, setSearchButton }) {
 			setData({
 				category: formDataObj["searchCategory"],
 				keyword: formDataObj["searchKeywords"],
-				location: location.formatted,
+				location: location.value.formatted,
 			});
 			setSearchButton(true);
 			console.log("Submitting!");
@@ -45,6 +45,7 @@ function SearchBar({ setData, setSearchButton }) {
 	return (
 		<div className="d-flex justify-content-center">
 			<Form
+				inline
 				className="nav-search-bar search-group"
 				onSubmit={searchFeed}
 				name="searchForm"
@@ -78,7 +79,9 @@ function SearchBar({ setData, setSearchButton }) {
 						placeholder="Enter keywords.."
 						name="searchKeywords"
 					/>
-					<LocationAutoComplete getLocation={setLocation} />
+					<Form.Group className="location-search">
+						<LocationAutoComplete setLocation={setLocation} />
+					</Form.Group>
 					<Button type="submit" className="submit-btn">
 						Search
 					</Button>

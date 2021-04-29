@@ -52,7 +52,7 @@ function CreatePost({ createRequest, createPost }) {
 		}
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
-		formDataObj.location = location?.formatted;
+		formDataObj.location = location?.value.formatted;
 		console.log(formDataObj);
 		console.log(myImages);
 		if (!requestForm) createRequest(formDataObj, myImages);
@@ -145,7 +145,8 @@ function CreatePost({ createRequest, createPost }) {
 								{!requestForm ? (
 									<Col>
 										<LocationAutoComplete
-											getLocation={setLocation}
+											setLocation={setLocation}
+											isrequest={true}
 										/>
 									</Col>
 								) : null}
