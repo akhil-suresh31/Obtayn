@@ -112,7 +112,7 @@
 } */
 
 .outgoing-req-container {
-	overflow-y: scroll;
+	overflow-y: hidden;
 	float: right;
 	height: 90vh;
 	width: 36vw;

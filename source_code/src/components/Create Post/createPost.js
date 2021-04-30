@@ -56,7 +56,10 @@ function CreatePost({ createRequest, createPost }) {
 		console.log(formDataObj);
 		console.log(myImages);
 		if (!requestForm) createRequest(formDataObj, myImages);
-		else createPost(formDataObj, myImages);
+		else {
+			delete formDataObj["location"];
+			createPost(formDataObj, myImages);
+		}
 		console.log("submitted!");
 		history.push("/home");
 	};

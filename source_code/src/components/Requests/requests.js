@@ -8,6 +8,7 @@ import {
 	Accordion,
 	Card,
 	Form,
+	FormLabel,
 } from "react-bootstrap";
 import Swal from "sweetalert2";
 
@@ -83,6 +84,7 @@ const Requests = ({
 		Swal.fire({
 			title: "Do you want to mark this Request as fulfilled?	",
 			showConfirmButton: true,
+			confirmButtonText: "Yes",
 			showDenyButton: true,
 		}).then((result) => {
 			if (result.isConfirmed) {
@@ -103,6 +105,7 @@ const Requests = ({
 		Swal.fire({
 			title: "Do you want to permanently delete this Request?",
 			showConfirmButton: true,
+			confirmButtonText: "Yes",
 			showDenyButton: true,
 		}).then((result) => {
 			if (result.isConfirmed) {
@@ -226,8 +229,24 @@ const Requests = ({
 						<center>
 							<div className="sticky-div">
 								<h6 className="req-heading">My Requests</h6>
-								<Form onChange={handleChange}>
-									<Form.Check
+								<center>
+									<Form onChange={handleChange}>
+										<FormLabel inline>
+											Pending/Accepted
+										</FormLabel>
+										&nbsp;&nbsp;
+										<Form.Check
+											inline
+											type="switch"
+											id="create-post-switch"
+											label="Fulfilled"
+											onChange={handleChange}
+											checked={!requestView}
+										/>
+									</Form>
+								</center>
+
+								{/* <Form.Check
 										type="radio"
 										label="Pending + Accepted"
 										inline
@@ -239,15 +258,12 @@ const Requests = ({
 										inline
 										checked={!requestView}
 									/>
-								</Form>
+								</Form> */}
 							</div>
 						</center>
 						{
 							(req_status = requestView ? (
 								<div className="pending-req-container">
-									<center>
-										<h6 className="req-heading">Pending</h6>
-									</center>
 									<Accordion className="outgoing-req-acc">
 										{pendingReq &&
 											pendingReq.map((req, index) => {
@@ -403,11 +419,6 @@ const Requests = ({
 								</div>
 							) : (
 								<div className="fulfilled-req-container">
-									<center>
-										<h6 className="req-heading">
-											Fulfilled
-										</h6>
-									</center>
 									<Accordion className="outgoing-req-acc">
 										{fulfilledReq &&
 											fulfilledReq.map((req, index) => {

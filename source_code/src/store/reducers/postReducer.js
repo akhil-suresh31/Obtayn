@@ -11,6 +11,7 @@ const postReducer = (state = initState, action) => {
 			return {
 				...state,
 				error: action.err.message,
+				success: null,
 			};
 		case "DELETE_POST":
 			console.log("post deleted", action.post.id);
@@ -18,7 +19,11 @@ const postReducer = (state = initState, action) => {
 
 		case "DELETE_POST_ERROR":
 			console.log("error to delete post", action.code);
-			return state;
+			return {
+				...state,
+				error: action.err.message,
+				success: null,
+			};
 		default:
 			return state;
 	}

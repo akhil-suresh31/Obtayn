@@ -20,110 +20,109 @@ const Activity = ({
 	deleteNotif,
 }) => {
 	const history = useHistory();
-	const [showNotif, setShowNotif] = useState(true);
-	//const [emptyNotif, setEmptyNotif] = useState(false);
+	//const [showNotif, setShowNotif] = useState(true);
+	const [emptyNotif, setEmptyNotif] = useState(false);
 	const closeMenu = () => {
 		setMenuOpen(false);
 	};
-
-	const handleClick = (e) => {
+	var notifCount = 0;
+	const handleDismiss = (e) => {
+		//setShowNotif(false);
 		notifications.forEach((notif) => {
 			if (notif.to_user_id === user) {
-				setShowNotif(false);
 				deleteNotif(notif);
 				console.log("Deleted: ", notif);
 			}
 		});
-		setShowNotif(true);
+		//setShowNotif(true);
 		//setEmptyNotif(true);
+		notifCount = 0;
+		console.log("Notif count->", notifCount);
 	};
 
 	const handleDelete = (notif) => {
 		console.log(notif);
-
 		deleteNotif(notif);
+		--notifCount;
+		console.log("Notif count->", notifCount);
 	};
-	var notifCount = 0;
 
 	return (
 		<Menu right isOpen={menuOpen} width={"25vw"}>
 			<div className="homepage-activity">
 				<h4 className="activity-heading">Notifications</h4>
-				<Button className="dismiss-button" onClick={handleClick}>
+
+				<Button
+					className="dismiss-button"
+					onClick={handleDismiss}
+					//disabled={notifCount == 0 ? true : false}
+				>
 					Dismiss All
 				</Button>
-				)
+
 				<AnimatePresence>
 					{notifications &&
 						notifications.map((item, index) => {
-							//console.log("Notif length: ", notifications.length);
 							if (item.to_user_id === user && notifCount < 5) {
 								++notifCount;
-
-								if (showNotif)
-									return (
-										<motion.div
-											className="activity-notif"
-											whileHover={{ scale: 1.05 }}
-											key={index}
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-											exit={{
-												x: -1000,
-												opacity: 0,
-												transition: {
-													duration: 0.5 + index * 0.2,
-												},
-											}}
+								//if (showNotif)
+								return (
+									<motion.div
+										className="activity-notif"
+										whileHover={{ scale: 1.05 }}
+										key={index}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{
+											x: -500,
+											opacity: 0,
+											transition: {
+												duration: 0.5,
+												//duration: 0.5 + index * 0.2,
+											},
+										}}
+									>
+										<div
+											className="delete-notif-div"
+											onClick={(e) => handleDelete(item)}
 										>
-											<div
-												className="delete-notif-div"
-												onClick={(e) =>
-													handleDelete(item)
-												}
-											>
-												<X
-													style={{
-														float: "right",
-														height: "8%",
-														width: "8%",
-														color: "black",
-														cursor: "pointer",
-													}}
-												/>
-											</div>
-											<p
-												className="notif-message"
-												onClick={() => {
-													clickNotif(item);
-													closeMenu();
-													history.push("/requests");
+											<X
+												style={{
+													float: "right",
+													height: "8%",
+													width: "8%",
+													color: "black",
+													cursor: "pointer",
 												}}
-												style={{ cursor: "pointer" }}
-											>
-												{item.message}
-											</p>
-											<p className="notif-timestamp">
-												{item.timestamp
-													.toDate()
-													.toLocaleTimeString(
-														"en-US",
-														{
-															weekday: "short",
-															day: "numeric",
-															month: "numeric",
-															hour: "2-digit",
-															minute: "2-digit",
-														}
-													)}
-											</p>
-										</motion.div>
-									);
+											/>
+										</div>
+										<p
+											className="notif-message"
+											onClick={() => {
+												clickNotif(item);
+												closeMenu();
+												history.push("/requests");
+											}}
+											style={{ cursor: "pointer" }}
+										>
+											{item.message}
+										</p>
+										<p className="notif-timestamp">
+											{item.timestamp
+												.toDate()
+												.toLocaleTimeString("en-US", {
+													weekday: "short",
+													day: "numeric",
+													month: "numeric",
+													hour: "2-digit",
+													minute: "2-digit",
+												})}
+										</p>
+									</motion.div>
+								);
 							}
-							//if (notifCount == 0) setEmptyNotif(true);
 						})}
 				</AnimatePresence>
-				{/* {notifCount == 0 ? setEmptyNotif(true) : setEmptyNotif(false)} */}
 			</div>
 		</Menu>
 	);

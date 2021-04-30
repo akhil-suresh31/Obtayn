@@ -59,3 +59,7 @@
 	background-color: rgb(90, 89, 89) !important;
 	border: none !important;
 }
+
+.dismiss-button:active {
+	border: none !important;
+}

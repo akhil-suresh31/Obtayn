@@ -36,14 +36,7 @@ const Homepage = ({ users, auth }) => {
 	if (auth.uid)
 		return (
 			<div>
-				<NavBar
-					tag={tag}
-					setTag={setTag}
-					show={show}
-					setShow={setShow}
-					menuOpen={menuOpen}
-					setMenuOpen={setMenuOpen}
-				/>
+				<NavBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
 				<div className="homepage-body">
 					<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />

@@ -90,6 +90,7 @@ function UserProfile({ logOut, User, user_id }) {
 		formData = Object.fromEntries(formData.entries());
 
 		if (file) {
+			//console.log("old->",)
 			const uploadTask = storage.ref(`/avatars/${file.name}`).put(file);
 			uploadTask.on("state_changed", console.log, console.error, () => {
 				storage
@@ -98,13 +99,18 @@ function UserProfile({ logOut, User, user_id }) {
 					.getDownloadURL()
 					.then((url) => {
 						setFile(null);
+						const oldRef = storage.refFromURL(UserInfo.avatar);
 						collectionRef.doc(user_id).update({
 							name: formData.profileName,
 							phone_number: formData.profileContact,
 							profile_picture: url,
 						});
 						setURL(url);
-						console.log(url);
+						//console.log("Picture->", url);
+						oldRef
+							.delete()
+							.then(console.log("Deleted old file."))
+							.catch((err) => console.log(err));
 					});
 			});
 		} else {
@@ -135,126 +141,133 @@ function UserProfile({ logOut, User, user_id }) {
 						variant="light"
 						className="navbar-profile"
 					>
-						<center>
-							<Dropdown.ItemText>
-								<OverlayTrigger
-									placement="bottom"
-									overlay={renderTooltip("Edit Profile")}
-								>
-									<motion.div
-										className="avatar-container"
-										whileHover={{ scale: 1.1 }}
+						<div className="profile-body">
+							<center>
+								<Dropdown.ItemText>
+									<OverlayTrigger
+										placement="bottom"
+										overlay={renderTooltip("Edit Profile")}
 									>
-										<Avatar
-											className="profileAvatar"
-											size="60"
-											src={UserInfo.avatar}
-											round={true}
-											onClick={handleShow}
-										/>
-									</motion.div>
-								</OverlayTrigger>
-								<div className="edit-profile-modal">
-									<Modal show={show} onHide={handleClose}>
-										<Modal.Header closeButton>
-											<Modal.Title>
-												Edit Profile
-											</Modal.Title>
-										</Modal.Header>
-										<Modal.Body>
-											<Form
-												name="edit-profile-form"
-												onSubmit={handleSubmit}
-											>
-												<Form.Control
-													type="text"
-													defaultValue={UserInfo.name}
-													name="profileName"
-												/>
-												<br />
-												<Form.Control
-													type="email"
-													defaultValue={
-														UserInfo.email
-													}
-													readOnly
-												/>
-												<br />
-												<Form.Group>
+										<motion.div
+											className="avatar-container"
+											whileHover={{ scale: 1.1 }}
+										>
+											<Avatar
+												className="profileAvatar"
+												size="60"
+												src={UserInfo.avatar}
+												round={true}
+												onClick={handleShow}
+											/>
+										</motion.div>
+									</OverlayTrigger>
+									<div className="edit-profile-modal">
+										<Modal show={show} onHide={handleClose}>
+											<Modal.Header closeButton>
+												<Modal.Title>
+													Edit Profile
+												</Modal.Title>
+											</Modal.Header>
+											<Modal.Body>
+												<Form
+													name="edit-profile-form"
+													onSubmit={handleSubmit}
+												>
 													<Form.Control
 														type="text"
 														defaultValue={
-															UserInfo.contactNumber
+															UserInfo.name
 														}
-														name="profileContact"
-														onChange={changeContact}
+														name="profileName"
 													/>
-													{contactError && (
-														<div className="error">
-															{contactError}
-														</div>
-													)}
-												</Form.Group>
-												<br />
-												<Form.Group>
-													<Form.File
-														className="position-relative"
-														name="profilePic"
-														label="Select new Profile Photo"
-														onChange={
-															changleHandler
+													<br />
+													<Form.Control
+														type="email"
+														defaultValue={
+															UserInfo.email
 														}
+														readOnly
 													/>
-													{error && (
-														<div className="error">
-															{error}
-														</div>
-													)}
-													{/* {file && <div>{file.name}</div>} */}
-												</Form.Group>
-												<Button
-													className="add-request-button"
-													variant="dark"
-													type="submit"
-													disabled={
-														error || contactError
-															? true
-															: false
-													}
-												>
-													Update
-												</Button>
-											</Form>
-										</Modal.Body>
-									</Modal>
-								</div>
-							</Dropdown.ItemText>
-							<Dropdown.Divider />
-							<Dropdown.ItemText eventKey="1">
-								{UserInfo.name}
-							</Dropdown.ItemText>
-							<Dropdown.ItemText eventKey="2">
-								{UserInfo.email}
-							</Dropdown.ItemText>
-							<Dropdown.ItemText eventKey="2">
-								{UserInfo.contactNumber}
-							</Dropdown.ItemText>
-							<Dropdown.Divider />
-							<Dropdown.ItemText
-								className="logout-link"
-								eventKey="4"
-							>
-								<Link
-									onClick={handleLogout}
-									style={{
-										color: "black",
-										textDecoration: "none",
-									}}
+													<br />
+													<Form.Group>
+														<Form.Control
+															type="text"
+															defaultValue={
+																UserInfo.contactNumber
+															}
+															name="profileContact"
+															onChange={
+																changeContact
+															}
+														/>
+														{contactError && (
+															<div className="error">
+																{contactError}
+															</div>
+														)}
+													</Form.Group>
+													<br />
+													<Form.Group>
+														<Form.File
+															className="position-relative"
+															name="profilePic"
+															label="Select new Profile Photo"
+															onChange={
+																changleHandler
+															}
+														/>
+														{error && (
+															<div className="error">
+																{error}
+															</div>
+														)}
+														{/* {file && <div>{file.name}</div>} */}
+													</Form.Group>
+													<Button
+														className="add-request-button"
+														variant="dark"
+														type="submit"
+														disabled={
+															error ||
+															contactError
+																? true
+																: false
+														}
+													>
+														Update
+													</Button>
+												</Form>
+											</Modal.Body>
+										</Modal>
+									</div>
+								</Dropdown.ItemText>
+								<Dropdown.Divider />
+								<Dropdown.ItemText eventKey="1">
+									{UserInfo.name}
+								</Dropdown.ItemText>
+								<Dropdown.ItemText eventKey="2">
+									{UserInfo.email}
+								</Dropdown.ItemText>
+								<Dropdown.ItemText eventKey="2">
+									{UserInfo.contactNumber}
+								</Dropdown.ItemText>
+								<Dropdown.Divider />
+								<Dropdown.ItemText
+									className="logout-link"
+									eventKey="4"
 								>
-									Logout
-								</Link>
-							</Dropdown.ItemText>
-						</center>
+									<Link
+										onClick={handleLogout}
+										style={{
+											color: "black",
+											textDecoration: "none",
+										}}
+									>
+										Logout
+									</Link>
+								</Dropdown.ItemText>
+							</center>
+						</div>
 					</DropdownButton>
 				</Nav>
 			</div>
