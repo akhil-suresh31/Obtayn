@@ -39,6 +39,7 @@ function SearchBar({ setData, setSearchButton }) {
 	const handleReset = () => {
 		if (document.getElementsByName("searchForm")[0])
 			document.getElementsByName("searchForm")[0].reset();
+		setLocation(null);
 		setSearchButton(false);
 	};
 
@@ -80,7 +81,10 @@ function SearchBar({ setData, setSearchButton }) {
 						name="searchKeywords"
 					/>
 					<Form.Group className="location-search">
-						<LocationAutoComplete setLocation={setLocation} />
+						<LocationAutoComplete
+							setLocation={setLocation}
+							location={location}
+						/>
 					</Form.Group>
 					<Button type="submit" className="submit-btn">
 						Search

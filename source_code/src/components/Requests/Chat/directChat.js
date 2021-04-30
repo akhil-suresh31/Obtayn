@@ -63,7 +63,7 @@ const DirectChat = ({
 
 	useEffect(() => {
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
-	}, [activeChat[0].messages]);
+	}, [activeChat[0]]);
 
 	if (chat && user && auth) {
 		return (
@@ -76,7 +76,7 @@ const DirectChat = ({
 					<center>
 						<Avatar
 							className="DM-avatar"
-							size="65"
+							// size="65"
 							src={
 								user && user.dp ? user.dp : user.profile_picture
 							}
@@ -112,7 +112,13 @@ const DirectChat = ({
 														}}
 													></img>
 												))}
-
+											{(() => {
+												if (
+													msg.images &&
+													msg.images.length
+												)
+													return <br></br>;
+											})()}
 											{msg.message}
 											<div
 												className="chat-time"
@@ -158,7 +164,7 @@ const DirectChat = ({
 								</Button>
 							</div>
 						)}
-						<div className="d-flex justify-content-around align-items-center">
+						<div className="d-flex align-items-center ml-1 mr-1">
 							<label
 								for="file-input"
 								style={{ cursor: "pointer" }}
@@ -176,6 +182,7 @@ const DirectChat = ({
 							/>
 
 							<Form
+								className="flex-grow-1 mr-1 ml-1"
 								onSubmit={(e) => {
 									e.preventDefault();
 									sendMessage();
@@ -183,8 +190,10 @@ const DirectChat = ({
 								name="message-form"
 							>
 								<Form.Control
+									style={{ minWidth: 0 }}
 									name="message"
 									type="text"
+									autoComplete="off"
 									placeholder={
 										user && `Messasge ${user.name}`
 									}

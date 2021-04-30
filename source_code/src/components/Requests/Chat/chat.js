@@ -4,8 +4,90 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import Avatar from "react-avatar";
 import "./chat.css";
-import { Media } from "react-bootstrap";
+import { Media, Spinner } from "react-bootstrap";
 import { markAsRead } from "../../../store/actions/chatActions";
+import { Image } from "react-bootstrap-icons";
+
+const userChat = (chat, user, openDm, markAsRead, key) => {
+	let lastMsg;
+	var style;
+	if (!chat.messages || chat.messages.length === 0) {
+		lastMsg = "Well whatcha waiting for say hi!";
+		style = "unread";
+	}
+	if (chat.messages && chat.messages[chat.messages.length - 1].message) {
+		lastMsg = chat.messages[chat.messages.length - 1].images.length ? (
+			<div>
+				<Image style={{ marginRight: "4px" }} />
+				{chat.messages[chat.messages.length - 1].message}
+			</div>
+		) : (
+			chat.messages[chat.messages.length - 1].message
+		);
+		style =
+			chat.messages[chat.messages.length - 1].from === user?.id
+				? "unread"
+				: "";
+	}
+	if (chat.messages && !chat.messages[chat.messages.length - 1].message) {
+		lastMsg = (
+			<div style={{ fontStyle: "italic" }}>
+				<Image /> Photo
+			</div>
+		);
+		style =
+			chat.messages[chat.messages.length - 1].from === user?.uid
+				? "unread"
+				: "";
+	}
+	if (chat.seen) style = "";
+	return (
+		<div className="chat-user" key={key}>
+			<Media
+				onClick={() => {
+					if (
+						!chat.seen &&
+						chat.messages &&
+						chat.messages[chat.messages.length - 1].from === user.id
+					)
+						markAsRead(chat);
+					openDm(chat, user);
+				}}
+			>
+				<Avatar
+					size="55"
+					src={user && user.dp}
+					round={true}
+					className="mt-1 ml-1"
+					name={user && user.name}
+				/>
+				<Media.Body>
+					<div className="d-flex w-100 align-tems-start mt-1">
+						<h5 className="ml-4">{user && user.name}</h5>
+					</div>
+					<div className="d-flex ml-4 mr-2">
+						<p className={`mb-0 last-message ${style}`}>
+							{lastMsg}
+						</p>
+					</div>
+					<div className="mr-2 mb-1">
+						<p className="chat-List-time ">
+							{chat.timestamp
+								.toDate()
+								.toLocaleTimeString("en-US", {
+									weekday: "short",
+									day: "numeric",
+									month: "numeric",
+									hour: "2-digit",
+									minute: "2-digit",
+								})}
+						</p>
+					</div>
+				</Media.Body>
+			</Media>
+		</div>
+	);
+};
 
 const Chat = ({
 	chatList,
@@ -46,92 +128,7 @@ const Chat = ({
 							if (chat.to === auth.uid) user = chat.from;
 							else user = chat.to;
 							user = UserDetails.get(user);
-							return (
-								<div className="chat-user" key={i}>
-									<Media
-										onClick={() => {
-											if (
-												!chat.seen &&
-												chat.messages &&
-												chat.messages[
-													chat.messages.length - 1
-												].from === user.id
-											)
-												markAsRead(chat);
-											openDm(chat, user);
-										}}
-									>
-										<Avatar
-											size="55"
-											src={user && user.dp}
-											round={true}
-											className="mt-1 ml-1"
-											name={user && user.name}
-										/>
-										<Media.Body>
-											<div className="d-flex w-100 align-tems-start mt-1">
-												<h5 className="ml-4">
-													{user && user.name}
-												</h5>
-											</div>
-
-											<div className="d-flex ml-4 mb-1">
-												{chat.messages ? (
-													chat.seen === false &&
-													chat.messages[
-														chat.messages.length - 1
-													].from ===
-														(user && user.id) ? (
-														<p className="last-message unread">
-															{
-																chat.messages[
-																	chat
-																		.messages
-																		.length -
-																		1
-																].message
-															}
-														</p>
-													) : (
-														<p className="last-message">
-															{
-																chat.messages[
-																	chat
-																		.messages
-																		.length -
-																		1
-																].message
-															}
-														</p>
-													)
-												) : (
-													<p className="last-message unread">
-														Well whatcha waiting for
-														say hi!
-													</p>
-												)}
-												<p className="chat-List-time ">
-													{chat.timestamp
-														.toDate()
-														.toLocaleTimeString(
-															"en-US",
-															{
-																weekday:
-																	"short",
-																day: "numeric",
-																month:
-																	"numeric",
-																hour: "2-digit",
-																minute:
-																	"2-digit",
-															}
-														)}
-												</p>
-											</div>
-										</Media.Body>
-									</Media>
-								</div>
-							);
+							return userChat(chat, user, openDm, markAsRead, i);
 						})}
 					</div>
 				</center>
@@ -142,7 +139,12 @@ const Chat = ({
 			<div className="chat-container">
 				<center>
 					<h4 className="chat-heading">Recent Messages</h4>
-					<div style={{ color: "white" }}>Loading</div>
+					<Spinner
+						animation="border"
+						variant="light"
+						className="mt-4"
+					/>
+					;
 				</center>
 			</div>
 		);

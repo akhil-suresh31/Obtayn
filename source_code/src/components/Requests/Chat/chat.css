@@ -7,7 +7,7 @@
 }
 .chat-heading {
 	color: white;
-	padding-top: 5vh;
+	padding-top: 5%;
 }
 
 .chat-input {
@@ -21,12 +21,13 @@
 	width: 26px;
 	height: 26px;
 	min-height: min-content;
-	min-width: min-content;
+	min-width: 0;
 	color: white;
 }
 
 .chat-List {
-	background-color: var(--chatListBackground);
+	/* background-color: var(--chatListBackground); */
+	background-color: #0b4047;
 	width: 100%;
 }
 .chat-List-DM {
@@ -39,7 +40,7 @@
 .chat-List-time {
 	font-size: 12px;
 	color: black;
-	align-content: flex-end;
+	text-align: end;
 }
 
 .chat-user {
@@ -48,13 +49,13 @@
 	margin-top: 5%;
 }
 
-.chat-user::after {
+/* .chat-user::after {
 	border-bottom: 2px solid white;
 	display: block;
 	content: " ";
 	margin-left: 12.5%;
 	width: 75%;
-}
+} */
 
 .DM-heading {
 	color: white;
@@ -68,6 +69,8 @@
 
 .DM-avatar {
 	margin: 0;
+	max-height: 64px;
+	max-width: 64px;
 }
 
 .last-message {

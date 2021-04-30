@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { GeoCode } from "geo-coder";
 import Async from "react-select/async";
-import { Provider } from "react-redux";
 
-const LocationAutoComplete = ({ setLocation, isrequest }) => {
+const LocationAutoComplete = ({ setLocation, isrequest, location }) => {
+	const selectLocationRef = useRef();
+
 	const loadOptions = async (inputText, callback) => {
 		const geoCode = new GeoCode();
 		var results = await await geoCode.geolookup(inputText);
@@ -26,12 +27,15 @@ const LocationAutoComplete = ({ setLocation, isrequest }) => {
 	return (
 		<div style={{ width: "100%" }}>
 			<Async
+				ref={selectLocationRef}
 				noOptionsMessage={() => "No such location"}
 				onChange={setLocation}
+				value={location}
 				placeholder={"Enter Location.."}
 				loadOptions={loadOptions}
 				menuShouldScrollIntoView
 				styles={customStyles}
+				backspaceRemovesValue={true}
 			/>
 		</div>
 	);
