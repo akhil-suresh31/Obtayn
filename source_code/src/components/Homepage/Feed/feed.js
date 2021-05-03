@@ -37,6 +37,7 @@ const Feed = ({
 	const delRequest = (req) => {
 		Swal.fire({
 			title: "Do you want to delete your request?",
+			confirmButtonText: "Yes",
 			showConfirmButton: true,
 			showDenyButton: true,
 		}).then((result) => {
