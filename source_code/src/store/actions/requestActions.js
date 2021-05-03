@@ -58,7 +58,7 @@ export const createRequest = (request, myImages) => {
 				from_user_id: uid,
 				to_user_id: null,
 				timestamp: new Date(),
-				status: "not_accepted",
+				status: "pending",
 				user: user,
 			})
 			.then((docRef) => {

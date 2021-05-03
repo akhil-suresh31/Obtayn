@@ -127,16 +127,19 @@ const Requests = ({
 	var incomingReq = [];
 	var pendingReq = [];
 	var fulfilledReq = [];
-	var req_status = [];
+	//var req_status = [];
 	var acceptor = "";
 	requests &&
 		user &&
 		requests.map((item, index) => {
 			if (item.to_user_id === user) incomingReq.push(item);
-			else if (item.status === "pending" || item.status === "accepted")
-				pendingReq.push(item);
-			else if (item.status === "fulfilled") fulfilledReq.push(item);
+			else if (item.from_user_id === user) {
+				if (item.status === "pending" || item.status === "accepted")
+					pendingReq.push(item);
+				else if (item.status === "fulfilled") fulfilledReq.push(item);
+			}
 		});
+	console.log("Pending-> ", pendingReq);
 	return (
 		<div>
 			<Navbar
@@ -261,291 +264,273 @@ const Requests = ({
 								</Form> */}
 							</div>
 						</center>
-						{
-							(req_status = requestView ? (
-								<div className="pending-req-container">
-									<Accordion className="outgoing-req-acc">
-										{pendingReq &&
-											pendingReq.map((req, index) => {
-												var bgcolor = "#FBD589";
-												const style =
-													highlightedReq == req.id
-														? {
-																backgroundColor:
-																	"#99ff99",
-																border:
-																	"5px solid #99ff99",
-														  }
-														: {
-																backgroundColor: bgcolor,
-														  };
-												if (req.status == "accepted") {
-													acceptor =
-														users[
-															users.findIndex(
-																(x) =>
-																	x.id ==
-																	req.to_user_id
-															)
-														];
-													// console.log(acceptor);
-												}
+						{requestView ? (
+							<div className="pending-req-container">
+								<Accordion className="outgoing-req-acc">
+									{pendingReq &&
+										pendingReq.map((req, index) => {
+											var bgcolor = "#FBD589";
+											const style =
+												highlightedReq == req.id
+													? {
+															backgroundColor:
+																"#99ff99",
+															border:
+																"5px solid #99ff99",
+													  }
+													: {
+															backgroundColor: bgcolor,
+													  };
+											if (req.status == "accepted") {
+												acceptor =
+													users[
+														users.findIndex(
+															(x) =>
+																x.id ==
+																req.to_user_id
+														)
+													];
+												// console.log(acceptor);
+											}
 
-												return (
-													<Card
-														className="outgoing-req-card"
-														style={style}
+											return (
+												<Card
+													className="outgoing-req-card"
+													style={style}
+												>
+													<Accordion.Toggle
+														as={Card.Header}
+														variant="link"
+														eventKey={index + 1}
 													>
-														<Accordion.Toggle
-															as={Card.Header}
-															variant="link"
-															eventKey={index + 1}
-														>
-															<p className="req-title">
-																{req.title}
+														<p className="req-title">
+															{req.title}
 
-																{req.status ===
-																"accepted" ? (
-																	<div className="fulfill-button">
-																		<OverlayTrigger
-																			placement="top"
-																			overlay={renderTooltip(
-																				"Mark as Fulfilled"
-																			)}
-																		>
-																			<CheckCircleFill
-																				onClick={() => {
-																					markFulfilled(
-																						req
-																					);
-																				}}
+															{req.status ===
+															"accepted" ? (
+																<div className="fulfill-button">
+																	<OverlayTrigger
+																		placement="top"
+																		overlay={renderTooltip(
+																			"Mark as Fulfilled"
+																		)}
+																	>
+																		<CheckCircleFill
+																			onClick={() => {
+																				markFulfilled(
+																					req
+																				);
+																			}}
+																			style={{
+																				color:
+																					"black",
+																				height:
+																					"80%",
+																				width:
+																					"80%",
+																			}}
+																		/>
+																	</OverlayTrigger>
+																</div>
+															) : null}
+														</p>
+														{acceptor ? (
+															<p className="req-acceptor">
+																<b>
+																	{req.status}{" "}
+																	by: {}
+																</b>
+																{acceptor.name}
+															</p>
+														) : (
+															<p className="req-acceptor">
+																<b>Pending</b>
+															</p>
+														)}
+													</Accordion.Toggle>
+													<Accordion.Collapse
+														eventKey={index + 1}
+													>
+														<Card.Body>
+															<p className="req-message">
+																{req.message}
+															</p>
+
+															{req.file &&
+																req.file.map(
+																	(
+																		image,
+																		index
+																	) => {
+																		return (
+																			<img
+																				src={
+																					image
+																				}
 																				style={{
-																					color:
-																						"black",
 																					height:
-																						"80%",
+																						"20vh",
 																					width:
-																						"80%",
+																						"20vh",
+																					padding:
+																						"5%",
+																					borderRadius:
+																						"15%",
 																				}}
+																				alt=""
 																			/>
-																		</OverlayTrigger>
-																	</div>
-																) : null}
-															</p>
-															{acceptor ? (
-																<p className="req-acceptor">
-																	<b>
-																		{
-																			req.status
-																		}{" "}
-																		by: {}
-																	</b>
-																	{
-																		acceptor.name
+																		);
 																	}
-																</p>
-															) : (
-																<p className="req-acceptor">
-																	<b>
-																		Pending
-																	</b>
-																</p>
-															)}
-														</Accordion.Toggle>
-														<Accordion.Collapse
-															eventKey={index + 1}
-														>
-															<Card.Body>
-																<p className="req-message">
-																	{
-																		req.message
-																	}
-																</p>
+																)}
+															<br />
 
-																{req.file &&
-																	req.file.map(
-																		(
-																			image,
-																			index
-																		) => {
-																			return (
-																				<img
-																					src={
-																						image
-																					}
-																					style={{
-																						height:
-																							"20vh",
-																						width:
-																							"20vh",
-																						padding:
-																							"5%",
-																						borderRadius:
-																							"15%",
-																					}}
-																					alt=""
-																				/>
-																			);
-																		}
+															<p className="req-timestamp">
+																{req.timestamp
+																	.toDate()
+																	.toDateString()}
+																<OverlayTrigger
+																	placement="top"
+																	overlay={renderTooltip(
+																		"Delete"
 																	)}
-																<br />
+																>
+																	<TrashFill
+																		onClick={() =>
+																			delRequest(
+																				req
+																			)
+																		}
+																		className="delete-button1"
+																	/>
+																</OverlayTrigger>
+															</p>
+														</Card.Body>
+													</Accordion.Collapse>
+												</Card>
+											);
+										})}
+								</Accordion>
+							</div>
+						) : (
+							<div className="fulfilled-req-container">
+								<Accordion className="outgoing-req-acc">
+									{fulfilledReq &&
+										fulfilledReq.map((req, index) => {
+											var bgcolor = "#B5E477";
+											const style =
+												highlightedReq == req.id
+													? {
+															backgroundColor:
+																"#99ff99",
+															border:
+																"5px solid #99ff99",
+													  }
+													: {
+															backgroundColor: bgcolor,
+													  };
+											if (req.status == "fulfilled") {
+												acceptor =
+													users[
+														users.findIndex(
+															(x) =>
+																x.id ==
+																req.to_user_id
+														)
+													];
+												// console.log(acceptor);
+											}
 
-																<p className="req-timestamp">
-																	{req.timestamp
-																		.toDate()
-																		.toDateString()}
-																	<OverlayTrigger
-																		placement="top"
-																		overlay={renderTooltip(
-																			"Delete"
-																		)}
-																	>
-																		<TrashFill
-																			onClick={() =>
-																				delRequest(
-																					req
-																				)
-																			}
-																			className="delete-button1"
-																		/>
-																	</OverlayTrigger>
-																</p>
-															</Card.Body>
-														</Accordion.Collapse>
-													</Card>
-												);
-											})}
-									</Accordion>
-								</div>
-							) : (
-								<div className="fulfilled-req-container">
-									<Accordion className="outgoing-req-acc">
-										{fulfilledReq &&
-											fulfilledReq.map((req, index) => {
-												var bgcolor = "#B5E477";
-												const style =
-													highlightedReq == req.id
-														? {
-																backgroundColor:
-																	"#99ff99",
-																border:
-																	"5px solid #99ff99",
-														  }
-														: {
-																backgroundColor: bgcolor,
-														  };
-												if (req.status == "fulfilled") {
-													acceptor =
-														users[
-															users.findIndex(
-																(x) =>
-																	x.id ==
-																	req.to_user_id
-															)
-														];
-													// console.log(acceptor);
-												}
-
-												return (
-													<Card
-														className="outgoing-req-card"
-														style={style}
+											return (
+												<Card
+													className="outgoing-req-card"
+													style={style}
+												>
+													<Accordion.Toggle
+														as={Card.Header}
+														variant="link"
+														eventKey={index + 1}
 													>
-														<Accordion.Toggle
-															as={Card.Header}
-															variant="link"
-															eventKey={index + 1}
-														>
-															<p className="req-title">
-																{req.title}
+														<p className="req-title">
+															{req.title}
+														</p>
+														{acceptor ? (
+															<p className="req-acceptor">
+																<b>
+																	{req.status}{" "}
+																	by: {}
+																</b>
+																{acceptor.name}
 															</p>
-															{acceptor ? (
-																<p className="req-acceptor">
-																	<b>
-																		{
-																			req.status
-																		}{" "}
-																		by: {}
-																	</b>
-																	{
-																		acceptor.name
-																	}
-																</p>
-															) : (
-																<p className="req-acceptor">
-																	<b>
-																		Pending
-																	</b>
-																</p>
-															)}
-														</Accordion.Toggle>
-														<Accordion.Collapse
-															eventKey={index + 1}
-														>
-															<Card.Body>
-																<p className="req-message">
-																	{
-																		req.message
-																	}
-																</p>
+														) : (
+															<p className="req-acceptor">
+																<b>Pending</b>
+															</p>
+														)}
+													</Accordion.Toggle>
+													<Accordion.Collapse
+														eventKey={index + 1}
+													>
+														<Card.Body>
+															<p className="req-message">
+																{req.message}
+															</p>
 
-																{req.file &&
-																	req.file.map(
-																		(
-																			image,
-																			index
-																		) => {
-																			return (
-																				<img
-																					src={
-																						image
-																					}
-																					style={{
-																						height:
-																							"20vh",
-																						width:
-																							"20vh",
-																						padding:
-																							"5%",
-																						borderRadius:
-																							"15%",
-																					}}
-																					alt=""
-																				/>
-																			);
-																		}
+															{req.file &&
+																req.file.map(
+																	(
+																		image,
+																		index
+																	) => {
+																		return (
+																			<img
+																				src={
+																					image
+																				}
+																				style={{
+																					height:
+																						"20vh",
+																					width:
+																						"20vh",
+																					padding:
+																						"5%",
+																					borderRadius:
+																						"15%",
+																				}}
+																				alt=""
+																			/>
+																		);
+																	}
+																)}
+															<br />
+
+															<p className="req-timestamp">
+																{req.timestamp
+																	.toDate()
+																	.toDateString()}
+																<OverlayTrigger
+																	placement="top"
+																	overlay={renderTooltip(
+																		"Delete"
 																	)}
-																<br />
-
-																<p className="req-timestamp">
-																	{req.timestamp
-																		.toDate()
-																		.toDateString()}
-																	<OverlayTrigger
-																		placement="top"
-																		overlay={renderTooltip(
-																			"Delete"
-																		)}
-																	>
-																		<TrashFill
-																			onClick={() =>
-																				delRequest(
-																					req
-																				)
-																			}
-																			className="delete-button1"
-																		/>
-																	</OverlayTrigger>
-																</p>
-															</Card.Body>
-														</Accordion.Collapse>
-													</Card>
-												);
-											})}
-									</Accordion>
-								</div>
-							))
-						}
+																>
+																	<TrashFill
+																		onClick={() =>
+																			delRequest(
+																				req
+																			)
+																		}
+																		className="delete-button1"
+																	/>
+																</OverlayTrigger>
+															</p>
+														</Card.Body>
+													</Accordion.Collapse>
+												</Card>
+											);
+										})}
+								</Accordion>
+							</div>
+						)}
 					</div>
 				</div>
 				{!openDM && (

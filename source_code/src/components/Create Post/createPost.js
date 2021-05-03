@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../Homepage/Navbar/navbar";
 import Activity from "../Homepage/Activity/activity";
-import { Form, Row, Col, Button, FormLabel } from "react-bootstrap";
+import { Form, Row, Col, Button, FormLabel, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import "./createPost.css";
@@ -10,7 +10,7 @@ import { createPost } from "../../store/actions/postActions";
 import LocationAutoComplete from "../Homepage/LocationAutoComplete";
 var myImages = [];
 
-function CreatePost({ createRequest, createPost }) {
+function CreatePost({ createRequest, createPost, post_error, req_error }) {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [validated, setValidated] = useState(false);
 	const [error, setError] = useState(null);
@@ -52,16 +52,14 @@ function CreatePost({ createRequest, createPost }) {
 		}
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
-		formDataObj.location = location?.value.formatted;
+		if (!requestForm) formDataObj.location = location?.value.formatted;
 		console.log(formDataObj);
 		console.log(myImages);
 		if (!requestForm) createRequest(formDataObj, myImages);
-		else {
-			delete formDataObj["location"];
-			createPost(formDataObj, myImages);
-		}
+		else createPost(formDataObj, myImages);
+		myImages = [];
 		console.log("submitted!");
-		history.push("/home");
+		if (!post_error) history.push("/home");
 	};
 
 	return (
@@ -76,6 +74,8 @@ function CreatePost({ createRequest, createPost }) {
 				}}
 			></div>
 			<div className="create-post-container">
+				{post_error && <Alert variant="danger">{post_error}</Alert>}
+				{req_error && <Alert variant="danger">{req_error}</Alert>}
 				<div className="create-post-body">
 					<center>
 						<FormLabel inline>New Request</FormLabel>
@@ -245,6 +245,14 @@ function CreatePost({ createRequest, createPost }) {
 	);
 }
 
+const mapStateToProps = (state) => {
+	console.log(state);
+	return {
+		post_error: state.post.error,
+		req_error: state.request.error,
+	};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		createRequest: (request, myImages) =>
@@ -253,4 +261,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(CreatePost);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePost);

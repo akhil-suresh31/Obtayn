@@ -20,24 +20,22 @@ const Activity = ({
 	deleteNotif,
 }) => {
 	const history = useHistory();
-	//const [showNotif, setShowNotif] = useState(true);
-	const [emptyNotif, setEmptyNotif] = useState(false);
+	const [isEmptyNotif, setEmptyNotif] = useState(true);
 	const closeMenu = () => {
 		setMenuOpen(false);
 	};
 	var notifCount = 0;
+
 	const handleDismiss = (e) => {
-		//setShowNotif(false);
 		notifications.forEach((notif) => {
 			if (notif.to_user_id === user) {
 				deleteNotif(notif);
 				console.log("Deleted: ", notif);
 			}
 		});
-		//setShowNotif(true);
-		//setEmptyNotif(true);
 		notifCount = 0;
 		console.log("Notif count->", notifCount);
+		setEmptyNotif(true);
 	};
 
 	const handleDelete = (notif) => {
@@ -45,6 +43,7 @@ const Activity = ({
 		deleteNotif(notif);
 		--notifCount;
 		console.log("Notif count->", notifCount);
+		if (notifCount == 0) setEmptyNotif(true);
 	};
 
 	return (
@@ -55,7 +54,7 @@ const Activity = ({
 				<Button
 					className="dismiss-button"
 					onClick={handleDismiss}
-					//disabled={notifCount == 0 ? true : false}
+					style={{ display: isEmptyNotif ? "hidden" : "block" }}
 				>
 					Dismiss All
 				</Button>
@@ -65,7 +64,7 @@ const Activity = ({
 						notifications.map((item, index) => {
 							if (item.to_user_id === user && notifCount < 5) {
 								++notifCount;
-								//if (showNotif)
+								console.log("Notif count->", notifCount);
 								return (
 									<motion.div
 										className="activity-notif"
@@ -121,6 +120,7 @@ const Activity = ({
 									</motion.div>
 								);
 							}
+							// if (notifCount > 0) setEmptyNotif(false);
 						})}
 				</AnimatePresence>
 			</div>
