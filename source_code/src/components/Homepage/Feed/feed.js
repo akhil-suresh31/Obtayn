@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Media, Spinner, Button } from "react-bootstrap";
 import { AnimatePresence } from "framer-motion";
 import { connect } from "react-redux";
@@ -7,15 +7,16 @@ import Avatar from "react-avatar";
 import Swal from "sweetalert2";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, withFirestore } from "react-redux-firebase";
 import {
 	acceptRequest,
 	deleteRequest,
 } from "../../../store/actions/requestActions";
 import "./feed.css";
 import { deletePost } from "../../../store/actions/postActions";
-import { GeoAltFill, HandThumbsUpFill, TrashFill } from "react-bootstrap-icons";
+import { GeoAltFill, TrashFill } from "react-bootstrap-icons";
 import ImageModal from "./imageModal";
+import { Waypoint } from "react-waypoint";
 
 const Feed = ({
 	requests,
@@ -29,10 +30,80 @@ const Feed = ({
 	searchData,
 	searchButton,
 	setSearchButton,
+	firestore,
 }) => {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const [showImage, setImage] = useState(false);
 	const [selectedImg, setSelectedImg] = useState(null);
+	const [lastPost, setLastPost] = useState(null);
+	const [lastRequest, setLastRequest] = useState(null);
+	const [lastPost2, setLastPost2] = useState(null);
+	const [lastReq2, setLastReq2] = useState(null);
+	const [loading, setLoading] = useState(false);
+
+	const loadMore = () => {
+		setLoading(true);
+		var lastpost, lastReq;
+
+		if (posts) lastpost = posts[posts.length - 1];
+		if (requests) lastReq = requests[requests.length - 1];
+		setLastReq2(lastReq);
+		setLastPost2(lastpost);
+		if (lastReq2 == null || lastReq2.id != lastRequest.id) {
+			firestore.get({
+				collection: "Request",
+				limit: requests.length + 2,
+				orderBy: ["timestamp", "desc"],
+				// where: ["to_user_id", "==", null],
+				startAfter: lastReq,
+			});
+		} else {
+			console.log("done fetching requests");
+		}
+		if (lastPost2 == null || lastPost2.id != lastPost.id) {
+			firestore.get({
+				collection: "Post",
+				limit: posts.length + 2,
+				orderBy: ["timestamp", "desc"],
+				startAfter: lastpost,
+			});
+		} else {
+			console.log("done fetching posts");
+		}
+		setTimeout(() => {
+			setLoading(false);
+		}, 2000);
+	};
+
+	useEffect(() => {
+		firestore.get({
+			collection: "Request",
+			limit: 2,
+			orderBy: ["timestamp", "desc"],
+			where: ["to_user_id", "==", null],
+			startAfter: 0,
+		});
+		firestore.get({
+			collection: "Post",
+			limit: 2,
+			orderBy: ["timestamp", "desc"],
+			startAfter: 0,
+		});
+
+		return () => {
+			firestore.unsetListeners([
+				{ collection: "Request" },
+				{ collection: "Post" },
+			]);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (posts && lastPost != posts[posts.length - 1])
+			setLastPost(posts[posts.length - 1]);
+		if (requests && lastRequest != requests[requests.length - 1])
+			setLastRequest(requests[requests.length - 1]);
+	}, [requests, posts]);
 
 	const delRequest = (req) => {
 		Swal.fire({
@@ -116,7 +187,8 @@ const Feed = ({
 
 		if (allPosts.length > 0) {
 			return (
-				<div className="feed-container">
+				<div className="feed-container mb-4">
+					{/* <Button onClick={loadMore}>load more</Button> */}
 					{allPosts.map((item, index) => {
 						return (
 							<AnimatePresence>
@@ -304,6 +376,15 @@ const Feed = ({
 							</AnimatePresence>
 						);
 					})}
+					{loading && (
+						<center className="mt-3">
+							<Spinner animation="border" variant="light" />
+						</center>
+					)}
+
+					<Waypoint onEnter={loadMore}>
+						<p></p>
+					</Waypoint>
 				</div>
 			);
 		} else {
@@ -325,7 +406,7 @@ const Feed = ({
 		return (
 			<div className="feed-container">
 				<center className="mt-3">
-					<Spinner animation="border" variant="light" />;
+					<Spinner animation="border" variant="light" />
 				</center>
 			</div>
 		);
@@ -350,17 +431,20 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default compose(
-	connect(mapStatetoProps, mapDispatchToProps),
-	firestoreConnect([
-		{
-			collection: "Request",
-			orderBy: ["timestamp", "desc"],
-			where: ["to_user_id", "==", null],
-		},
-		{ collection: "User" },
-		{
-			collection: "Post",
-			orderBy: ["timestamp", "desc"],
-		},
-	])
+	withFirestore,
+	connect(mapStatetoProps, mapDispatchToProps)
+	// firestoreConnect([
+	// 	{
+	// 		collection: "Request",
+	// 		orderBy: ["timestamp", "desc"],
+	// 		where: ["to_user_id", "==", null],
+	// 		limit: 2,
+	// 	},
+	// 	{ collection: "User" },
+	// 	{
+	// 		collection: "Post",
+	// 		orderBy: ["timestamp", "desc"],
+	// 		limit: 2,
+	// 	},
+	// ])
 )(Feed);

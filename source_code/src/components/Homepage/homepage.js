@@ -75,7 +75,7 @@ const Homepage = ({ users, auth }) => {
 		return (
 			<div className="homepage-body">
 				<center className="mt-3">
-					<Spinner animation="border" variant="light" />;
+					<Spinner animation="border" variant="light" />
 				</center>
 			</div>
 		);
