@@ -6,7 +6,7 @@ import Avatar from "react-avatar";
 import "./chat.css";
 import { Form, Spinner, Button } from "react-bootstrap";
 import { ArrowLeft, Cursor, CursorFill, Image } from "react-bootstrap-icons";
-import { sendChat } from "../../../store/actions/chatActions";
+import { markAsRead, sendChat } from "../../../store/actions/chatActions";
 
 var myImages = [];
 
@@ -19,6 +19,7 @@ const DirectChat = ({
 	sendChat,
 	setDMChat,
 	setDMUser,
+	markAsRead,
 }) => {
 	const [message, setMessage] = useState();
 	const [error, setError] = useState(null);
@@ -63,6 +64,12 @@ const DirectChat = ({
 
 	useEffect(() => {
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
+		if (
+			activeChat[0] &&
+			activeChat[0].messages[activeChat[0].messages.length - 1].from ==
+				user.id
+		)
+			markAsRead(chat);
 	}, [activeChat[0]]);
 
 	if (chat && user && auth) {
@@ -194,6 +201,7 @@ const DirectChat = ({
 									name="message"
 									type="text"
 									autoComplete="off"
+									autoFocus
 									placeholder={
 										user && `Messasge ${user.name}`
 									}
@@ -241,6 +249,7 @@ const mapStatetoProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		sendChat: (messageInfo, chat) => dispatch(sendChat(messageInfo, chat)),
+		markAsRead: (chat) => dispatch(markAsRead(chat)),
 	};
 };
 
