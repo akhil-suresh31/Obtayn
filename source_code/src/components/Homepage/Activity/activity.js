@@ -42,7 +42,7 @@ const Activity = ({
 		console.log(notif);
 		deleteNotif(notif);
 		--notifCount;
-		console.log("Notif count->", notifCount);
+		// console.log("Notif count->", notifCount);
 		if (notifCount == 0) setEmptyNotif(true);
 	};
 
@@ -64,7 +64,7 @@ const Activity = ({
 						notifications.map((item, index) => {
 							if (item.to_user_id === user && notifCount < 5) {
 								++notifCount;
-								console.log("Notif count->", notifCount);
+								// console.log("Notif count->", notifCount);
 								return (
 									<motion.div
 										className="activity-notif"

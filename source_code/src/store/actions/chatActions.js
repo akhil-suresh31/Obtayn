@@ -1,5 +1,6 @@
 import { messageSent } from "./notificationActions";
 import firebase from "../../firebase/firebase.js";
+import { format } from "date-fns";
 
 export const addUserChat = (users) => {
 	return (dispatch, getState, { getFirestore }) => {
@@ -45,10 +46,13 @@ export const addUserChat = (users) => {
 	};
 };
 
-const uploadTaskPromise = async (image) => {
+const uploadTaskPromise = async (image, chat) => {
 	return new Promise((resolve, reject) => {
 		const storage = firebase.storage();
-		const uploadTask = storage.ref(`/chatImages/${image.name}`).put(image);
+		const time = format(new Date(), "yyyyMMdd-HH-mm-ss-SSS");
+		const uploadTask = storage
+			.ref(`/chatImages/${chat.id}/IMG-${time}-${image.name}`)
+			.put(image);
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {
@@ -64,8 +68,8 @@ const uploadTaskPromise = async (image) => {
 			},
 			() => {
 				storage
-					.ref("chatImages")
-					.child(image.name)
+					.ref(`chatImages/${chat.id}`)
+					.child(`IMG-${time}-${image.name}`)
 					.getDownloadURL()
 					.then((url) => {
 						resolve(url);
@@ -82,14 +86,14 @@ export const sendChat = (messageInfo, chat) => {
 		const message = messageInfo.message ? messageInfo.message : "";
 		const chatRef = firestore.collection("Chat").doc(chat.id);
 		const images = messageInfo.images;
-		console.log(images);
+		// console.log(images);
 		var imagesUrl = [];
 		for (let i = 0; i < images.length; i++) {
-			let url = await uploadTaskPromise(images[i]);
+			let url = await uploadTaskPromise(images[i], chat);
 			imagesUrl.push(url);
 		}
 
-		console.log(imagesUrl);
+		// console.log(imagesUrl);
 		chatRef
 			.update({
 				seen: false,

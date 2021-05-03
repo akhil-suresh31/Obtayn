@@ -139,7 +139,7 @@ const Requests = ({
 				else if (item.status === "fulfilled") fulfilledReq.push(item);
 			}
 		});
-	console.log("Pending-> ", pendingReq);
+	// console.log("Pending-> ", pendingReq);
 	return (
 		<div>
 			<Navbar

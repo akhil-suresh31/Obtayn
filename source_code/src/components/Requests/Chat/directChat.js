@@ -23,10 +23,11 @@ const DirectChat = ({
 }) => {
 	const [message, setMessage] = useState();
 	const [error, setError] = useState(null);
+	const messagesRef = useRef(null);
 	const lastMessage = useRef();
 	const sendMessage = () => {
 		setError("");
-		console.log(message);
+		// console.log(message);
 		const messageInfo = {
 			message: message,
 			to_user_id: user.id,
@@ -66,11 +67,16 @@ const DirectChat = ({
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
 		if (
 			activeChat[0] &&
+			activeChat[0].messages &&
 			activeChat[0].messages[activeChat[0].messages.length - 1].from ==
 				user.id
 		)
 			markAsRead(chat);
 	}, [activeChat[0]]);
+
+	useEffect(() => {
+		lastMessage.current.scrollIntoView({ behavior: "smooth" });
+	}, [messagesRef?.current?.scrollHeight]);
 
 	if (chat && user && auth) {
 		return (
@@ -92,11 +98,11 @@ const DirectChat = ({
 						/>
 						<h4 className="DM-userName">{user.name}</h4>
 					</center>
-					<div vissible={false}> </div>
+					<div visible="false"> </div>
 				</div>
 
 				<div className="chat-List-DM d-flex align-items-start flex-column">
-					<div className="messages mb-auto w-100">
+					<div ref={messagesRef} className="messages mb-auto w-100">
 						{activeChat[0].messages &&
 							activeChat[0].messages.map((msg) => {
 								const messageClass =
@@ -153,9 +159,14 @@ const DirectChat = ({
 									</div>
 								);
 							})}
+
 						<div ref={lastMessage} />
 					</div>
-
+					{!activeChat[0].messages && (
+						<div className="empty-message justify-content-center align-items-center">
+							* awkward silence *
+						</div>
+					)}
 					<div className="chat-input">
 						{error && <div className="error">{error}</div>}
 						{myImages && myImages.length == 0 ? null : (
