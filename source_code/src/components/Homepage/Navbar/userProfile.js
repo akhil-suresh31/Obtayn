@@ -76,9 +76,9 @@ function UserProfile({ logOut, User, user_id }) {
 
 	const handleLogout = () => {
 		logOut();
-		setTimeout(() => {
-			history.push("/");
-		}, 2000);
+		// setTimeout(() => {
+		// 	history.push("/");
+		// }, 2000);
 	};
 
 	const handleSubmit = (e) => {

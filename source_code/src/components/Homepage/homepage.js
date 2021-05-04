@@ -10,6 +10,7 @@ import SearchBar from "./searchBar";
 import "./homepage.css";
 import PostFilter from "./postFilter";
 import { Spinner } from "react-bootstrap";
+import { Redirect } from "react-router";
 
 const Homepage = ({ users, auth }) => {
 	var initialSearchData = { category: null, keywords: null, location: null };
@@ -73,11 +74,12 @@ const Homepage = ({ users, auth }) => {
 		);
 	else
 		return (
-			<div className="homepage-body">
-				<center className="mt-3">
-					<Spinner animation="border" variant="light" />
-				</center>
-			</div>
+			<Redirect to="/" />
+			// <div className="homepage-body">
+			// 	<center className="mt-3">
+			// 		<Spinner animation="border" variant="light" />
+			// 	</center>
+			// </div>
 		);
 };
 
