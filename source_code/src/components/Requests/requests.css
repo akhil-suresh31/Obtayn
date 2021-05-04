@@ -106,18 +106,12 @@
 	padding: 2%;
 }
 
-/* .incoming-req-acc {
-	width: 30vw;
-	margin-left: 2%;
-} */
-
 .outgoing-req-container {
 	overflow-y: hidden;
 	float: right;
 	height: 90vh;
 	width: 36vw;
 	padding: 2%;
-	/* background-color: cornflowerblue; */
 }
 
 .req-heading {
@@ -130,7 +124,6 @@
 .fulfill-button {
 	height: 10%;
 	width: 10%;
-	/* position: fixed; */
 	color: black;
 	float: right;
 }
@@ -145,3 +138,9 @@
 .sticky-div {
 	position: sticky;
 }
+
+/* @media (max-width: 995px) and (max-height: 1000px) {
+	.show {
+		z-index: 5 !important;
+	}
+} */

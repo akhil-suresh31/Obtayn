@@ -6,6 +6,8 @@ import {
 	Modal,
 	Form,
 	Button,
+	Row,
+	Col,
 } from "react-bootstrap";
 import Avatar from "react-avatar";
 import { useHistory, Link } from "react-router-dom";
@@ -199,43 +201,86 @@ function UserProfile({ logOut, User, user_id }) {
 															onChange={
 																changeContact
 															}
+															placeholder="Contact Number"
 														/>
 														{contactError && (
 															<div className="error">
-																{contactError}
+																<i>
+																	{
+																		contactError
+																	}
+																</i>
 															</div>
 														)}
 													</Form.Group>
 													<br />
-													<Form.Group>
-														<Form.File
+													<Row>
+														<Col>
+															<Form.Group>
+																{/* <Form.File
 															className="position-relative"
 															name="profilePic"
 															label="Select new Profile Photo"
 															onChange={
 																changleHandler
 															}
-														/>
-														{error && (
-															<div className="error">
-																{error}
-															</div>
-														)}
-														{/* {file && <div>{file.name}</div>} */}
-													</Form.Group>
-													<Button
-														className="add-request-button"
-														variant="dark"
-														type="submit"
-														disabled={
-															error ||
-															contactError
-																? true
-																: false
-														}
-													>
-														Update
-													</Button>
+														/> */}
+																<Form.Label>
+																	New Profile
+																	Picture
+																</Form.Label>
+																<label className="profile-input-label">
+																	<input
+																		type="file"
+																		onChange={
+																			changleHandler
+																		}
+																		className="profile-input"
+																	/>
+																	<span
+																		style={{
+																			marginLeft:
+																				"18%",
+																		}}
+																	>
+																		+
+																	</span>
+																</label>
+																{error && (
+																	<div className="error">
+																		<i>
+																			{
+																				error
+																			}
+																		</i>
+																	</div>
+																)}
+																{file && (
+																	<div className="file-output">
+																		<i>
+																			{
+																				file.name
+																			}
+																		</i>
+																	</div>
+																)}
+															</Form.Group>
+														</Col>
+														<Col>
+															<Button
+																className="update-button"
+																type="submit"
+																disabled={
+																	error ||
+																	contactError
+																		? true
+																		: false
+																}
+															>
+																Update
+															</Button>
+														</Col>
+													</Row>
 												</Form>
 											</Modal.Body>
 										</Modal>

@@ -26,20 +26,19 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 	const handleImageChange = (e) => {
 		e.preventDefault();
 		var files = e.target.files;
-		console.log("Target files ->", files);
 		var i;
 		if (files.length > 3) setError("Cannot upload more than 3 images.");
 		else setError(null);
 		if (files.length > 0) {
 			for (i = 0; i < files.length; i++) {
 				if (types.includes(files[i].type)) {
-					console.log(files[i]);
+					//console.log(files[i]);
 					myImages.push(files[i]);
 					setError("");
 				} else setError("Please select an image file (png or jpg)");
 			}
 		}
-		console.log("temp->", myImages);
+		//console.log("temp->", myImages);
 	};
 
 	const handleSubmit = (e) => {
@@ -52,13 +51,12 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 		}
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
+
 		if (!requestForm) formDataObj.location = location?.value.formatted;
-		console.log(formDataObj);
-		console.log(myImages);
 		if (!requestForm) createRequest(formDataObj, myImages);
 		else createPost(formDataObj, myImages);
+
 		myImages = [];
-		console.log("submitted!");
 		if (!post_error) history.push("/home");
 	};
 
@@ -173,7 +171,7 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 							<Row>
 								<Col>
 									<Form.Group>
-										<input
+										{/*<input
 											type="file"
 											className="position-relative"
 											name="file"
@@ -183,19 +181,48 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 										/>
 										{error && (
 											<div className="error">{error}</div>
+										)} */}
+										<Form.Label>Add Images</Form.Label>
+										<label className="file-input-label">
+											<input
+												type="file"
+												name="file"
+												onChange={handleImageChange}
+												multiple
+												className="position-relative file-input"
+											/>
+											<span
+												style={{
+													marginLeft: "18%",
+												}}
+											>
+												+
+											</span>
+										</label>
+										{error && (
+											<div className="error">
+												<i>{error}</i>
+											</div>
 										)}
+										<div className="file-output">
+											{myImages.length != 0
+												? myImages.map((img, index) => {
+														return (
+															<i>
+																{img.name}
+																<br />
+															</i>
+														);
+												  })
+												: null}
+										</div>
 									</Form.Group>
 								</Col>
-							</Row>
-							<br />
-							<Row>
-								<Col></Col>
 								<Col>
 									{!requestForm ? (
 										error ? (
 											<Button
-												className="add-request-button"
-												variant="dark"
+												className="submit-button"
 												type="submit"
 												disabled
 											>
@@ -203,8 +230,7 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 											</Button>
 										) : (
 											<Button
-												className="add-request-button"
-												variant="dark"
+												className="submit-button"
 												type="submit"
 											>
 												Add Request
@@ -212,8 +238,7 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 										)
 									) : error ? (
 										<Button
-											className="add-post-button"
-											variant="dark"
+											className="submit-button"
 											type="submit"
 											disabled
 										>
@@ -221,8 +246,7 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 										</Button>
 									) : (
 										<Button
-											className="add-post-button"
-											variant="dark"
+											className="submit-button"
 											type="submit"
 										>
 											Add Post
@@ -246,7 +270,6 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 }
 
 const mapStateToProps = (state) => {
-	console.log(state);
 	return {
 		post_error: state.post.error,
 		req_error: state.request.error,

@@ -188,7 +188,13 @@ const Requests = ({
 											<Accordion.Collapse
 												eventKey={index + 1}
 											>
-												<Card.Body>
+												<Card.Body
+													style={{
+														backgroundColor:
+															"#f8b4c5",
+														zIndex: 5,
+													}}
+												>
 													<p className="req-message">
 														{req.message}
 													</p>
@@ -248,20 +254,6 @@ const Requests = ({
 										/>
 									</Form>
 								</center>
-
-								{/* <Form.Check
-										type="radio"
-										label="Pending + Accepted"
-										inline
-										checked={requestView}
-									/>
-									<Form.Check
-										type="radio"
-										label="Fulfilled"
-										inline
-										checked={!requestView}
-									/>
-								</Form> */}
 							</div>
 						</center>
 						{requestView ? (
@@ -290,7 +282,6 @@ const Requests = ({
 																req.to_user_id
 														)
 													];
-												// console.log(acceptor);
 											}
 
 											return (
@@ -351,7 +342,11 @@ const Requests = ({
 													<Accordion.Collapse
 														eventKey={index + 1}
 													>
-														<Card.Body>
+														<Card.Body
+															style={{
+																backgroundColor: bgcolor,
+															}}
+														>
 															<p className="req-message">
 																{req.message}
 															</p>
@@ -470,7 +465,11 @@ const Requests = ({
 													<Accordion.Collapse
 														eventKey={index + 1}
 													>
-														<Card.Body>
+														<Card.Body
+															style={{
+																backgroundColor: bgcolor,
+															}}
+														>
 															<p className="req-message">
 																{req.message}
 															</p>

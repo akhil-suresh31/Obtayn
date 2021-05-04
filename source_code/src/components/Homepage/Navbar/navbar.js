@@ -12,17 +12,12 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const history = useHistory();
 
-	const handleToggle = (e) => {
-		console.log("Toggling");
-	};
-
 	return (
 		<>
 			<Navbar
 				collapseOnSelect
 				expand="lg"
 				className="justify-content-between homepage-navbar"
-				onToggle={handleToggle}
 			>
 				<Navbar.Brand
 					style={{
@@ -31,15 +26,12 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 					}}
 					className="homepage-navbar-brand"
 				>
-					<img
-						alt="logo"
-						src="http://placekitten.com/200/200"
-						width="30"
-						height="30"
-						className="d-inline-block align-top"
+					<b
 						onClick={() => history.push("/home")}
-					/>{" "}
-					<b>Obtayn</b>
+						style={{ cursor: "pointer" }}
+					>
+						Obtayn
+					</b>
 				</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -49,11 +41,10 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 						{(() => {
 							if (window.location.pathname === "/requests")
 								return (
-									<Nav.Link>
+									<Nav.Link className="redirect-link">
 										<Link
 											to="/home"
 											style={{ color: "white" }}
-											className="redirect-link"
 										>
 											Feed
 										</Link>
@@ -81,7 +72,7 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 												Feed
 											</Link>
 										</Nav.Link>
-										<Nav.Link>
+										<Nav.Link className="redirect-link">
 											<Link
 												to="/requests"
 												style={{ color: "white" }}
@@ -95,7 +86,6 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 					</Nav>
 
 					<Nav className="justify-content-end">
-						{/* <div className="notif-div"> */}
 						<OverlayTrigger
 							placement="bottom"
 							overlay={renderTooltip("Notifications")}
@@ -110,7 +100,6 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 								alt="Notifications"
 							/>
 						</OverlayTrigger>
-						{/* </div> */}
 					</Nav>
 					<Nav className="justify-content-end">
 						<OverlayTrigger
