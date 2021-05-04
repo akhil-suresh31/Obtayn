@@ -8,6 +8,16 @@ import { Media, Spinner } from "react-bootstrap";
 import { markAsRead } from "../../../store/actions/chatActions";
 import { Image } from "react-bootstrap-icons";
 
+/**
+ *
+ * @param {object} chat - contains details like from/to user time of last sent message
+ *
+ * @param {object} user -has user details like profile pic, name
+ * @param {function} openDm -function to switch from chat list to direct chat
+ * @param {function} markAsRead -function to set the seen status as true
+ * @param {int} key -key for each element rendered using the map
+ * @returns jsx of Media(from bootstrap) containing the user name , profile_pic, and last mesage
+ */
 const userChat = (chat, user, openDm, markAsRead, key) => {
 	let lastMsg;
 	var style;
@@ -44,6 +54,7 @@ const userChat = (chat, user, openDm, markAsRead, key) => {
 	return (
 		<div className="chat-user" key={key}>
 			<Media
+				style={{ cursor: "pointer" }}
 				onClick={() => {
 					if (
 						!chat.seen &&
@@ -98,6 +109,7 @@ const Chat = ({
 	setOpenDM,
 	markAsRead,
 }) => {
+	/**function to open chat, set the user for the direct chat and the chat object */
 	const openDm = (chat, user) => {
 		setDMChat(chat);
 		setDMUser(user);
@@ -111,7 +123,7 @@ const Chat = ({
 				{ name: user.name, dp: user.profile_picture, id: user.id },
 			])
 		);
-
+		/**filters chat only for the user */
 		const chatForUser = chatList.filter(
 			(chat) => chat.to === auth.uid || chat.from === auth.uid
 		);
@@ -144,7 +156,6 @@ const Chat = ({
 						variant="light"
 						className="mt-4"
 					/>
-					;
 				</center>
 			</div>
 		);

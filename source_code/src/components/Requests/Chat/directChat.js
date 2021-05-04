@@ -25,6 +25,9 @@ const DirectChat = ({
 	const [error, setError] = useState(null);
 	const messagesRef = useRef(null);
 	const lastMessage = useRef();
+	/**
+	 * function to send message containing the message/image
+	 */
 	const sendMessage = () => {
 		setError("");
 		// console.log(message);
@@ -38,6 +41,7 @@ const DirectChat = ({
 		myImages = [];
 	};
 
+	/**function to handle file upload */
 	const handleChange = (e) => {
 		e.preventDefault();
 		var files = e.target.files;
@@ -51,12 +55,13 @@ const DirectChat = ({
 					myImages.push(files[i]);
 
 					setError("");
-					//setImages(myImages);
 				} else setError("Please select an image file (png or jpg)");
 			}
 		}
 		console.log("temp->", myImages);
 	};
+
+	/**function to clear the user and chat,nd go back to chatlist */
 	const goBack = () => {
 		setDMChat(null);
 		setDMUser(null);
@@ -65,15 +70,20 @@ const DirectChat = ({
 
 	useEffect(() => {
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
+	}, []);
+
+	useEffect(() => {
+		// lastMessage.current.scrollIntoView({ behavior: "smooth" });
 		if (
 			activeChat[0] &&
 			activeChat[0].messages &&
-			activeChat[0].messages[activeChat[0].messages.length - 1].from ==
+			activeChat[0].messages[activeChat[0].messages.length - 1].from ===
 				user.id
 		)
 			markAsRead(chat);
 	}, [activeChat[0]]);
 
+	/**check when the scroll lengh is increased to scroll to the bottom */
 	useEffect(() => {
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
 	}, [messagesRef?.current?.scrollHeight]);
@@ -106,7 +116,7 @@ const DirectChat = ({
 						{activeChat[0].messages &&
 							activeChat[0].messages.map((msg) => {
 								const messageClass =
-									msg.from == user.id ? "received" : "sent";
+									msg.from === user.id ? "received" : "sent";
 
 								return (
 									<div
@@ -123,6 +133,7 @@ const DirectChat = ({
 															padding: "3px",
 															borderRadius: "5%",
 														}}
+														alt=""
 													></img>
 												))}
 											{(() => {
@@ -137,7 +148,7 @@ const DirectChat = ({
 												className="chat-time"
 												style={{
 													textAlign:
-														messageClass == "sent"
+														messageClass === "sent"
 															? "right"
 															: "left",
 												}}
@@ -163,13 +174,18 @@ const DirectChat = ({
 						<div ref={lastMessage} />
 					</div>
 					{!activeChat[0].messages && (
-						<div className="empty-message justify-content-center align-items-center">
-							* awkward silence *
+						<div
+							className="empty-message justify-content-center align-items-end mb-5"
+							style={{
+								backgroundImage: "url(/images/emptychat.jpg)",
+							}}
+						>
+							Type your first message!
 						</div>
 					)}
 					<div className="chat-input">
 						{error && <div className="error">{error}</div>}
-						{myImages && myImages.length == 0 ? null : (
+						{myImages && myImages.length === 0 ? null : (
 							<div className="file-names">
 								{myImages.map((image) => image.name)}
 								<Button

@@ -1,13 +1,13 @@
 import { React, useEffect, useState } from "react";
 import { Media, Spinner, Button } from "react-bootstrap";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import Avatar from "react-avatar";
 import Swal from "sweetalert2";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { firestoreConnect, withFirestore } from "react-redux-firebase";
+import { withFirestore } from "react-redux-firebase";
 import {
 	acceptRequest,
 	deleteRequest,
@@ -33,14 +33,18 @@ const Feed = ({
 	firestore,
 }) => {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
-	const [showImage, setImage] = useState(false);
-	const [selectedImg, setSelectedImg] = useState(null);
-	const [lastPost, setLastPost] = useState(null);
-	const [lastRequest, setLastRequest] = useState(null);
-	const [lastPost2, setLastPost2] = useState(null);
-	const [lastReq2, setLastReq2] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const [showImage, setImage] = useState(false); //shows image modal
+	const [selectedImg, setSelectedImg] = useState(null); //sets the image which is selected
+	const [lastPost, setLastPost] = useState(null); //last post object used as reference to fetch next post
+	const [lastRequest, setLastRequest] = useState(null); //Last request for fetching referrence
+	const [lastPost2, setLastPost2] = useState(null); //last to last post used for comparison to stop fetching
+	const [lastReq2, setLastReq2] = useState(null); //last to last reqeust used for comparison to stop fetching
+	const [loading, setLoading] = useState(false); //variable to show loading spinner when fetching data
+	const [loadall, setLoadall] = useState(true); //variable to check when to fetch all data wehn searching
 
+	/**
+	 * function which is called when end of scrollbar is reached , to fetch more data
+	 */
 	const loadMore = () => {
 		setLoading(true);
 		var lastpost, lastReq;
@@ -49,7 +53,7 @@ const Feed = ({
 		if (requests) lastReq = requests[requests.length - 1];
 		setLastReq2(lastReq);
 		setLastPost2(lastpost);
-		if (lastReq2 == null || lastReq2.id != lastRequest.id) {
+		if (lastReq2 == null || lastReq2.id !== lastRequest.id) {
 			firestore.get({
 				collection: "Request",
 				limit: requests.length + 2,
@@ -60,7 +64,7 @@ const Feed = ({
 		} else {
 			console.log("done fetching requests");
 		}
-		if (lastPost2 == null || lastPost2.id != lastPost.id) {
+		if (lastPost2 == null || lastPost2.id !== lastPost.id) {
 			firestore.get({
 				collection: "Post",
 				limit: posts.length + 2,
@@ -73,6 +77,20 @@ const Feed = ({
 		setTimeout(() => {
 			setLoading(false);
 		}, 2000);
+	};
+	/**
+	 * function to fetch all data , called when searching
+	 */
+	const loadAll = () => {
+		firestore.get({
+			collection: "Request",
+			orderBy: ["timestamp", "desc"],
+			where: ["to_user_id", "==", null],
+		});
+		firestore.get({
+			collection: "Post",
+			orderBy: ["timestamp", "desc"],
+		});
 	};
 
 	useEffect(() => {
@@ -89,22 +107,21 @@ const Feed = ({
 			orderBy: ["timestamp", "desc"],
 			startAfter: 0,
 		});
-
-		return () => {
-			firestore.unsetListeners([
-				{ collection: "Request" },
-				{ collection: "Post" },
-			]);
-		};
 	}, []);
 
+	/**
+	 * keeps track of posts and request to update the last request and post
+	 */
 	useEffect(() => {
-		if (posts && lastPost != posts[posts.length - 1])
+		if (posts && lastPost !== posts[posts.length - 1])
 			setLastPost(posts[posts.length - 1]);
-		if (requests && lastRequest != requests[requests.length - 1])
+		if (requests && lastRequest !== requests[requests.length - 1])
 			setLastRequest(requests[requests.length - 1]);
 	}, [requests, posts]);
 
+	/**function to delete a request
+	 * parameter : request object
+	 */
 	const delRequest = (req) => {
 		Swal.fire({
 			title: "Do you want to delete your request?",
@@ -123,6 +140,9 @@ const Feed = ({
 			}
 		});
 	};
+	/**function to delete a post
+	 * parameter : post object
+	 */
 	const delPost = (post) => {
 		Swal.fire({
 			title: "Do you want to delete your post?",
@@ -142,11 +162,18 @@ const Feed = ({
 		});
 	};
 
+	if (searchButton && loadall) {
+		loadAll();
+		setLoadall(false);
+	}
+
 	if (requests && posts && users) {
+		/**avatarlist : map containing user_id as key and user profile picture as value */
 		const avatarlist = new Map(
 			users.map((obj) => [obj.id, obj.profile_picture])
 		);
 		var allPosts;
+		/**allPosts contains requests and posts ordered by timestamp */
 		if (
 			(filter.request && filter.post) ||
 			(!filter.request && !filter.post)
@@ -159,24 +186,29 @@ const Feed = ({
 			allPosts = [...posts];
 		}
 
+		/**filtering data according to the search parameters  */
 		if (searchData && searchButton) {
 			console.log("Searching...");
 			console.log(searchData);
-			if (searchData.category != "") {
+			if (searchData.category !== "") {
 				allPosts = allPosts.filter(
-					(post) => post.category == searchData.category
+					(post) => post.category === searchData.category
 				);
 				console.log("Category filter -> ", allPosts);
 			}
-			if (searchData.keyword != "") {
+			if (searchData.keyword !== "") {
 				allPosts = allPosts.filter(
 					(post) =>
-						post.title.includes(searchData.keyword) ||
-						post.message.includes(searchData.keyword)
+						post.title
+							.toLowerCase()
+							.includes(searchData.keyword.toLowerCase()) ||
+						post.message
+							.toLowerCase()
+							.includes(searchData.keyword.toLowerCase())
 				);
 				console.log("Keyword filter -> ", allPosts);
 			}
-			if (searchData.location != "") {
+			if (searchData.location !== "") {
 				allPosts = allPosts.filter((post) =>
 					post.location?.includes(searchData.location)
 				);
@@ -187,17 +219,17 @@ const Feed = ({
 
 		if (allPosts.length > 0) {
 			return (
-				<div className="feed-container mb-4">
+				<div className="feed-container mb-5">
 					{/* <Button onClick={loadMore}>load more</Button> */}
-					{allPosts.map((item, index) => {
-						return (
-							<AnimatePresence>
-								<div
+					<AnimatePresence>
+						{allPosts.map((item, index) => {
+							return (
+								<motion.div
 									className="feed-post"
 									key={index}
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
-									transition={{ duration: 0.2 }}
+									transition={{ duration: 0.5 }}
 									exit={{ opacity: 0 }}
 								>
 									<Media className="post-container">
@@ -260,7 +292,7 @@ const Feed = ({
 											{(() => {
 												if (
 													item.file &&
-													item.file.length != 0
+													item.file.length !== 0
 												)
 													return (
 														<div className="image-grid">
@@ -281,6 +313,7 @@ const Feed = ({
 																					src={
 																						image
 																					}
+																					alt=""
 																					style={{
 																						height:
 																							"20vh",
@@ -289,7 +322,6 @@ const Feed = ({
 																						padding:
 																							"10%",
 																					}}
-																					alt="Some image"
 																					onClick={() => {
 																						setSelectedImg(
 																							image
@@ -318,7 +350,7 @@ const Feed = ({
 														</div>
 													);
 											})()}
-											{/* {actionBtn ? ( */}
+
 											<div className="d-flex w-100 mt-0 ">
 												<p></p>
 
@@ -372,26 +404,28 @@ const Feed = ({
 											{/* ) : null} */}
 										</Media.Body>
 									</Media>
-								</div>
-							</AnimatePresence>
-						);
-					})}
+								</motion.div>
+							);
+						})}
+					</AnimatePresence>
 					{loading && (
 						<center className="mt-3">
 							<Spinner animation="border" variant="light" />
 						</center>
 					)}
 
-					<Waypoint onEnter={loadMore}>
-						<p></p>
-					</Waypoint>
+					{!searchButton && (
+						<Waypoint onEnter={loadMore}>
+							<p></p>
+						</Waypoint>
+					)}
 				</div>
 			);
 		} else {
 			return (
 				<>
 					<div className="no-results">
-						<img src="images/tenor.gif" name="results-gif" />
+						<img src="images/tenor.gif" name="results-gif" alt="" />
 					</div>
 					<h4
 						className="no-result-text"
@@ -433,18 +467,4 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
 	withFirestore,
 	connect(mapStatetoProps, mapDispatchToProps)
-	// firestoreConnect([
-	// 	{
-	// 		collection: "Request",
-	// 		orderBy: ["timestamp", "desc"],
-	// 		where: ["to_user_id", "==", null],
-	// 		limit: 2,
-	// 	},
-	// 	{ collection: "User" },
-	// 	{
-	// 		collection: "Post",
-	// 		orderBy: ["timestamp", "desc"],
-	// 		limit: 2,
-	// 	},
-	// ])
 )(Feed);
