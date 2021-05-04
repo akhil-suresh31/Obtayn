@@ -13,8 +13,7 @@
 	border-radius: 5px;
 	margin: 3%;
 	background-color: var(--postBg);
-
-	box-shadow: 4px 4px #8f8d8d71;
+	box-shadow: 3px 3px 8px 0px rgba(82, 82, 82, 1);
 }
 
 .text-left {

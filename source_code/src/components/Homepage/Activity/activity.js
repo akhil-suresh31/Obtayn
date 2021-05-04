@@ -11,6 +11,15 @@ import { Button } from "react-bootstrap";
 import { X } from "react-bootstrap-icons";
 import { slide as Menu } from "react-burger-menu";
 
+/**
+ * Use - Component to show Notifications. Uses react-burger-menu as a Sidebar.
+ * props - notifications as collection from Firestore
+ * 			user as current logged in User
+ * 			clickNotif from actions to redirect on notification click event
+ * 			menuOpen, setMenuOpen to toggle visibility of burger menu
+ * 			deleteNotif from actions to delete a notification
+ */
+
 const Activity = ({
 	notifications,
 	user,
@@ -76,8 +85,8 @@ const Activity = ({
 											x: -500,
 											opacity: 0,
 											transition: {
-												duration: 0.5,
-												//duration: 0.5 + index * 0.2,
+												//duration: 0.5,
+												duration: 0.3 + index * 0.2,
 											},
 										}}
 									>

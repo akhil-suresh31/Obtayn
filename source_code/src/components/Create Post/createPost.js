@@ -10,20 +10,31 @@ import { createPost } from "../../store/actions/postActions";
 import LocationAutoComplete from "../Homepage/LocationAutoComplete";
 var myImages = [];
 
+/**
+ * Use - Renders Create Post component. Appears as a shortcut inside Navbar.
+ * 		Contains Form to add details for new Request/Post.
+ * Parameters - createRequest from store/actions/requestActions to add new document to Request collection in Firestore
+ * 				createPost from store/actions/postActions to add new document to Post collection in Firestore
+ * 				post_error from postReducer to handle createPost error
+ * 				req_error from requestReducer to handle createRequest error
+ */
+
 function CreatePost({ createRequest, createPost, post_error, req_error }) {
-	const [menuOpen, setMenuOpen] = useState(false);
-	const [validated, setValidated] = useState(false);
-	const [error, setError] = useState(null);
-	const [requestForm, setRequestForm] = useState(false);
-	const types = ["image/png", "image/jpeg"];
-	const [location, setLocation] = useState();
+	const [menuOpen, setMenuOpen] = useState(false); //toggles Notifications menu
+	const [validated, setValidated] = useState(false); //check if form fields are validated
+	const [error, setError] = useState(null); //check if form validations contain errors
+	const [requestForm, setRequestForm] = useState(false); //check is Request option is not selected
+	const types = ["image/png", "image/jpeg"]; //stores file extensions accepted
+	const [location, setLocation] = useState(); //set location from LocationAutoComplete form field
 	const history = useHistory();
 
 	const handleChange = (e) => {
+		//set or unset requestForm state
 		setRequestForm(!requestForm);
 	};
 
 	const handleImageChange = (e) => {
+		//validate image according to constraints
 		e.preventDefault();
 		var files = e.target.files;
 		var i;
@@ -42,6 +53,7 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 	};
 
 	const handleSubmit = (e) => {
+		//upload form data to firestore
 		e.preventDefault();
 		setValidated(true);
 		const form = e.target;
@@ -64,13 +76,13 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 		<div>
 			<NavBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 			<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-			<div
+			{/* <div
 				className="left-image-container"
 				style={{
 					backgroundImage: "url(/images/left-bg.jpg)",
 					backgroundSize: "cover",
 				}}
-			></div>
+			></div> */}
 			<div className="create-post-container">
 				{post_error && <Alert variant="danger">{post_error}</Alert>}
 				{req_error && <Alert variant="danger">{req_error}</Alert>}
@@ -90,11 +102,11 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 					<br />
 					<div
 						className="form-container"
-						style={{
-							backgroundColor: requestForm
-								? "#b5e477"
-								: "#F8B4C5",
-						}}
+						// style={{
+						// 	backgroundColor: requestForm
+						// 		? "#b5e477"
+						// 		: "#adcad6",
+						// }}
 					>
 						<Form
 							noValidate
@@ -258,13 +270,13 @@ function CreatePost({ createRequest, createPost, post_error, req_error }) {
 					</div>
 				</div>
 			</div>
-			<div
+			{/* <div
 				className="right-image-container"
 				style={{
 					backgroundImage: "url(/images/right-bg.jpg)",
 					backgroundSize: "cover",
 				}}
-			></div>
+			></div> */}
 		</div>
 	);
 }

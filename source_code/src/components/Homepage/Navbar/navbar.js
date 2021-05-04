@@ -8,6 +8,11 @@ import Tooltip from "react-bootstrap/Tooltip";
 import UserProfile from "./userProfile";
 import "./navbar.css";
 
+/**
+ * Use - Component that renders a responsive Navbar containing links and shortcuts using react-bootstrap.
+ * Parameters - menuOpen and setMenuOpen to toggle Activity sidebar.
+ */
+
 export default function NavBar({ menuOpen, setMenuOpen }) {
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const history = useHistory();

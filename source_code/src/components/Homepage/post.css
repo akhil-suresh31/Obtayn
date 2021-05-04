@@ -63,39 +63,3 @@
 	background-color: var(--createPost);
 	display: flex;
 }
-
-.submit-button {
-	background-color: #489abd !important;
-	border: 0ch !important;
-	color: white !important;
-	float: right;
-	margin-top: 10%;
-}
-
-.file-input {
-	height: 0;
-	width: 0;
-	opacity: 0;
-}
-.file-input-label {
-	display: block;
-	width: 8vh;
-	height: 8vh;
-	border: 2px solid white;
-	/* background-color: white; */
-	border-radius: 50%;
-	/* margin-left: 17%; */
-	line-height: 30px;
-	color: white;
-	font-weight: bold;
-	font-size: 40px;
-	cursor: pointer;
-}
-.file-input-label:hover {
-	background: #f8b4c5;
-	color: white;
-}
-
-.file-output {
-	font-size: 12px;
-}

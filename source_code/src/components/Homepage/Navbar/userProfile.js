@@ -22,6 +22,14 @@ import firebase from "../../../firebase/firebase";
 import "firebase/storage";
 import "firebase/firestore";
 
+/**
+ * Use - Loads User Profile component inside Navbar. Renders as a dropdown.
+ * 		Also contains Edit Profile modal on avatar clock event.
+ * Parameters - logOut to unset current User
+ * 				User as current logged in user
+ * 				user_id as current User's id
+ */
+
 function UserProfile({ logOut, User, user_id }) {
 	const [UserInfo, setUserInfo] = useState({
 		avatar: User.profile_picture,
@@ -92,12 +100,13 @@ function UserProfile({ logOut, User, user_id }) {
 		formData = Object.fromEntries(formData.entries());
 
 		if (file) {
-			//console.log("old->",)
-			const uploadTask = storage.ref(`/avatars/${file.name}`).put(file);
+			const uploadTask = storage
+				.ref(`/avatars/${user_id}-${file.name}`)
+				.put(file);
 			uploadTask.on("state_changed", console.log, console.error, () => {
 				storage
 					.ref("avatars")
-					.child(file.name)
+					.child(`${user_id}-${file.name}`)
 					.getDownloadURL()
 					.then((url) => {
 						setFile(null);
@@ -108,7 +117,6 @@ function UserProfile({ logOut, User, user_id }) {
 							profile_picture: url,
 						});
 						setURL(url);
-						//console.log("Picture->", url);
 						oldRef
 							.delete()
 							.then(console.log("Deleted old file."))
