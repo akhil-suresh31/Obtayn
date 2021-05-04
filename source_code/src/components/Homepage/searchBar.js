@@ -4,7 +4,7 @@ import LocationAutoComplete from "./LocationAutoComplete";
 import "./homepage";
 
 function SearchBar({ setData, setSearchButton }) {
-	const [location, setLocation] = useState();
+	const [location, setLocation] = useState(null);
 	const searchFeed = (e) => {
 		e.preventDefault();
 		const form = e.target;
@@ -26,10 +26,11 @@ function SearchBar({ setData, setSearchButton }) {
 				formDataObj["searchCategory"] == "Category"
 			)
 				formDataObj["searchCategory"] = "";
+
 			setData({
 				category: formDataObj["searchCategory"],
 				keyword: formDataObj["searchKeywords"],
-				location: location.value.formatted,
+				location: !location ? "" : location.value.formatted,
 			});
 			setSearchButton(true);
 			console.log("Submitting!");
@@ -56,13 +57,9 @@ function SearchBar({ setData, setSearchButton }) {
 						<Form.Control
 							as="select"
 							name="searchCategory"
-							// defaultValue="Category"
+							defaultValue=""
 						>
-							<option
-								disabled={true}
-								selected="selected"
-								value=""
-							>
+							<option disabled value="">
 								Category
 							</option>
 							<option>Clothing</option>

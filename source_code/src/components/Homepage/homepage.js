@@ -9,7 +9,6 @@ import { firestoreConnect } from "react-redux-firebase";
 import SearchBar from "./searchBar";
 import "./homepage.css";
 import PostFilter from "./postFilter";
-import { Spinner } from "react-bootstrap";
 import { Redirect } from "react-router";
 
 const Homepage = ({ users, auth }) => {
@@ -19,8 +18,6 @@ const Homepage = ({ users, auth }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [data, setData] = useState(initialSearchData);
 	const [searchButton, setSearchButton] = useState(false); //search button in SearchBar component
-	const [show, setShow] = useState(false);
-	const [tag, setTag] = useState("Tag");
 
 	function checkScrollPos(val) {
 		if (val > 200 && !scrollToTop) setscrollToTop(true);
