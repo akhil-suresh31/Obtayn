@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { FileEarmarkPlusFill } from "react-bootstrap-icons";
 import Tooltip from "react-bootstrap/Tooltip";
-import UserProfile from "./userProfile";
+import UserProfile from "./Profile/userProfile";
 import "./navbar.css";
 
 /**

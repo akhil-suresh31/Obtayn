@@ -1,0 +1,51 @@
+.progress-bar {
+	height: 5px;
+	border-radius: 10px;
+	background-color: #f8b4c5 !important;
+	margin-top: 10px;
+	color: white;
+}
+
+.update-button {
+	background-color: #489abd !important;
+	border: 0ch !important;
+	color: white !important;
+	float: right;
+	margin-top: 4%;
+}
+
+.profile-input {
+	height: 0;
+	width: 0;
+	opacity: 0;
+}
+.profile-input-label {
+	display: block;
+	width: 8vh;
+	height: 8vh;
+	border: 1px solid #f8b4c5;
+	border-radius: 50%;
+	margin-left: 4%;
+	line-height: 30px;
+	color: #f8b4c5;
+	font-weight: bold;
+	font-size: 40px;
+	cursor: pointer;
+}
+.profile-input-label:hover {
+	background: #f8b4c5;
+	color: white;
+}
+
+.file-output {
+	font-size: 12px;
+}
+
+.edit-profile {
+	padding-top: 20%;
+}
+
+.error {
+	color: red;
+	float: left;
+}

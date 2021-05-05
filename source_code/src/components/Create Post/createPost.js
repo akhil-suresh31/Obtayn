@@ -7,7 +7,7 @@ import { useHistory } from "react-router";
 import "./createPost.css";
 import { createRequest } from "../../store/actions/requestActions";
 import { createPost } from "../../store/actions/postActions";
-import LocationAutoComplete from "../Homepage/LocationAutoComplete";
+import LocationAutoComplete from "../Homepage/Location/LocationAutoComplete";
 var myImages = [];
 
 /**

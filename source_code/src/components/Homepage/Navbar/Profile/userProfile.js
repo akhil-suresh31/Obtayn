@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import {
 	Nav,
 	DropdownButton,
@@ -10,17 +10,18 @@ import {
 	Col,
 } from "react-bootstrap";
 import Avatar from "react-avatar";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 
-import { logOut } from "../../../store/actions/authActions";
+import { logOut } from "../../../../store/actions/authActions";
 import { connect } from "react-redux";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import firebase from "../../../firebase/firebase";
+import firebase from "../../../../firebase/firebase";
 import "firebase/storage";
 import "firebase/firestore";
+import "./profile.css";
 
 /**
  * Use - Loads User Profile component inside Navbar. Renders as a dropdown.
@@ -39,7 +40,6 @@ function UserProfile({ logOut, User, user_id }) {
 	});
 
 	const storage = firebase.storage();
-
 	const [url, setURL] = useState("");
 	const [show, setShow] = useState(false);
 	const [file, setFile] = useState(null);
@@ -48,7 +48,7 @@ function UserProfile({ logOut, User, user_id }) {
 	const [error, setError] = useState(null);
 	const [contactError, setContactError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
-	const history = useHistory();
+	const progressRef = useRef(null);
 
 	useEffect(() => {
 		setUserInfo({
@@ -86,9 +86,6 @@ function UserProfile({ logOut, User, user_id }) {
 
 	const handleLogout = () => {
 		logOut();
-		// setTimeout(() => {
-		// 	history.push("/");
-		// }, 2000);
 	};
 
 	const handleSubmit = (e) => {
@@ -103,40 +100,65 @@ function UserProfile({ logOut, User, user_id }) {
 			const uploadTask = storage
 				.ref(`/avatars/${user_id}-${file.name}`)
 				.put(file);
-			uploadTask.on("state_changed", console.log, console.error, () => {
-				storage
-					.ref("avatars")
-					.child(`${user_id}-${file.name}`)
-					.getDownloadURL()
-					.then((url) => {
-						setFile(null);
-						const oldRef = storage.refFromURL(UserInfo.avatar);
-						collectionRef.doc(user_id).update({
-							name: formData.profileName,
-							phone_number: formData.profileContact,
-							profile_picture: url,
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const percentage =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+					if (snapshot.state === firebase.storage.TaskState.RUNNING) {
+						if (progressRef)
+							progressRef.current.style.width = `${percentage}%`;
+						console.log(`Percentage: ${percentage}%`);
+					}
+				},
+				(error) => {
+					console.log(error);
+				},
+				() => {
+					storage
+						.ref("avatars")
+						.child(`${user_id}-${file.name}`)
+						.getDownloadURL()
+						.then((url) => {
+							setFile(null);
+							const oldRef = storage.refFromURL(UserInfo.avatar);
+							collectionRef.doc(user_id).update({
+								name: formData.profileName,
+								phone_number: formData.profileContact,
+								profile_picture: url,
+							});
+							setURL(url);
+							oldRef
+								.delete()
+								.then(() => {
+									console.log("Deleted old file.");
+									Swal.fire({
+										icon: "success",
+										title: "Profile updated!",
+										confirmButtonText: "Cool",
+										timer: 1000,
+									});
+									handleClose();
+								})
+								.catch((err) => console.log(err));
 						});
-						setURL(url);
-						oldRef
-							.delete()
-							.then(console.log("Deleted old file."))
-							.catch((err) => console.log(err));
-					});
-			});
+				}
+			);
 		} else {
 			collectionRef.doc(user_id).update({
 				name: formData.profileName,
 				phone_number: formData.profileContact,
 				profile_picture: User.profile_picture,
 			});
+			Swal.fire({
+				icon: "success",
+				title: "Profile updated!",
+				confirmButtonText: "Cool",
+				timer: 1000,
+			});
+			handleClose();
 		}
-		Swal.fire({
-			icon: "success",
-			title: "Profile updated!",
-			confirmButtonText: "Cool",
-			timer: 1000,
-		});
-		handleClose();
 	};
 
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
@@ -222,73 +244,78 @@ function UserProfile({ logOut, User, user_id }) {
 														)}
 													</Form.Group>
 													<br />
+
+													<Form.Label
+														style={{
+															marginLeft: "2%",
+														}}
+													>
+														New Profile Picture
+													</Form.Label>
 													<Row>
 														<Col>
-															<Form.Group>
-																{/* <Form.File
-															className="position-relative"
-															name="profilePic"
-															label="Select new Profile Photo"
-															onChange={
-																changleHandler
-															}
-														/> */}
-																<Form.Label>
-																	New Profile
-																	Picture
-																</Form.Label>
-																<label className="profile-input-label">
-																	<input
-																		type="file"
-																		onChange={
-																			changleHandler
-																		}
-																		className="profile-input"
-																	/>
-																	<span
-																		style={{
-																			marginLeft:
-																				"18%",
-																		}}
-																	>
-																		+
-																	</span>
-																</label>
-																{error && (
-																	<div className="error">
-																		<i>
-																			{
-																				error
-																			}
-																		</i>
-																	</div>
-																)}
-																{file && (
-																	<div className="file-output">
-																		<i>
-																			{
-																				file.name
-																			}
-																		</i>
-																	</div>
-																)}
-															</Form.Group>
+															<label className="profile-input-label">
+																<input
+																	type="file"
+																	onChange={
+																		changleHandler
+																	}
+																	className="profile-input"
+																/>
+																<span
+																	style={{
+																		marginLeft:
+																			"18%",
+																	}}
+																>
+																	+
+																</span>
+															</label>
 														</Col>
-														<Col>
-															<Button
-																className="update-button"
-																type="submit"
-																disabled={
-																	error ||
-																	contactError
-																		? true
-																		: false
-																}
-															>
-																Update
-															</Button>
-														</Col>
+
+														{error && (
+															<Col>
+																<div className="error">
+																	<i>
+																		{error}
+																	</i>
+																</div>
+															</Col>
+														)}
 													</Row>
+													{file && (
+														<Col>
+															<div className="file-output">
+																<i>
+																	{file.name}
+																</i>
+															</div>
+														</Col>
+													)}
+													{file && (
+														<motion.div
+															ref={progressRef}
+															className="progress-bar"
+															initial={{
+																width: 0,
+															}}
+														>
+															{" "}
+														</motion.div>
+													)}
+
+													<Button
+														className="update-button"
+														type="submit"
+														disabled={
+															error ||
+															contactError
+																? true
+																: false
+														}
+													>
+														Update
+													</Button>
 												</Form>
 											</Modal.Body>
 										</Modal>

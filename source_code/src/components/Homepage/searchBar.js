@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
-import LocationAutoComplete from "./LocationAutoComplete";
+import LocationAutoComplete from "./Location/LocationAutoComplete";
 import "./homepage";
 
 function SearchBar({ setData, setSearchButton }) {
