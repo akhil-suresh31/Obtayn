@@ -56,9 +56,9 @@ const Feed = ({
 		if (lastReq2 == null || lastReq2.id !== lastRequest.id) {
 			firestore.get({
 				collection: "Request",
-				limit: requests.length + 2,
+				limit: requests.length + 4,
 				orderBy: ["timestamp", "desc"],
-				// where: ["to_user_id", "==", null],
+				where: ["to_user_id", "==", null],
 				startAfter: lastReq,
 			});
 		} else {
@@ -67,7 +67,7 @@ const Feed = ({
 		if (lastPost2 == null || lastPost2.id !== lastPost.id) {
 			firestore.get({
 				collection: "Post",
-				limit: posts.length + 2,
+				limit: posts.length + 4,
 				orderBy: ["timestamp", "desc"],
 				startAfter: lastpost,
 			});
@@ -96,14 +96,14 @@ const Feed = ({
 	useEffect(() => {
 		firestore.get({
 			collection: "Request",
-			limit: 2,
+			limit: 4,
 			orderBy: ["timestamp", "desc"],
 			where: ["to_user_id", "==", null],
 			startAfter: 0,
 		});
 		firestore.get({
 			collection: "Post",
-			limit: 2,
+			limit: 4,
 			orderBy: ["timestamp", "desc"],
 			startAfter: 0,
 		});

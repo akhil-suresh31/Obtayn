@@ -45,8 +45,9 @@ const Homepage = ({ users, auth }) => {
 								setData={setData}
 								setSearchButton={setSearchButton}
 							/>
+
+							<PostFilter setFilter={setFilter} filter={filter} />
 						</center>
-						<PostFilter setFilter={setFilter} filter={filter} />
 					</div>
 					<div
 						className="homepage-feed"

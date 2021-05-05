@@ -178,8 +178,8 @@
 }
 
 .homepage-sticky {
-	position: sticky;
-	min-height: min-content;
+	/* position: sticky; */
+	max-height: max-content;
 	height: 20vh;
 	width: 100vw;
 	background-color: var(--createPost);
@@ -189,4 +189,14 @@
 
 .location-search {
 	min-width: 350px;
+}
+
+@media (max-width: 995px) and (max-height: 1000px) {
+	.homepage-sticky {
+		height: 30vh;
+	}
+
+	.homepage-feed {
+		height: 60vh;
+	}
 }

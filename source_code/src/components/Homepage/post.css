@@ -3,13 +3,14 @@
 }
 
 .filter-div {
-	height: 5vh;
-	width: 30vw;
+	height: min-content;
+	/* width: 30vw; */
 	border-radius: 5px;
 	margin-top: 3vh;
-	margin-right: 11%;
+	width: max-content;
+	/* margin-left: 5%; */
 	/* margin-left: 48vw; */
-	float: right;
+	/* float: right; */
 	display: flex;
 }
 

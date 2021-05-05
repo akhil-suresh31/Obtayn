@@ -73,6 +73,11 @@ function SearchBar({ setData, setSearchButton }) {
 					</InputGroup.Prepend>
 
 					<Form.Control
+						style={{
+							minWidth: "150px",
+							maxWidth: "200px",
+							borderRadius: "2px",
+						}}
 						type="text"
 						placeholder="Enter keywords.."
 						name="searchKeywords"
