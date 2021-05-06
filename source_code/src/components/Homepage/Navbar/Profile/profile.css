@@ -23,18 +23,14 @@
 	display: block;
 	width: 8vh;
 	height: 8vh;
-	border: 1px solid #f8b4c5;
+	/* border: 1px solid #f8b4c5; */
 	border-radius: 50%;
-	margin-left: 4%;
+	margin-left: 12%;
 	line-height: 30px;
 	color: #f8b4c5;
 	font-weight: bold;
 	font-size: 40px;
 	cursor: pointer;
-}
-.profile-input-label:hover {
-	background: #f8b4c5;
-	color: white;
 }
 
 .file-output {
@@ -48,4 +44,8 @@
 .error {
 	color: red;
 	float: left;
+}
+
+.plus-icon:hover {
+	color: #f05d81;
 }

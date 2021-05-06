@@ -70,15 +70,7 @@ const Homepage = ({ users, auth }) => {
 				</div>
 			</div>
 		);
-	else
-		return (
-			<Redirect to="/" />
-			// <div className="homepage-body">
-			// 	<center className="mt-3">
-			// 		<Spinner animation="border" variant="light" />
-			// 	</center>
-			// </div>
-		);
+	else return <Redirect to="/" />;
 };
 
 const mapStatetoProps = (state) => {

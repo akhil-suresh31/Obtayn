@@ -22,6 +22,7 @@ import firebase from "../../../../firebase/firebase";
 import "firebase/storage";
 import "firebase/firestore";
 import "./profile.css";
+import { PlusCircle, X } from "react-bootstrap-icons";
 
 /**
  * Use - Loads User Profile component inside Navbar. Renders as a dropdown.
@@ -162,6 +163,11 @@ function UserProfile({ logOut, User, user_id }) {
 	};
 
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
+
+	const removeImage = () => {
+		setFile(null);
+	};
+
 	if (User.isLoaded)
 		return (
 			<div>
@@ -253,7 +259,12 @@ function UserProfile({ logOut, User, user_id }) {
 														New Profile Picture
 													</Form.Label>
 													<Row>
-														<Col>
+														<Col
+															style={{
+																maxWidth:
+																	"min-content",
+															}}
+														>
 															<label className="profile-input-label">
 																<input
 																	type="file"
@@ -262,14 +273,7 @@ function UserProfile({ logOut, User, user_id }) {
 																	}
 																	className="profile-input"
 																/>
-																<span
-																	style={{
-																		marginLeft:
-																			"18%",
-																	}}
-																>
-																	+
-																</span>
+																<PlusCircle className="plus-icon" />
 															</label>
 														</Col>
 
@@ -282,16 +286,57 @@ function UserProfile({ logOut, User, user_id }) {
 																</div>
 															</Col>
 														)}
+
+														{file && (
+															<Col>
+																<div
+																	style={{
+																		position:
+																			"relative",
+																		borderRadius:
+																			"5px",
+																		width:
+																			"70px",
+																		height:
+																			"70px",
+																		margin:
+																			"0 5px",
+																		backgroundImage: `url(${URL.createObjectURL(
+																			file
+																		)})`,
+																		backgroundSize:
+																			"cover",
+																	}}
+																>
+																	<X
+																		size={
+																			25
+																		}
+																		style={{
+																			position:
+																				"absolute",
+																			right: 0,
+																			top:
+																				"1px",
+																			backgroundColor:
+																				"#0000007c",
+																			borderRadius:
+																				"12px",
+																			cursor:
+																				"pointer",
+																		}}
+																		color={
+																			"white"
+																		}
+																		onClick={() =>
+																			removeImage()
+																		}
+																	/>
+																</div>
+															</Col>
+														)}
 													</Row>
-													{file && (
-														<Col>
-															<div className="file-output">
-																<i>
-																	{file.name}
-																</i>
-															</div>
-														</Col>
-													)}
+
 													{file && (
 														<motion.div
 															ref={progressRef}

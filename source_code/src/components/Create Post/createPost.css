@@ -29,11 +29,11 @@
 	border: 0ch !important;
 	color: black !important;
 	float: right;
-	margin-top: 10%;
+	margin-top: 30%;
 }
 
 .submit-button:hover {
-	background-color: #37748f !important;
+	background-color: #f05d81 !important;
 }
 
 .file-input {
@@ -43,10 +43,9 @@
 }
 .file-input-label {
 	display: block;
-	width: 8vh;
-	height: 8vh;
-	border: 1px solid #f59db3;
-	/* background-color: white; */
+	width: 50px;
+	height: 50px;
+	/* border: 1px solid #f59db3; */
 	border-radius: 50%;
 	/* margin-left: 17%; */
 	line-height: 30px;
@@ -55,12 +54,12 @@
 	font-size: 40px;
 	cursor: pointer;
 }
-.file-input-label:hover {
-	background: #37748f;
-	color: white;
-	border: 0px;
-}
 
 .file-output {
 	font-size: 12px;
+	margin-top: 5vh;
+}
+
+.plus-icon:hover {
+	color: #f05d81;
 }
