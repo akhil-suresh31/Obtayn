@@ -135,7 +135,6 @@
 	font-weight: bold;
 }
 
-.file-names {
-	color: white;
-	margin-left: 0;
+.selected-files {
+	display: flex;
 }

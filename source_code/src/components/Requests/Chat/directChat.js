@@ -5,10 +5,8 @@ import { compose } from "redux";
 import Avatar from "react-avatar";
 import "./chat.css";
 import { Form, Spinner, Button } from "react-bootstrap";
-import { ArrowLeft, Cursor, CursorFill, Image } from "react-bootstrap-icons";
+import { ArrowLeft, Cursor, CursorFill, Image, X } from "react-bootstrap-icons";
 import { markAsRead, sendChat } from "../../../store/actions/chatActions";
-
-var myImages = [];
 
 const DirectChat = ({
 	chat,
@@ -23,6 +21,7 @@ const DirectChat = ({
 }) => {
 	const [message, setMessage] = useState();
 	const [error, setError] = useState(null);
+	const [images, setImages] = useState([]);
 	const messagesRef = useRef(null);
 	const lastMessage = useRef();
 	/**
@@ -34,11 +33,11 @@ const DirectChat = ({
 		const messageInfo = {
 			message: message,
 			to_user_id: user.id,
-			images: myImages,
+			images: images,
 		};
-		if (message || myImages.length) sendChat(messageInfo, chat);
+		if (message || images.length) sendChat(messageInfo, chat);
 		setMessage("");
-		myImages = [];
+		setImages([]);
 	};
 
 	/**function to handle file upload */
@@ -46,19 +45,27 @@ const DirectChat = ({
 		e.preventDefault();
 		var files = e.target.files;
 		console.log("Target files ->", files);
+		const myImages = [];
 		var i;
-		if (files.length > 3) setError("Cannot upload more than 3 images.");
-		else setError(null);
+		if (files.length > 3) {
+			setError("Cannot upload more than 3 images.");
+			return;
+		} else setError(null);
 		if (files.length > 0) {
 			for (i = 0; i < files.length; i++) {
 				if (["image/png", "image/jpeg"].includes(files[i].type)) {
 					myImages.push(files[i]);
 
 					setError("");
-				} else setError("Please select an image file (png or jpg)");
+				} else {
+					setError("Please select an image file (png or jpg)");
+					return;
+				}
 			}
 		}
 		console.log("temp->", myImages);
+		setImages([...images, ...myImages]);
+		console.log("images => ", images);
 	};
 
 	/**function to clear the user and chat,nd go back to chatlist */
@@ -87,6 +94,15 @@ const DirectChat = ({
 	useEffect(() => {
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
 	}, [messagesRef?.current?.scrollHeight]);
+
+	const removeImage = (img) => {
+		var array = Array.from(images);
+		var index = array.indexOf(img);
+		if (index !== -1) {
+			array.splice(index, 1);
+			setImages(array);
+		}
+	};
 
 	if (chat && user && auth) {
 		return (
@@ -184,14 +200,48 @@ const DirectChat = ({
 						</div>
 					)}
 					<div className="chat-input">
-						{error && <div className="error">{error}</div>}
-						{myImages && myImages.length === 0 ? null : (
-							<div className="file-names">
-								{myImages.map((image) => image.name)}
+						{images && images.length === 0 ? null : (
+							<div className="selected-files mb-2 align-items-center">
+								{images.map((image) => (
+									<div
+										// src={URL.createObjectURL(image)}
+										style={{
+											position: "relative",
+											borderRadius: "5px",
+											width: "70px",
+											height: "70px",
+											margin: "0 5px",
+											backgroundImage: `url(${URL.createObjectURL(
+												image
+											)})`,
+											backgroundSize: "cover",
+										}}
+									>
+										<X
+											size={25}
+											style={{
+												position: "absolute",
+												right: 0,
+												top: "1px",
+												backgroundColor: "#0000007c",
+												borderRadius: "12px",
+												cursor: "pointer",
+											}}
+											color={"white"}
+											onClick={() => removeImage(image)}
+										/>
+									</div>
+								))}
 								<Button
 									variant="danger"
 									onClick={() => {
-										myImages = [];
+										console.log(images);
+										setImages([]);
+									}}
+									style={{
+										height: "min-content",
+										marginLeft: "auto",
+										marginRight: "5px",
 									}}
 								>
 									cancel
@@ -252,7 +302,25 @@ const DirectChat = ({
 								/>
 							)}
 						</div>
-						{error && <div className="error">{error}</div>}
+						{error && (
+							<div
+								className="ml-2 mr-2 d-flex"
+								style={{ color: "salmon" }}
+							>
+								{error}
+								<X
+									size={25}
+									style={{
+										backgroundColor: "#0000007c",
+										borderRadius: "12px",
+										cursor: "pointer",
+										marginLeft: "auto",
+									}}
+									color={"white"}
+									onClick={() => setError(null)}
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
