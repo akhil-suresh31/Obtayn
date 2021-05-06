@@ -19,11 +19,11 @@ const DirectChat = ({
 	setDMUser,
 	markAsRead,
 }) => {
-	const [message, setMessage] = useState();
-	const [error, setError] = useState(null);
-	const [images, setImages] = useState([]);
-	const messagesRef = useRef(null);
-	const lastMessage = useRef();
+	const [message, setMessage] = useState(); //state storing the message in input box
+	const [error, setError] = useState(null); //Error state when image is not of the defined type/has more images than 3
+	const [images, setImages] = useState([]); //Array of images selected by the user
+	const messagesRef = useRef(null); //refrence to message container to capture when the scrol size changes
+	const lastMessage = useRef(); //reference to the end of the chat to scroll into view
 	/**
 	 * function to send message containing the message/image
 	 */
@@ -46,13 +46,12 @@ const DirectChat = ({
 		var files = e.target.files;
 		console.log("Target files ->", files);
 		const myImages = [];
-		var i;
-		if (files.length > 3) {
+		if (images.length + files.length > 3) {
 			setError("Cannot upload more than 3 images.");
 			return;
 		} else setError(null);
 		if (files.length > 0) {
-			for (i = 0; i < files.length; i++) {
+			for (let i = 0; i < files.length; i++) {
 				if (["image/png", "image/jpeg"].includes(files[i].type)) {
 					myImages.push(files[i]);
 
@@ -95,6 +94,9 @@ const DirectChat = ({
 		lastMessage.current.scrollIntoView({ behavior: "smooth" });
 	}, [messagesRef?.current?.scrollHeight]);
 
+	/**
+	 * function to remove the image from the list when user presses "X"
+	 */
 	const removeImage = (img) => {
 		var array = Array.from(images);
 		var index = array.indexOf(img);
@@ -204,7 +206,6 @@ const DirectChat = ({
 							<div className="selected-files mb-2 align-items-center">
 								{images.map((image) => (
 									<div
-										// src={URL.createObjectURL(image)}
 										style={{
 											position: "relative",
 											borderRadius: "5px",
