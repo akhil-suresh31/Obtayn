@@ -94,19 +94,39 @@ const Feed = ({
 	};
 
 	useEffect(() => {
-		firestore.get({
-			collection: "Request",
-			limit: 4,
-			orderBy: ["timestamp", "desc"],
-			where: ["to_user_id", "==", null],
-			startAfter: 0,
-		});
-		firestore.get({
-			collection: "Post",
-			limit: 4,
-			orderBy: ["timestamp", "desc"],
-			startAfter: 0,
-		});
+		firestore.setListeners([
+			{
+				collection: "Request",
+				limit: 4,
+				orderBy: ["timestamp", "desc"],
+				where: ["to_user_id", "==", null],
+				startAfter: 0,
+			},
+			{
+				collection: "Post",
+				limit: 4,
+				orderBy: ["timestamp", "desc"],
+				startAfter: 0,
+			},
+		]);
+
+		return () => {
+			firestore.unsetListeners([
+				{
+					collection: "Request",
+					limit: 4,
+					orderBy: ["timestamp", "desc"],
+					where: ["to_user_id", "==", null],
+					startAfter: 0,
+				},
+				{
+					collection: "Post",
+					limit: 4,
+					orderBy: ["timestamp", "desc"],
+					startAfter: 0,
+				},
+			]);
+		};
 	}, []);
 
 	/**
