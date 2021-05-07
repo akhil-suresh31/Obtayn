@@ -17,6 +17,7 @@ import { deletePost } from "../../../store/actions/postActions";
 import { GeoAltFill, TrashFill } from "react-bootstrap-icons";
 import ImageModal from "./imageModal";
 import { Waypoint } from "react-waypoint";
+import { useHistory } from "react-router";
 
 const Feed = ({
 	requests,
@@ -90,6 +91,28 @@ const Feed = ({
 		firestore.get({
 			collection: "Post",
 			orderBy: ["timestamp", "desc"],
+		});
+	};
+
+	const history = useHistory();
+
+	const confirmAccept = (req) => {
+		Swal.fire({
+			title: "Are you sure you want to accept this request?",
+			confirmButtonText: "Yes",
+			showConfirmButton: true,
+			showDenyButton: true,
+		}).then((result) => {
+			if (result.isConfirmed) {
+				acceptRequest(req);
+				Swal.fire({
+					title: "Request Accepted!",
+					text: "",
+					icon: "success",
+					timer: 1500,
+				});
+				history.push("/requests");
+			}
 		});
 	};
 
@@ -396,7 +419,7 @@ const Feed = ({
 														<Button
 															className="accept-button"
 															onClick={() =>
-																acceptRequest(
+																confirmAccept(
 																	item
 																)
 															}

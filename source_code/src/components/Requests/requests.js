@@ -281,7 +281,7 @@ const Requests = ({
 														: {
 																backgroundColor: bgcolor,
 														  };
-												if (req.status == "accepted") {
+												if (req.status === "accepted") {
 													acceptor =
 														users[
 															users.findIndex(
@@ -291,6 +291,7 @@ const Requests = ({
 															)
 														];
 												}
+												// } else acceptor.name = "";
 
 												return (
 													<Card
@@ -333,7 +334,16 @@ const Requests = ({
 																	</div>
 																) : null}
 															</p>
-															{acceptor ? (
+															{req.to_user_id ==
+																null && (
+																<p className="req-acceptor">
+																	<b>
+																		Pending
+																	</b>
+																</p>
+															)}
+															{req.to_user_id !=
+																null && (
 																<p className="req-acceptor">
 																	<b>
 																		{
@@ -344,12 +354,6 @@ const Requests = ({
 																	{
 																		acceptor.name
 																	}
-																</p>
-															) : (
-																<p className="req-acceptor">
-																	<b>
-																		Pending
-																	</b>
 																</p>
 															)}
 														</Accordion.Toggle>
