@@ -445,7 +445,11 @@ const Feed = ({
 			return (
 				<>
 					<div className="no-results">
-						<img src="images/tenor.gif" name="results-gif" alt="" />
+						<img
+							src="images/no-results.gif"
+							name="results-gif"
+							alt=""
+						/>
 					</div>
 					<h4
 						className="no-result-text"
