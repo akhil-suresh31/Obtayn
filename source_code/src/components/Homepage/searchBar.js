@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 import LocationAutoComplete from "./Location/LocationAutoComplete";
 import "./homepage";
 
@@ -10,14 +11,18 @@ function SearchBar({ setData, setSearchButton }) {
 		const form = e.target;
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
-		console.log(location); // lcoation text
+		console.log(location); // location text
 		console.log(formDataObj);
 		if (
 			!formDataObj["searchCategory"] &&
 			!formDataObj["searchKeywords"] &&
 			!location
 		) {
-			alert("EMPTY FORM!");
+			Swal.fire({
+				icon: "error",
+				title: "Sorry!",
+				text: "At least one field must be filled.",
+			});
 			setSearchButton(false);
 		} else {
 			if (
