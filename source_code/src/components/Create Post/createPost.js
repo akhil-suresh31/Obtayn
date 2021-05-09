@@ -80,7 +80,15 @@ function CreatePost({
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
 
-		if (!requestForm) formDataObj.location = location?.value.formatted;
+		if (!requestForm) {
+			formDataObj.location = location?.value.formatted;
+			formDataObj.locCoords = location
+				? {
+						latitude: location.value.lat,
+						longitude: location.value.lng,
+				  }
+				: null;
+		}
 		if (!requestForm) createRequest(formDataObj, images);
 		else createPost(formDataObj, images);
 
