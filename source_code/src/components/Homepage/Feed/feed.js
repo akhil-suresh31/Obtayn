@@ -104,7 +104,6 @@ const Feed = ({
 					orderBy: ["timestamp", "desc"],
 				},
 			]);
-			console.log("inside unmounting shizzzz");
 
 			firestore.unsetListeners([
 				{
@@ -129,8 +128,6 @@ const Feed = ({
 		setLoading(true);
 
 		if (reqLen === requests.length) {
-			console.log("req len: ", reqLen);
-
 			firestore.unsetListener({
 				collection: "Request",
 				limit: requests.length,
@@ -144,12 +141,8 @@ const Feed = ({
 				where: ["to_user_id", "==", null],
 			});
 			setReqLen(reqLen + 4);
-		} else {
-			console.log("done fetching requests");
 		}
 		if (postLen === posts.length) {
-			console.log("Post len :", postLen);
-
 			firestore.unsetListener({
 				collection: "Post",
 				limit: posts.length,
@@ -161,8 +154,6 @@ const Feed = ({
 				orderBy: ["timestamp", "desc"],
 			});
 			setPostLen(postLen + 4);
-		} else {
-			console.log("done fetching posts");
 		}
 		setTimeout(() => {
 			setLoading(false);

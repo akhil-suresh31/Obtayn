@@ -10,7 +10,6 @@ import {
 	Col,
 } from "react-bootstrap";
 import Avatar from "react-avatar";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 
@@ -62,8 +61,7 @@ function UserProfile({ logOut, User, user_id }) {
 
 	const changeContact = (e) => {
 		let contact = e.target.value;
-		console.log(contact);
-		if (contact != "") {
+		if (contact !== "") {
 			if (isNaN(contact))
 				setContactError("Contact number must be numeric.");
 			else if (contact.length < 10)
@@ -110,7 +108,6 @@ function UserProfile({ logOut, User, user_id }) {
 					if (snapshot.state === firebase.storage.TaskState.RUNNING) {
 						if (progressRef)
 							progressRef.current.style.width = `${percentage}%`;
-						console.log(`Percentage: ${percentage}%`);
 					}
 				},
 				(error) => {
@@ -133,7 +130,6 @@ function UserProfile({ logOut, User, user_id }) {
 							oldRef
 								.delete()
 								.then(() => {
-									console.log("Deleted old file.");
 									Swal.fire({
 										icon: "success",
 										title: "Profile updated!",
@@ -174,7 +170,7 @@ function UserProfile({ logOut, User, user_id }) {
 				<Nav className="justify-content-end">
 					<DropdownButton
 						menuAlign="right"
-						title={UserInfo.name}
+						title={User.name}
 						id="dropdown-menu-align-right"
 						variant="light"
 						className="navbar-profile"
@@ -381,15 +377,17 @@ function UserProfile({ logOut, User, user_id }) {
 									className="logout-link"
 									eventKey="4"
 								>
-									<Link
+									<div
+										to={null}
 										onClick={handleLogout}
 										style={{
+											cursor: "pointer",
 											color: "black",
 											textDecoration: "none",
 										}}
 									>
 										Logout
-									</Link>
+									</div>
 								</Dropdown.ItemText>
 							</center>
 						</div>

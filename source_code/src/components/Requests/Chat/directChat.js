@@ -142,8 +142,9 @@ const DirectChat = ({
 									>
 										<p>
 											{msg.images &&
-												msg.images.map((image) => (
+												msg.images.map((image, i) => (
 													<img
+														key={i}
 														src={image}
 														style={{
 															width: "80%",
@@ -204,8 +205,9 @@ const DirectChat = ({
 					<div className="chat-input">
 						{images && images.length === 0 ? null : (
 							<div className="selected-files mb-2 align-items-center">
-								{images.map((image) => (
+								{images.map((image, i) => (
 									<div
+										key={i}
 										style={{
 											position: "relative",
 											borderRadius: "5px",

@@ -18,21 +18,27 @@ function LandingPage() {
 						<p>Get stuff.</p>
 					</Container>
 				</Jumbotron>
-
-				<p
+				<h2
 					style={{
-						color: "white",
+						color: "#4abaaa",
 						paddingLeft: "5%",
 						paddingRight: "5%",
 					}}
 				>
-					<h2 style={{ color: "#4abaaa" }}>New here?</h2>
-					<p className="FillerText">
-						We've created a community where people can exchange
-						souvenirs, hassle-free. Send requests, chat with other
-						awesome people, post photos or say thanks via an
-						appreciation post!
-					</p>
+					New here?
+				</h2>
+
+				<p
+					className="FillerText"
+					style={{
+						paddingLeft: "5%",
+						paddingRight: "5%",
+					}}
+				>
+					We've created a community where people can exchange
+					souvenirs, hassle-free. Send requests, chat with other
+					awesome people, post photos or say thanks via an
+					appreciation post!
 				</p>
 			</div>
 			<div

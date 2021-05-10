@@ -153,7 +153,6 @@ function Login({
 }
 
 const mapStateToProps = (state) => {
-	console.log(state);
 	return {
 		error: state.auth.error,
 		authState: state.firebase.auth,

@@ -46,44 +46,46 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 						{(() => {
 							if (window.location.pathname === "/requests")
 								return (
-									<Nav.Link className="redirect-link">
-										<Link
-											to="/home"
-											style={{ color: "white" }}
-										>
-											Feed
-										</Link>
+									<Nav.Link
+										className="redirect-link"
+										onClick={() => history.push("/home")}
+										style={{ color: "white" }}
+									>
+										Feed
 									</Nav.Link>
 								);
 							else if (window.location.pathname === "/home")
 								return (
-									<Nav.Link className="redirect-link">
-										<Link
-											to="/requests"
-											style={{ color: "white" }}
-										>
-											My Requests
-										</Link>
+									<Nav.Link
+										className="redirect-link"
+										onClick={() =>
+											history.push("/requests")
+										}
+										style={{ color: "white" }}
+									>
+										My Requests{" "}
 									</Nav.Link>
 								);
 							else
 								return (
 									<Nav>
-										<Nav.Link className="redirect-link">
-											<Link
-												to="/home"
-												style={{ color: "white" }}
-											>
-												Feed
-											</Link>
+										<Nav.Link
+											className="redirect-link"
+											onClick={() =>
+												history.push("/home")
+											}
+											style={{ color: "white" }}
+										>
+											Feed
 										</Nav.Link>
-										<Nav.Link className="redirect-link">
-											<Link
-												to="/requests"
-												style={{ color: "white" }}
-											>
-												My Requests
-											</Link>
+										<Nav.Link
+											className="redirect-link"
+											onClick={() =>
+												history.push("/requests")
+											}
+											style={{ color: "white" }}
+										>
+											My Requests
 										</Nav.Link>
 									</Nav>
 								);
