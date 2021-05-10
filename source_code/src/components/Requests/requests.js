@@ -36,21 +36,22 @@ const Requests = ({
 	highlight,
 }) => {
 	const [show, setShow] = useState(false);
-	const [tag, setTag] = useState("Tag");
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [openDM, setOpenDM] = useState(false);
 	const [DMUser, setDMUser] = useState();
 	const [DMChat, setDMChat] = useState();
-	const [requestView, setRequestView] = useState(true);
+	const [requestView, setRequestView] = useState(false);
 	const [highlightedReq, setHighlightedReq] = useState();
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 
 	useEffect(() => {
 		if (highlight) {
 			if (highlight.trigger_event === "request") {
-				highlight.message.includes("accepted")
-					? setRequestView(true)
-					: setRequestView(false);
+				highlight.message.includes("accepted") ||
+				highlight.message.includes("Fulfilled")
+					? setRequestView(false)
+					: setRequestView(true);
+
 				setHighlightedReq(highlight.trigger_event_id);
 				setTimeout(function () {
 					clearNotif();
@@ -123,6 +124,7 @@ const Requests = ({
 
 	const handleChange = (e) => {
 		setRequestView(!requestView);
+		console.log(requestView);
 	};
 
 	var incomingReq = [];
@@ -145,8 +147,6 @@ const Requests = ({
 		return (
 			<div>
 				<Navbar
-					tag={tag}
-					setTag={setTag}
 					show={show}
 					setShow={setShow}
 					menuOpen={menuOpen}
@@ -164,13 +164,16 @@ const Requests = ({
 							<Accordion className="incoming-req-acc">
 								{incomingReq &&
 									incomingReq.map((req, index) => {
+										var bgcolor = "#f8b4c5";
 										const style =
 											highlightedReq == req.id
 												? {
-														border:
-															"5px solid #99ff99",
+														backgroundColor:
+															"#99ff99",
 												  }
-												: {};
+												: {
+														backgroundColor: bgcolor,
+												  };
 										return (
 											<Card
 												className="incoming-req-card"
@@ -188,6 +191,12 @@ const Requests = ({
 														<b>From: </b>
 														{req.user}
 													</p>
+													{req.status ===
+														"fulfilled" && (
+														<p className="req-sender">
+															<b>Fulfilled </b>
+														</p>
+													)}
 												</Accordion.Toggle>
 
 												<Accordion.Collapse
@@ -195,8 +204,7 @@ const Requests = ({
 												>
 													<Card.Body
 														style={{
-															backgroundColor:
-																"#f8b4c5",
+															backgroundColor: bgcolor,
 															zIndex: 5,
 														}}
 													>
@@ -245,7 +253,9 @@ const Requests = ({
 						<div className="outgoing-req-container">
 							<center>
 								<div className="sticky-div">
-									<h6 className="req-heading">My Requests</h6>
+									<h6 className="req-heading">
+										Outgoing Requests
+									</h6>
 									<center>
 										<Form onChange={handleChange}>
 											<FormLabel inline>
@@ -258,13 +268,13 @@ const Requests = ({
 												id="create-post-switch"
 												label="Fulfilled"
 												onChange={handleChange}
-												checked={!requestView}
+												checked={requestView}
 											/>
 										</Form>
 									</center>
 								</div>
 							</center>
-							{requestView ? (
+							{!requestView ? (
 								<div className="pending-req-container">
 									<Accordion className="outgoing-req-acc">
 										{pendingReq &&
@@ -276,7 +286,7 @@ const Requests = ({
 																backgroundColor:
 																	"#99ff99",
 																border:
-																	"5px solid #99ff99",
+																	"5px solid black",
 														  }
 														: {
 																backgroundColor: bgcolor,
