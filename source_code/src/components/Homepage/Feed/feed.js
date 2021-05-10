@@ -18,6 +18,24 @@ import { GeoAltFill, TrashFill } from "react-bootstrap-icons";
 import ImageModal from "./imageModal";
 import { Waypoint } from "react-waypoint";
 import { useHistory } from "react-router";
+import { getDistance } from "geolib";
+
+/**
+ * Use - Renders feed component ,shows un-accepted reqeusts and posts, ordered by time of upload.
+ * 		 More posts are dynamically loaded as user scrolls down ,all of the data is updated in real time, synced to databse.
+ * Parameters - requests :array of requests fetched from the database
+				user : Unique id of currently logged in user
+	users : List of users ,
+	posts : array of posts fetched from db,
+	acceptRequest :function to change the status of request when its accepted,
+	deleteRequest :function to delete the request from the database,
+	deletePost :function to delete the post from the database,
+	filter : data from filter component that tells if the user has selected any filter or not,
+	searchData :data from search component that contains the search paramertes to carry out search,
+	searchButton :bool value to tell if user pressed the seach button or not,
+	setSearchButton,
+	firestore :firestore ref of current project using witFirestore,
+ */
 
 const Feed = ({
 	requests,
@@ -36,66 +54,154 @@ const Feed = ({
 	const renderTooltip = (msg) => <Tooltip>{msg}</Tooltip>;
 	const [showImage, setImage] = useState(false); //shows image modal
 	const [selectedImg, setSelectedImg] = useState(null); //sets the image which is selected
-	const [lastPost, setLastPost] = useState(null); //last post object used as reference to fetch next post
-	const [lastRequest, setLastRequest] = useState(null); //Last request for fetching referrence
-	const [lastPost2, setLastPost2] = useState(null); //last to last post used for comparison to stop fetching
-	const [lastReq2, setLastReq2] = useState(null); //last to last reqeust used for comparison to stop fetching
 	const [loading, setLoading] = useState(false); //variable to show loading spinner when fetching data
 	const [loadall, setLoadall] = useState(true); //variable to check when to fetch all data wehn searching
+	const [userLoc, setUserLoc] = useState(null); //contains user location, null by default has longitude and latitude when user allows location access
+	const [reqLen, setReqLen] = useState(4); //stores the length of array requested from  "Reqeust" collection
+	const [postLen, setPostLen] = useState(4); //stores the length of array requested from  "Reqeust" collection
+	const history = useHistory(); //hook to help with routing
+
+	/**
+	 * lifecycle method use effects ,
+	 * sets the listener to Reqeusts and Posts when component is mounted, also remove listeners when component is unmounted
+	 */
+	useEffect(() => {
+		firestore.unsetListeners([
+			{
+				collection: "Request",
+				orderBy: ["timestamp", "desc"],
+				where: ["to_user_id", "==", null],
+			},
+			{
+				collection: "Post",
+				orderBy: ["timestamp", "desc"],
+			},
+		]);
+
+		firestore.setListeners([
+			{
+				collection: "Request",
+				limit: 4,
+				orderBy: ["timestamp", "desc"],
+				where: ["to_user_id", "==", null],
+			},
+			{
+				collection: "Post",
+				limit: 4,
+				orderBy: ["timestamp", "desc"],
+			},
+		]);
+
+		return () => {
+			firestore.unsetListeners([
+				{
+					collection: "Request",
+					orderBy: ["timestamp", "desc"],
+					where: ["to_user_id", "==", null],
+				},
+				{
+					collection: "Post",
+					orderBy: ["timestamp", "desc"],
+				},
+			]);
+			console.log("inside unmounting shizzzz");
+
+			firestore.unsetListeners([
+				{
+					collection: "Request",
+					limit: reqLen,
+					orderBy: ["timestamp", "desc"],
+					where: ["to_user_id", "==", null],
+				},
+				{
+					collection: "Post",
+					limit: postLen,
+					orderBy: ["timestamp", "desc"],
+				},
+			]);
+		};
+	}, []);
 
 	/**
 	 * function which is called when end of scrollbar is reached , to fetch more data
 	 */
 	const loadMore = () => {
 		setLoading(true);
-		var lastpost, lastReq;
 
-		if (posts) lastpost = posts[posts.length - 1];
-		if (requests) lastReq = requests[requests.length - 1];
-		setLastReq2(lastReq);
-		setLastPost2(lastpost);
-		if (lastReq2 == null || lastReq2.id !== lastRequest.id) {
-			firestore.get({
+		if (reqLen === requests.length) {
+			console.log("req len: ", reqLen);
+
+			firestore.unsetListener({
 				collection: "Request",
-				limit: requests.length + 4,
+				limit: requests.length,
 				orderBy: ["timestamp", "desc"],
 				where: ["to_user_id", "==", null],
-				startAfter: lastReq,
 			});
+			firestore.setListener({
+				collection: "Request",
+				limit: reqLen + 4,
+				orderBy: ["timestamp", "desc"],
+				where: ["to_user_id", "==", null],
+			});
+			setReqLen(reqLen + 4);
 		} else {
 			console.log("done fetching requests");
 		}
-		if (lastPost2 == null || lastPost2.id !== lastPost.id) {
-			firestore.get({
+		if (postLen === posts.length) {
+			console.log("Post len :", postLen);
+
+			firestore.unsetListener({
 				collection: "Post",
-				limit: posts.length + 4,
+				limit: posts.length,
 				orderBy: ["timestamp", "desc"],
-				startAfter: lastpost,
 			});
+			firestore.setListener({
+				collection: "Post",
+				limit: postLen + 4,
+				orderBy: ["timestamp", "desc"],
+			});
+			setPostLen(postLen + 4);
 		} else {
 			console.log("done fetching posts");
 		}
 		setTimeout(() => {
 			setLoading(false);
-		}, 2000);
+		}, 1000);
 	};
 	/**
 	 * function to fetch all data , called when searching
 	 */
 	const loadAll = () => {
-		firestore.get({
-			collection: "Request",
-			orderBy: ["timestamp", "desc"],
-			where: ["to_user_id", "==", null],
-		});
-		firestore.get({
-			collection: "Post",
-			orderBy: ["timestamp", "desc"],
-		});
+		firestore.unsetListeners([
+			{
+				collection: "Request",
+				limit: reqLen,
+				orderBy: ["timestamp", "desc"],
+				where: ["to_user_id", "==", null],
+			},
+			{
+				collection: "Post",
+				limit: postLen,
+				orderBy: ["timestamp", "desc"],
+			},
+		]);
+		firestore.setListeners([
+			{
+				collection: "Request",
+				orderBy: ["timestamp", "desc"],
+				where: ["to_user_id", "==", null],
+			},
+			{
+				collection: "Post",
+				orderBy: ["timestamp", "desc"],
+			},
+		]);
 	};
 
-	const history = useHistory();
-
+	/**
+	 * function triggered when user clicks the accept button
+	 * parameter - req : request obj for which accept button was clicked
+	 */
 	const confirmAccept = (req) => {
 		Swal.fire({
 			title: "Are you sure you want to accept this request?",
@@ -115,52 +221,6 @@ const Feed = ({
 			}
 		});
 	};
-
-	useEffect(() => {
-		firestore.setListeners([
-			{
-				collection: "Request",
-				limit: 4,
-				orderBy: ["timestamp", "desc"],
-				where: ["to_user_id", "==", null],
-				startAfter: 0,
-			},
-			{
-				collection: "Post",
-				limit: 4,
-				orderBy: ["timestamp", "desc"],
-				startAfter: 0,
-			},
-		]);
-
-		return () => {
-			firestore.unsetListeners([
-				{
-					collection: "Request",
-					limit: 4,
-					orderBy: ["timestamp", "desc"],
-					where: ["to_user_id", "==", null],
-					startAfter: 0,
-				},
-				{
-					collection: "Post",
-					limit: 4,
-					orderBy: ["timestamp", "desc"],
-					startAfter: 0,
-				},
-			]);
-		};
-	}, []);
-
-	/**
-	 * keeps track of posts and request to update the last request and post
-	 */
-	useEffect(() => {
-		if (posts && lastPost !== posts[posts.length - 1])
-			setLastPost(posts[posts.length - 1]);
-		if (requests && lastRequest !== requests[requests.length - 1])
-			setLastRequest(requests[requests.length - 1]);
-	}, [requests, posts]);
 
 	/**function to delete a request
 	 * parameter : request object
@@ -205,6 +265,7 @@ const Feed = ({
 		});
 	};
 
+	//helper fucntion to load all data if search button was pressed and to prevent reloaduing data once its fetched
 	if (searchButton && loadall) {
 		loadAll();
 		setLoadall(false);
@@ -225,19 +286,33 @@ const Feed = ({
 			allPosts.sort((a, b) => b.timestamp - a.timestamp);
 		} else if (filter.request) {
 			allPosts = [...requests];
+			if (navigator.geolocation) {
+				!userLoc &&
+					navigator.geolocation.getCurrentPosition((position) => {
+						setUserLoc({
+							latitude: position.coords.latitude,
+							longitude: position.coords.longitude,
+						});
+					});
+			}
+			if (userLoc)
+				allPosts.sort((a, b) => {
+					if (!a.locCoords || !b.locCoords) return -1;
+					return (
+						getDistance(userLoc, a.locCoords) -
+						getDistance(userLoc, b.locCoords)
+					);
+				});
 		} else if (filter.post) {
 			allPosts = [...posts];
 		}
 
 		/**filtering data according to the search parameters  */
 		if (searchData && searchButton) {
-			console.log("Searching...");
-			console.log(searchData);
 			if (searchData.category !== "") {
 				allPosts = allPosts.filter(
 					(post) => post.category === searchData.category
 				);
-				console.log("Category filter -> ", allPosts);
 			}
 			if (searchData.keyword !== "") {
 				allPosts = allPosts.filter(
@@ -249,16 +324,15 @@ const Feed = ({
 							.toLowerCase()
 							.includes(searchData.keyword.toLowerCase())
 				);
-				console.log("Keyword filter -> ", allPosts);
 			}
 			if (searchData.location !== "") {
 				allPosts = allPosts.filter((post) =>
 					post.location?.includes(searchData.location)
 				);
-				console.log("Keyword filter -> ", allPosts);
 			}
-			console.log("FILTERED FEED-> ", allPosts);
 		} else setSearchButton(false);
+
+		/**rendering the posts and requests which are stored together in allPosts */
 
 		if (allPosts.length > 0) {
 			return (
@@ -345,7 +419,11 @@ const Feed = ({
 																	index
 																) => {
 																	return (
-																		<div>
+																		<div
+																			key={
+																				index
+																			}
+																		>
 																			<OverlayTrigger
 																				placement="top"
 																				overlay={renderTooltip(
@@ -444,7 +522,6 @@ const Feed = ({
 													</OverlayTrigger>
 												) : null}
 											</div>
-											{/* ) : null} */}
 										</Media.Body>
 									</Media>
 								</motion.div>
