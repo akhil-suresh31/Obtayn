@@ -1,4 +1,7 @@
 import React from "react";
+import { CaretLeftSquareFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 function ErrorPage() {
 	return (
@@ -17,7 +20,7 @@ function ErrorPage() {
 
 			<center style={{ color: "white" }}>
 				<br />
-				<br />
+
 				<br />
 				<h1
 					style={{
@@ -43,6 +46,15 @@ function ErrorPage() {
 						moved.
 					</i>
 				</h6>
+				<br />
+				<Button variant="dark">
+					<Link
+						to="/home"
+						style={{ color: "white", fontSize: "18px" }}
+					>
+						<b>Back to Home</b>
+					</Link>
+				</Button>
 			</center>
 		</div>
 	);

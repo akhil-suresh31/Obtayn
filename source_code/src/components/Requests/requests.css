@@ -33,7 +33,7 @@
 .incoming-req-card {
 	margin-bottom: 6%;
 	border-radius: 5px !important;
-	background-color: var(--acceptedReqBg) !important;
+	/* background-color: var(--acceptedReqBg) !important; */
 	transition: background-color 0.5s ease;
 	border: 1px solid white !important;
 }
