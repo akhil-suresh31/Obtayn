@@ -49,3 +49,9 @@
 .plus-icon:hover {
 	color: #f05d81;
 }
+
+.muted-text {
+	font-size: 12px;
+	color: rgb(104, 102, 102);
+	margin-top: 2%;
+}

@@ -395,6 +395,19 @@ function UserProfile({ logOut, User, user_id }) {
 															</Col>
 														)}
 													</Row>
+													<Row>
+														<Col>
+															<p className="muted-text">
+																<i>
+																	Files with
+																	size above
+																	1Mb will be
+																	compressed
+																	and cropped.
+																</i>
+															</p>
+														</Col>
+													</Row>
 
 													{file && (
 														<motion.div
