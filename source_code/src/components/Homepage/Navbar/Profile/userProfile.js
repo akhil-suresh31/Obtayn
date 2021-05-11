@@ -40,7 +40,6 @@ function UserProfile({ logOut, User, user_id }) {
 	});
 
 	const storage = firebase.storage();
-	const [url, setURL] = useState("");
 	const [show, setShow] = useState(false);
 	const [file, setFile] = useState(null);
 	const handleClose = () => setShow(false);
@@ -87,7 +86,46 @@ function UserProfile({ logOut, User, user_id }) {
 		logOut();
 	};
 
-	const handleSubmit = (e) => {
+	const resizeImage = (file) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		return new Promise((resolve, reject) => {
+			reader.onload = function (event) {
+				const imgElement = document.createElement("img");
+				imgElement.src = event.target.result;
+
+				imgElement.onload = function (e) {
+					const canvas = document.createElement("canvas");
+					const MAX_WIDTH = 400;
+
+					const scaleSize = MAX_WIDTH / e.target.width;
+					canvas.width = MAX_WIDTH;
+					canvas.height = e.target.height * scaleSize;
+					console.log("width :", canvas.width);
+					console.log("height :", canvas.height);
+					const ctx = canvas.getContext("2d");
+
+					ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+
+					canvas.toBlob((blob) => {
+						console.log("blob", blob);
+						resolve(blob);
+					}, "image/jpeg");
+					// const srcEncoded = ctx.canvas.toDataURL(
+					// 	e.target,
+					// 	"image/jpeg"
+					// );
+
+					// // you can send srcEncoded to the server
+					// resolve(srcEncoded);
+				};
+				imgElement.onerror = (e) => reject(e);
+			};
+			reader.onerror = (e) => reject(e);
+		});
+	};
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const firestore = firebase.firestore();
 		const collectionRef = firestore.collection("User");
@@ -96,14 +134,23 @@ function UserProfile({ logOut, User, user_id }) {
 		formData = Object.fromEntries(formData.entries());
 
 		if (file) {
+			var result;
+			try {
+				result = await resizeImage(file);
+			} catch (e) {
+				console.log("file conver error :", e);
+			}
+			const uploadDate = Date.now();
+			const blob = result;
 			const uploadTask = storage
-				.ref(`/avatars/${user_id}-${file.name}`)
-				.put(file);
+				.ref(`/avatars/${user_id}-DP-${uploadDate}`)
+				.put(blob, { contentType: "image/jpeg" });
 			uploadTask.on(
 				"state_changed",
 				(snapshot) => {
 					const percentage =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log(percentage);
 
 					if (snapshot.state === firebase.storage.TaskState.RUNNING) {
 						if (progressRef)
@@ -116,17 +163,17 @@ function UserProfile({ logOut, User, user_id }) {
 				() => {
 					storage
 						.ref("avatars")
-						.child(`${user_id}-${file.name}`)
+						.child(`${user_id}-DP-${uploadDate}`)
 						.getDownloadURL()
 						.then((url) => {
 							setFile(null);
+							console.log("url:", url);
 							const oldRef = storage.refFromURL(UserInfo.avatar);
 							collectionRef.doc(user_id).update({
 								name: formData.profileName,
 								phone_number: formData.profileContact,
 								profile_picture: url,
 							});
-							setURL(url);
 							oldRef
 								.delete()
 								.then(() => {
@@ -291,12 +338,9 @@ function UserProfile({ logOut, User, user_id }) {
 																			"relative",
 																		borderRadius:
 																			"5px",
-																		width:
-																			"70px",
-																		height:
-																			"70px",
-																		margin:
-																			"0 5px",
+																		width: "70px",
+																		height: "70px",
+																		margin: "0 5px",
 																		backgroundImage: `url(${URL.createObjectURL(
 																			file
 																		)})`,
@@ -312,14 +356,12 @@ function UserProfile({ logOut, User, user_id }) {
 																			position:
 																				"absolute",
 																			right: 0,
-																			top:
-																				"1px",
+																			top: "1px",
 																			backgroundColor:
 																				"#0000007c",
 																			borderRadius:
 																				"12px",
-																			cursor:
-																				"pointer",
+																			cursor: "pointer",
 																		}}
 																		color={
 																			"white"
