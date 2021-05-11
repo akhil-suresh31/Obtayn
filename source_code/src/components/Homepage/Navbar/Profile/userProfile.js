@@ -22,6 +22,7 @@ import "firebase/storage";
 import "firebase/firestore";
 import "./profile.css";
 import { PlusCircle, X } from "react-bootstrap-icons";
+import imageCompression from "browser-image-compression";
 
 /**
  * Use - Loads User Profile component inside Navbar. Renders as a dropdown.
@@ -96,28 +97,31 @@ function UserProfile({ logOut, User, user_id }) {
 
 				imgElement.onload = function (e) {
 					const canvas = document.createElement("canvas");
-					const MAX_WIDTH = 400;
+					const MAX_SIZE = 400;
+					const imageWidth = e.target.naturalWidth;
+					const imageHeight = e.target.naturalHeight;
+					const imageRatio = imageWidth / imageHeight;
 
-					const scaleSize = MAX_WIDTH / e.target.width;
-					canvas.width = MAX_WIDTH;
-					canvas.height = e.target.height * scaleSize;
-					console.log("width :", canvas.width);
-					console.log("height :", canvas.height);
+					let opWidth = imageWidth;
+					let opHeight = imageHeight;
+
+					if (imageRatio > 1) {
+						opWidth = imageHeight;
+					} else if (imageRatio < 1) {
+						opHeight = imageWidth;
+					}
+
+					const opX = (opWidth - imageWidth) * 0.5;
+					const opY = (opHeight - imageHeight) * 0.5;
+					canvas.width = opWidth;
+					canvas.height = opHeight;
 					const ctx = canvas.getContext("2d");
 
-					ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+					ctx.drawImage(e.target, opX, opY);
 
 					canvas.toBlob((blob) => {
-						console.log("blob", blob);
 						resolve(blob);
 					}, "image/jpeg");
-					// const srcEncoded = ctx.canvas.toDataURL(
-					// 	e.target,
-					// 	"image/jpeg"
-					// );
-
-					// // you can send srcEncoded to the server
-					// resolve(srcEncoded);
 				};
 				imgElement.onerror = (e) => reject(e);
 			};
@@ -138,19 +142,29 @@ function UserProfile({ logOut, User, user_id }) {
 			try {
 				result = await resizeImage(file);
 			} catch (e) {
-				console.log("file conver error :", e);
+				console.log("file convert error :", e);
 			}
 			const uploadDate = Date.now();
 			const blob = result;
+			const options = {
+				maxSizeMB: 1,
+				maxWidthOrHeight: 1920,
+			};
+			var cmpFile;
+			try {
+				cmpFile = await imageCompression(blob, options);
+			} catch (error) {
+				console.log(error);
+			}
+
 			const uploadTask = storage
 				.ref(`/avatars/${user_id}-DP-${uploadDate}`)
-				.put(blob, { contentType: "image/jpeg" });
+				.put(cmpFile);
 			uploadTask.on(
 				"state_changed",
 				(snapshot) => {
 					const percentage =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-					console.log(percentage);
 
 					if (snapshot.state === firebase.storage.TaskState.RUNNING) {
 						if (progressRef)
@@ -167,7 +181,6 @@ function UserProfile({ logOut, User, user_id }) {
 						.getDownloadURL()
 						.then((url) => {
 							setFile(null);
-							console.log("url:", url);
 							const oldRef = storage.refFromURL(UserInfo.avatar);
 							collectionRef.doc(user_id).update({
 								name: formData.profileName,
@@ -185,7 +198,15 @@ function UserProfile({ logOut, User, user_id }) {
 									});
 									handleClose();
 								})
-								.catch((err) => console.log(err));
+								.catch((err) => {
+									Swal.fire({
+										icon: "error",
+										title: "Could not update your profile, try again later.",
+										confirmButtonText: "Cool",
+										timer: 1000,
+									});
+									handleClose();
+								});
 						});
 				}
 			);
