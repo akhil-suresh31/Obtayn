@@ -91,6 +91,7 @@ function SearchBar({ setData, setSearchButton }) {
 						<LocationAutoComplete
 							setLocation={setLocation}
 							location={location}
+							aria-label="location"
 						/>
 					</Form.Group>
 					<Button type="submit" className="submit-btn">

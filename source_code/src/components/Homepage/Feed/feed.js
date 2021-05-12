@@ -351,6 +351,7 @@ const Feed = ({
 												)
 											}
 											round={true}
+											name={item?.user}
 										/>
 										<Media.Body>
 											<div className="d-flex w-100 mb-0 align-items-end">
@@ -389,8 +390,7 @@ const Feed = ({
 														<GeoAltFill
 															size={22}
 															style={{
-																color:
-																	"#cc0000",
+																color: "#cc0000",
 															}}
 														/>
 													</h6>
@@ -427,10 +427,8 @@ const Feed = ({
 																					}
 																					alt=""
 																					style={{
-																						height:
-																							"20vh",
-																						width:
-																							"20vh",
+																						height: "20vh",
+																						width: "20vh",
 																						padding:
 																							"10%",
 																					}}

@@ -22,6 +22,10 @@ const LocationAutoComplete = ({ setLocation, isrequest, location }) => {
 			...provided,
 			maxHeight: isrequest ? "30vh" : "11vh",
 		}),
+		placeholder: (provided, state) => ({
+			...provided,
+			color: "rgb(86 86 86)",
+		}),
 	};
 
 	return (

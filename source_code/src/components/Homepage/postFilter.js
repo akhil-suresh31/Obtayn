@@ -15,7 +15,7 @@ function PostFilter({ setFilter, filter }) {
 						label="Requests"
 						id="viewRequests"
 						feedbackTooltip
-						style={{ color: "white" }}
+						style={{ color: "black" }}
 						onClick={() => {
 							setFilter({ ...filter, request: !filter.request });
 						}}
@@ -27,7 +27,7 @@ function PostFilter({ setFilter, filter }) {
 						label="Posts"
 						id="viewPosts"
 						feedbackTooltip
-						style={{ color: "white" }}
+						style={{ color: "black" }}
 						onClick={() => {
 							setFilter({ ...filter, post: !filter.post });
 						}}
