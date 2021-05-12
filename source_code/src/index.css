@@ -1,3 +1,31 @@
 body {
-  margin: 0;
+	margin: 0;
+}
+
+:root {
+	--navbarBg: #0b4047;
+	--feedBg: #adcad6;
+	--activityBg: #0b4047;
+	--createPost: #adcad6;
+	--feedContainerBg: #2b4f60;
+	--postBg: white;
+	--notifBg: #298591;
+}
+
+/* scrollbar styles */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #4b4f68;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #0b4047;
 }

@@ -35,6 +35,11 @@
 	background-color: #298591;
 }
 
+.homepage-navbar {
+	height: 10vh !important;
+	background-color: var(--navbarBg) !important;
+}
+
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media (max-width: 995px) and (max-height: 1000px) {
 	.homepage-navbar {

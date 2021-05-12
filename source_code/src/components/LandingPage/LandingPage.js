@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import { useState, Suspense, lazy } from "react";
 import { Jumbotron, Container } from "react-bootstrap";
 import { AnimatePresence, motion } from "framer-motion";
-import SignUp from "./SignUp";
+import { Redirect, useLocation } from "react-router-dom";
+import { connect } from "react-redux";
+
 import Login from "./Login";
 import "./LandingPage.css";
-import ForgotPassword from "./ForgotPassword";
 
-function LandingPage() {
+const SignUp = lazy(() => import("./SignUp"));
+const ForgotPassword = lazy(() => import("./ForgotPassword"));
+
+function LandingPage({ authState }) {
 	const [login, setLogin] = useState(true);
 	const [frgtPass, setFrgtPass] = useState(false);
+	const { state } = useLocation();
+
+	if (authState.uid) return <Redirect to={state?.from || "/home"} />;
+
 	return (
 		<div className="contents">
 			<div className="black-div">
@@ -20,7 +28,7 @@ function LandingPage() {
 				</Jumbotron>
 				<h2
 					style={{
-						color: "#4abaaa",
+						color: "rgb(20 128 112)",
 						paddingLeft: "5%",
 						paddingRight: "5%",
 					}}
@@ -65,10 +73,13 @@ function LandingPage() {
 									}}
 									exit={{ opacity: 0 }}
 								>
-									<ForgotPassword
-										setLogin={setLogin}
-										setFrgtPass={setFrgtPass}
-									/>
+									{" "}
+									<Suspense fallback={<div>Loading...</div>}>
+										<ForgotPassword
+											setLogin={setLogin}
+											setFrgtPass={setFrgtPass}
+										/>
+									</Suspense>
 								</motion.div>
 							) : (
 								<motion.div
@@ -98,7 +109,9 @@ function LandingPage() {
 								}}
 								exit={{ opacity: 0 }}
 							>
-								<SignUp setLogin={setLogin} />
+								<Suspense fallback={<div>Loading...</div>}>
+									<SignUp setLogin={setLogin} />
+								</Suspense>
 							</motion.div>
 						)}
 					</div>
@@ -107,5 +120,10 @@ function LandingPage() {
 		</div>
 	);
 }
+const mapStateToProps = (state) => {
+	return {
+		authState: state.firebase.auth,
+	};
+};
 
-export default LandingPage;
+export default connect(mapStateToProps)(LandingPage);

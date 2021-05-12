@@ -163,6 +163,7 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 										style={{ padding: 0, border: 0 }}
 										onClick={signInGoogle}
 										disabled={disableButton}
+										aria-label="googleButton"
 									>
 										<img
 											style={{

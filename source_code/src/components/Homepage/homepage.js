@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import { useState, Suspense, lazy } from "react";
+import { Redirect } from "react-router";
+import { connect, useSelector } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import "./homepage.css";
 import NavBar from "./Navbar/navbar";
 import Feed from "./Feed/feed";
-import Activity from "./Activity/activity";
-import ScrollToTop from "./scrollToTop";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
 import SearchBar from "./searchBar";
-import "./homepage.css";
 import PostFilter from "./postFilter";
-import { Redirect } from "react-router";
+
+const ScrollToTop = lazy(() => import("./scrollToTop"));
+const Activity = lazy(() => import("./Activity/activity"));
 
 const Homepage = ({ users, auth }) => {
 	var initialSearchData = { category: null, keywords: null, location: null };
@@ -31,46 +32,50 @@ const Homepage = ({ users, auth }) => {
 			behavior: "smooth",
 		});
 	}
-	if (auth.uid)
-		return (
-			<div>
-				<NavBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
-				<div className="homepage-body">
+	if (!auth.uid) return <Redirect to="/" />;
+
+	return (
+		<div>
+			<NavBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+
+			<div className="homepage-body">
+				<Suspense fallback={<div>Loading...</div>}>
 					<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-
-					<div className="homepage-sticky">
-						<center>
-							<SearchBar
-								setData={setData}
-								setSearchButton={setSearchButton}
-							/>
-
-							<PostFilter setFilter={setFilter} filter={filter} />
-						</center>
-					</div>
-					<div
-						className="homepage-feed"
-						onScroll={(val) => checkScrollPos(val.target.scrollTop)}
-					>
-						<Feed
-							users={users}
-							filter={filter}
-							searchData={data}
-							searchButton={searchButton}
+				</Suspense>
+				<div className="homepage-sticky">
+					<center>
+						<SearchBar
+							setData={setData}
 							setSearchButton={setSearchButton}
 						/>
-						<div className="scroll">
+
+						<PostFilter setFilter={setFilter} filter={filter} />
+					</center>
+				</div>
+				<div
+					className="homepage-feed"
+					onScroll={(val) => checkScrollPos(val.target.scrollTop)}
+				>
+					<Feed
+						users={users}
+						filter={filter}
+						searchData={data}
+						searchButton={searchButton}
+						setSearchButton={setSearchButton}
+					/>
+					<div className="scroll">
+						<Suspense fallback={<div>Loading...</div>}>
 							<ScrollToTop
 								scrollToTop={scrollToTop}
 								scrollUp={scrollUp}
 							/>
-						</div>
+						</Suspense>
 					</div>
 				</div>
 			</div>
-		);
-	else return <Redirect to="/" />;
+		</div>
+	);
 };
 
 const mapStatetoProps = (state) => {

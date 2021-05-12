@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
 	Nav,
 	DropdownButton,
@@ -22,6 +22,8 @@ import "firebase/storage";
 import "firebase/firestore";
 import "./profile.css";
 import { PlusCircle, X } from "react-bootstrap-icons";
+
+import { useHistory } from "react-router";
 import imageCompression from "browser-image-compression";
 
 /**
@@ -49,6 +51,7 @@ function UserProfile({ logOut, User, user_id }) {
 	const [contactError, setContactError] = useState(null);
 	const types = ["image/png", "image/jpeg"];
 	const progressRef = useRef(null);
+	const history = useHistory();
 
 	useEffect(() => {
 		setUserInfo({
@@ -484,6 +487,7 @@ const mapStateToProps = (state) => {
 	return {
 		User: state.firebase.profile,
 		user_id: state.firebase.auth.uid,
+		auth: state.firebase.auth,
 	};
 };
 

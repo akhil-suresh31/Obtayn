@@ -6,6 +6,10 @@
 	color: white;
 }
 
+.profile-body {
+	background-color: white !important;
+}
+
 .update-button {
 	background-color: #489abd !important;
 	border: 0ch !important;

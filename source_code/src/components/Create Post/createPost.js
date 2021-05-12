@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import NavBar from "../Homepage/Navbar/navbar";
-import Activity from "../Homepage/Activity/activity";
 import { Form, Row, Col, Button, FormLabel, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
-import { useHistory, Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import "./createPost.css";
 import { createRequest } from "../../store/actions/requestActions";
 import { createPost } from "../../store/actions/postActions";
 import LocationAutoComplete from "../Homepage/Location/LocationAutoComplete";
 import { PlusCircle, X } from "react-bootstrap-icons";
+
+const Activity = lazy(() => import("../Homepage/Activity/activity"));
 
 /**
  * Use - Renders Create Post component. Appears as a shortcut inside Navbar.
@@ -104,230 +105,220 @@ function CreatePost({
 			setImages(array);
 		}
 	};
-
-	if (auth.uid)
-		return (
-			<div>
-				<NavBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+	if (!auth.uid) return <Redirect to="/" />;
+	return (
+		<div>
+			<NavBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+			<Suspense fallback={<div>Loading...</div>}>
 				<Activity menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-
-				<div className="create-post-container">
-					{post_error && <Alert variant="danger">{post_error}</Alert>}
-					{req_error && <Alert variant="danger">{req_error}</Alert>}
-					<div className="create-post-body">
-						<center>
-							<FormLabel inline>New Request</FormLabel>
-							&nbsp;&nbsp;
-							<Form.Check
-								inline
-								type="switch"
-								id="create-post-switch"
-								label="New Post"
-								onChange={handleChange}
-								checked={requestForm}
-							/>
-						</center>
-						<br />
-						<div className="form-container">
-							<Form
-								noValidate
-								validated={validated}
-								onSubmit={handleSubmit}
-								name="form"
-								className="pink-form"
-							>
-								<Row>
-									{!requestForm ? (
-										<Col>
-											<Form.Group as={Col}>
-												<Form.Control
-													as="select"
-													defaultValue="Category"
-													required
-													name="category"
-												>
-													<option disabled={true}>
-														Category
-													</option>
-													<option>Clothing</option>
-													<option>Electronics</option>
-													<option>Food</option>
-													<option>Hobbies</option>
-													<option>
-														Home & Living
-													</option>
-													<option>Other</option>
-												</Form.Control>
-											</Form.Group>
-										</Col>
-									) : null}
+			</Suspense>
+			<div className="create-post-container">
+				{post_error && <Alert variant="danger">{post_error}</Alert>}
+				{req_error && <Alert variant="danger">{req_error}</Alert>}
+				<div className="create-post-body">
+					<center>
+						<FormLabel inline>New Request</FormLabel>
+						&nbsp;&nbsp;
+						<Form.Check
+							inline
+							type="switch"
+							id="create-post-switch"
+							label="New Post"
+							onChange={handleChange}
+							checked={requestForm}
+						/>
+					</center>
+					<br />
+					<div className="form-container">
+						<Form
+							noValidate
+							validated={validated}
+							onSubmit={handleSubmit}
+							name="form"
+							className="pink-form"
+						>
+							<Row>
+								{!requestForm ? (
 									<Col>
-										<Form.Control
-											required
-											type="text"
-											placeholder="Title"
-											name="title"
-										/>
-										<Form.Control.Feedback>
-											Looks good!
-										</Form.Control.Feedback>
-										<Form.Control.Feedback type="invalid">
-											Please enter a title.
-										</Form.Control.Feedback>
+										<Form.Group as={Col}>
+											<Form.Control
+												as="select"
+												defaultValue="Category"
+												required
+												name="category"
+											>
+												<option disabled={true}>
+													Category
+												</option>
+												<option>Clothing</option>
+												<option>Electronics</option>
+												<option>Food</option>
+												<option>Hobbies</option>
+												<option>Home & Living</option>
+												<option>Other</option>
+											</Form.Control>
+										</Form.Group>
 									</Col>
-								</Row>
-								<Row>
-									{!requestForm ? (
-										<Col>
-											<LocationAutoComplete
-												setLocation={setLocation}
-												isrequest={true}
-											/>
-										</Col>
-									) : null}
-								</Row>
-								<br />
-								<Form.Group>
+								) : null}
+								<Col>
 									<Form.Control
-										as="textarea"
-										rows={3}
 										required
-										name="message"
-										placeholder="Message"
+										type="text"
+										placeholder="Title"
+										name="title"
 									/>
 									<Form.Control.Feedback>
 										Looks good!
 									</Form.Control.Feedback>
 									<Form.Control.Feedback type="invalid">
-										Please enter a message.
+										Please enter a title.
 									</Form.Control.Feedback>
-								</Form.Group>
-								<Form.Label>Add Images</Form.Label>
-								<Row>
-									<Col
-									// style={{
-									// 	maxWidth: "min-content",
-									// 	maxHeight: "min-content",
-									// }}
-									>
-										<label className="file-input-label">
-											<input
-												type="file"
-												name="file"
-												onChange={handleImageChange}
-												multiple
-												className="position-relative file-input"
-											/>
-											<PlusCircle className="plus-icon" />
-										</label>
+								</Col>
+							</Row>
+							<Row>
+								{!requestForm ? (
+									<Col>
+										<LocationAutoComplete
+											setLocation={setLocation}
+											isrequest={true}
+										/>
 									</Col>
+								) : null}
+							</Row>
+							<br />
+							<Form.Group>
+								<Form.Control
+									as="textarea"
+									rows={3}
+									required
+									name="message"
+									placeholder="Message"
+								/>
+								<Form.Control.Feedback>
+									Looks good!
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									Please enter a message.
+								</Form.Control.Feedback>
+							</Form.Group>
+							<Form.Label>Add Images</Form.Label>
+							<Row>
+								<Col
+								// style={{
+								// 	maxWidth: "min-content",
+								// 	maxHeight: "min-content",
+								// }}
+								>
+									<label className="file-input-label">
+										<input
+											type="file"
+											name="file"
+											onChange={handleImageChange}
+											multiple
+											className="position-relative file-input"
+										/>
+										<PlusCircle className="plus-icon" />
+									</label>
+								</Col>
 
-									{error && (
-										<Col>
-											<div className="error">
-												<i>{error}</i>
-											</div>
-										</Col>
-									)}
+								{error && (
+									<Col>
+										<div className="error">
+											<i>{error}</i>
+										</div>
+									</Col>
+								)}
 
-									<div className="file-output d-flex">
-										{images.length != 0
-											? images.map((img, index) => {
-													return (
-														<Col>
-															<div
+								<div className="file-output d-flex">
+									{images.length != 0
+										? images.map((img, index) => {
+												return (
+													<Col>
+														<div
+															style={{
+																position:
+																	"relative",
+																borderRadius:
+																	"5px",
+																width: "70px",
+																height: "70px",
+																margin: "0 5px",
+																backgroundImage: `url(${URL.createObjectURL(
+																	img
+																)})`,
+																backgroundSize:
+																	"cover",
+															}}
+														>
+															<X
+																size={25}
 																style={{
 																	position:
-																		"relative",
+																		"absolute",
+																	right: 0,
+																	top: "1px",
+																	backgroundColor:
+																		"#0000007c",
 																	borderRadius:
-																		"5px",
-																	width:
-																		"70px",
-																	height:
-																		"70px",
-																	margin:
-																		"0 5px",
-																	backgroundImage: `url(${URL.createObjectURL(
-																		img
-																	)})`,
-																	backgroundSize:
-																		"cover",
+																		"12px",
+																	cursor: "pointer",
 																}}
-															>
-																<X
-																	size={25}
-																	style={{
-																		position:
-																			"absolute",
-																		right: 0,
-																		top:
-																			"1px",
-																		backgroundColor:
-																			"#0000007c",
-																		borderRadius:
-																			"12px",
-																		cursor:
-																			"pointer",
-																	}}
-																	color={
-																		"white"
-																	}
-																	onClick={() =>
-																		removeImage(
-																			img
-																		)
-																	}
-																/>
-															</div>
-														</Col>
-													);
-											  })
-											: null}
-									</div>
+																color={"white"}
+																onClick={() =>
+																	removeImage(
+																		img
+																	)
+																}
+															/>
+														</div>
+													</Col>
+												);
+										  })
+										: null}
+								</div>
 
-									<Col>
-										{!requestForm ? (
-											error ? (
-												<Button
-													className="submit-button"
-													type="submit"
-													disabled
-												>
-													Add Request
-												</Button>
-											) : (
-												<Button
-													className="submit-button"
-													type="submit"
-												>
-													Add Request
-												</Button>
-											)
-										) : error ? (
+								<Col>
+									{!requestForm ? (
+										error ? (
 											<Button
 												className="submit-button"
 												type="submit"
 												disabled
 											>
-												Add Post
+												Add Request
 											</Button>
 										) : (
 											<Button
 												className="submit-button"
 												type="submit"
 											>
-												Add Post
+												Add Request
 											</Button>
-										)}
-									</Col>
-								</Row>
-							</Form>
-						</div>
+										)
+									) : error ? (
+										<Button
+											className="submit-button"
+											type="submit"
+											disabled
+										>
+											Add Post
+										</Button>
+									) : (
+										<Button
+											className="submit-button"
+											type="submit"
+										>
+											Add Post
+										</Button>
+									)}
+								</Col>
+							</Row>
+						</Form>
 					</div>
 				</div>
 			</div>
-		);
-	else return <Redirect to="/" />;
+		</div>
+	);
 }
 
 const mapStateToProps = (state) => {

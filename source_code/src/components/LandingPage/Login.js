@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col, Alert } from "react-bootstrap";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { continueWithGoogle, login } from "../../store/actions/authActions";
 
@@ -39,8 +39,6 @@ function Login({
 		setDisableButton(false);
 		//console.log("login successful", user.uid);
 	};
-
-	if (authState.uid) return <Redirect to="/home"></Redirect>;
 
 	return (
 		<div>
@@ -122,6 +120,7 @@ function Login({
 										style={{ padding: 0, border: 0 }}
 										onClick={signInGoogle}
 										disabled={disableButton}
+										aria-label="googleButton"
 									>
 										<img
 											style={{
