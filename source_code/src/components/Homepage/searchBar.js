@@ -11,8 +11,7 @@ function SearchBar({ setData, setSearchButton }) {
 		const form = e.target;
 		const formData = new FormData(form);
 		const formDataObj = Object.fromEntries(formData.entries());
-		console.log(location); // location text
-		console.log(formDataObj);
+
 		if (
 			!formDataObj["searchCategory"] &&
 			!formDataObj["searchKeywords"] &&
@@ -38,7 +37,6 @@ function SearchBar({ setData, setSearchButton }) {
 				location: !location ? "" : location.value.formatted,
 			});
 			setSearchButton(true);
-			console.log("Submitting!");
 		}
 	};
 

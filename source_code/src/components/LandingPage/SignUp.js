@@ -42,7 +42,6 @@ function SignUp({ setLogin, authError, signUp, continueWithGoogle }) {
 
 		setDisableButton(false);
 		// setLogin(true);
-		console.log("sign up completed");
 	};
 
 	return (

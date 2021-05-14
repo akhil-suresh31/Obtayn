@@ -17,7 +17,6 @@ export const requestAccepted = (request, acceptor) => {
 			.collection("Notification")
 			.add(data)
 			.then((ref) => {
-				console.log(ref);
 				dispatch({ type: "ACCEPT_REQ", notif: data });
 			})
 			.catch((err) => {
@@ -113,7 +112,6 @@ export const clearNotif = () => {
 
 export const deleteNotif = (notif) => {
 	return (dispatch, getState, { getFirestore }) => {
-		console.log("Inside notif actions");
 		const firestore = getFirestore();
 		firestore
 			.collection("Notification")

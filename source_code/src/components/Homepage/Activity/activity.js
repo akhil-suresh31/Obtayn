@@ -40,7 +40,6 @@ const Activity = ({
 	};
 
 	const handleDelete = (notif) => {
-		console.log(notif);
 		deleteNotif(notif);
 	};
 

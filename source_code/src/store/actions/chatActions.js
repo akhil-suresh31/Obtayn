@@ -32,7 +32,6 @@ export const addUserChat = (users) => {
 							timestamp: new Date(),
 						})
 						.then((ref) => {
-							console.log(ref.id);
 							dispatch({ type: "ADDED_CHAT", ref });
 						})
 						.catch((err) => {
@@ -58,9 +57,6 @@ const uploadTaskPromise = async (image, chat) => {
 			(snapshot) => {
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				if (snapshot.state === firebase.storage.TaskState.RUNNING) {
-					console.log(`Progress: ${progress}%`);
-				}
 			},
 			(error) => {
 				console.log(error);
@@ -86,14 +82,12 @@ export const sendChat = (messageInfo, chat) => {
 		const message = messageInfo.message ? messageInfo.message : "";
 		const chatRef = firestore.collection("Chat").doc(chat.id);
 		const images = messageInfo.images;
-		// console.log(images);
 		var imagesUrl = [];
 		for (let i = 0; i < images.length; i++) {
 			let url = await uploadTaskPromise(images[i], chat);
 			imagesUrl.push(url);
 		}
 
-		// console.log(imagesUrl);
 		chatRef
 			.update({
 				seen: false,

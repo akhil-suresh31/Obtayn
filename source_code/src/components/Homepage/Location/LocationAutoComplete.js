@@ -9,7 +9,6 @@ const LocationAutoComplete = ({ setLocation, isrequest, location }) => {
 		const geoCode = new GeoCode();
 		var results = await await geoCode.geolookup(inputText);
 		results = results.filter((item) => item.raw.importance > 0.3);
-		console.log(inputText);
 		callback(results.map((loc) => ({ label: loc.formatted, value: loc })));
 	};
 

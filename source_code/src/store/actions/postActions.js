@@ -14,9 +14,6 @@ const uploadImages = (myImages, doc_id, firestore) => {
 			(snapshot) => {
 				const progress =
 					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				if (snapshot.state === firebase.storage.TaskState.RUNNING) {
-					console.log(`Progress: ${progress}%`);
-				}
 			},
 			(error) => {
 				console.log(error);
@@ -27,7 +24,6 @@ const uploadImages = (myImages, doc_id, firestore) => {
 					.child(`${doc_id}-${i}`)
 					.getDownloadURL()
 					.then((url) => {
-						console.log("supposed to be named :", `${doc_id}-${i}`);
 						URLList.push(url);
 						firestore
 							.collection("Post")
@@ -41,7 +37,6 @@ const uploadImages = (myImages, doc_id, firestore) => {
 
 export const createPost = (data, myImages) => {
 	return (dispatch, getState, { getFirestore }) => {
-		//console.log("Received->", myImages);
 		const firestore = getFirestore();
 		const uid = getState().firebase.auth.uid;
 		const user = getState().firebase.profile.name;
@@ -62,7 +57,6 @@ export const createPost = (data, myImages) => {
 			.then((docRef) => {
 				ref = docRef.id;
 				uploadImages(myImages, ref, firestore);
-				//console.log("doc Id ", ref);
 				dispatch({ type: "CREATE_POST", data });
 			})
 			.catch((err) => {

@@ -90,7 +90,6 @@ const Requests = ({
 			showDenyButton: true,
 		}).then((result) => {
 			if (result.isConfirmed) {
-				console.log("calling");
 				requestFulfilledNotif(request);
 				Swal.fire({
 					title: "Marked as Fulfilled!",
@@ -98,7 +97,6 @@ const Requests = ({
 					icon: "success",
 					timer: 1500,
 				});
-				console.log("called");
 			}
 		});
 	};
@@ -124,7 +122,6 @@ const Requests = ({
 
 	const handleChange = (e) => {
 		setRequestView(!requestView);
-		console.log(requestView);
 	};
 
 	var incomingReq = [];
@@ -445,7 +442,6 @@ const Requests = ({
 																req.to_user_id
 														)
 													];
-												// console.log(acceptor);
 											}
 
 											return (

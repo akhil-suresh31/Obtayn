@@ -55,7 +55,6 @@ function CreatePost({
 		if (files.length > 0) {
 			for (i = 0; i < files.length; i++) {
 				if (types.includes(files[i].type)) {
-					//console.log(files[i]);
 					myImages.push(files[i]);
 					setError("");
 				} else {
@@ -64,9 +63,7 @@ function CreatePost({
 				}
 			}
 		}
-		console.log("temp->", myImages);
 		setImages([...images, ...myImages]);
-		console.log("images => ", images);
 	};
 
 	const handleSubmit = (e) => {

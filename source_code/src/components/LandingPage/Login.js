@@ -37,7 +37,6 @@ function Login({
 		// 	return;
 		// }
 		setDisableButton(false);
-		//console.log("login successful", user.uid);
 	};
 
 	return (
@@ -86,9 +85,6 @@ function Login({
 								<Form.Text
 									className="forgot-pass mb-3 mt=0"
 									onClick={() => {
-										console.log(
-											"lmao loser forgtot his/her password"
-										);
 										setFrgtPass(true);
 									}}
 								>
