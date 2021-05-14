@@ -3,7 +3,7 @@ const initState = {};
 const notificationReducer = (state = initState, action) => {
 	switch (action.type) {
 		case "ACCEPT_REQ":
-			console.log("accept request notification added", action.notif);
+			console.log("accept request notification added");
 			return state;
 
 		case "ACCEPT_REQ_ERROR":
@@ -21,7 +21,7 @@ const notificationReducer = (state = initState, action) => {
 			return state;
 
 		case "DELETE_NOTIF":
-			console.log("request delete notification sent", action.ref);
+			console.log("request delete notification sent");
 			return state;
 
 		case "DELETE_NOTIF_ERROR":
@@ -32,7 +32,7 @@ const notificationReducer = (state = initState, action) => {
 			return state;
 
 		case "NEW_MESSAGE_NOTIF":
-			console.log("new message notification sent", action.ref.id);
+			console.log("new message notification sent");
 			return state;
 
 		case "NEW_MESSAGE_NOTIF_ERROR":
@@ -40,7 +40,7 @@ const notificationReducer = (state = initState, action) => {
 			return state;
 
 		case "NOTIF_CLICK":
-			console.log("notification clicked :", action.notif.id);
+			console.log("notification clicked :");
 			return {
 				...state,
 				...action.notif,
@@ -51,7 +51,7 @@ const notificationReducer = (state = initState, action) => {
 			return null;
 
 		case "DELETED_NOTIF":
-			console.log("notification deleted", action.notif.id);
+			console.log("notification deleted");
 			return state;
 
 		case "DELETED_NOTIF_ERROR":

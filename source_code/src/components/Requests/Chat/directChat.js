@@ -29,7 +29,6 @@ const DirectChat = ({
 	 */
 	const sendMessage = () => {
 		setError("");
-		// console.log(message);
 		const messageInfo = {
 			message: message,
 			to_user_id: user.id,
@@ -44,7 +43,6 @@ const DirectChat = ({
 	const handleChange = (e) => {
 		e.preventDefault();
 		var files = e.target.files;
-		console.log("Target files ->", files);
 		const myImages = [];
 		if (images.length + files.length > 3) {
 			setError("Cannot upload more than 3 images.");
@@ -62,9 +60,7 @@ const DirectChat = ({
 				}
 			}
 		}
-		console.log("temp->", myImages);
 		setImages([...images, ...myImages]);
-		console.log("images => ", images);
 	};
 
 	/**function to clear the user and chat,nd go back to chatlist */
@@ -238,7 +234,6 @@ const DirectChat = ({
 								<Button
 									variant="danger"
 									onClick={() => {
-										console.log(images);
 										setImages([]);
 									}}
 									style={{

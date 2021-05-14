@@ -102,7 +102,6 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 								size={27}
 								onClick={() => {
 									setMenuOpen(!menuOpen);
-									console.log("Navbar->", menuOpen);
 								}}
 								alt="Notifications"
 							/>
