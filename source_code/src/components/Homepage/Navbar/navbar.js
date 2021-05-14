@@ -108,18 +108,20 @@ export default function NavBar({ menuOpen, setMenuOpen }) {
 							/>
 						</OverlayTrigger>
 					</Nav>
-					<Nav className="justify-content-end">
-						<OverlayTrigger
-							placement="bottom"
-							overlay={renderTooltip("New Post")}
-						>
-							<Link to="/createPost" className="navbar-icons">
-								<FileEarmarkPlusFill size={27} />
-							</Link>
-						</OverlayTrigger>
-					</Nav>
+					{window.location.pathname !== "/createPost" ? (
+						<Nav className="justify-content-end">
+							<OverlayTrigger
+								placement="bottom"
+								overlay={renderTooltip("New Post")}
+							>
+								<Link to="/createPost" className="navbar-icons">
+									<FileEarmarkPlusFill size={27} />
+								</Link>
+							</OverlayTrigger>
+						</Nav>
+					) : null}
 					{(() => {
-						if (window.location.pathname === "/home")
+						if (window.location.pathname !== "/requests")
 							return (
 								<Nav className="justify-content-end">
 									<OverlayTrigger
