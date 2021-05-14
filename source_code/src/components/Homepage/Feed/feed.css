@@ -68,19 +68,15 @@
 }
 
 .no-results {
-	margin-top: 5%;
+	margin-top: 2%;
 	height: min-content;
 	/* width: min-content; */
-	margin-left: 38%;
+	/* margin-left: 38%; */
 	overflow: hidden;
-}
-
-.no-result-text {
-	margin-left: 28%;
 }
 
 .results-gif {
 	align-self: center;
-	height: 40vh !important;
-	width: 50vw !important;
+	height: 30vh !important;
+	width: 40vw !important;
 }

@@ -533,19 +533,21 @@ const Feed = ({
 		} else {
 			return (
 				<>
-					<div className="no-results">
-						<img
-							src="images/no-results.gif"
-							name="results-gif"
-							alt=""
-						/>
-					</div>
-					<h4
-						className="no-result-text"
-						style={{ color: "white", paddingTop: "2%" }}
-					>
-						Don't be mad, we couldn't find any results.
-					</h4>
+					<center>
+						<div className="no-results">
+							<img
+								src="images/no-results.gif"
+								name="results-gif"
+								alt=""
+							/>
+						</div>
+						<h4
+							className="no-result-text"
+							style={{ color: "white", paddingBottom: "2%" }}
+						>
+							Don't be mad, we couldn't find any results.
+						</h4>
+					</center>
 				</>
 			);
 		}
