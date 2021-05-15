@@ -46,12 +46,22 @@ export const addUserChat = (users) => {
 };
 
 const uploadTaskPromise = async (image, chat) => {
+	const options = {
+		maxSizeMB: 1,
+		maxWidthOrHeight: 1920,
+	};
+	var cmpFile;
+	try {
+		cmpFile = await imageCompression(image, options);
+	} catch (error) {
+		console.log(error);
+	}
 	return new Promise((resolve, reject) => {
 		const storage = firebase.storage();
 		const time = format(new Date(), "yyyyMMdd-HH-mm-ss-SSS");
 		const uploadTask = storage
 			.ref(`/chatImages/${chat.id}/IMG-${time}-${image.name}`)
-			.put(image);
+			.put(cmpFile);
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {

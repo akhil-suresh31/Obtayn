@@ -2,13 +2,23 @@ import "firebase/firestore";
 import "firebase/storage";
 import firebase from "../../firebase/firebase.js";
 
-const uploadImages = (myImages, doc_id, firestore) => {
+const uploadImages = async (myImages, doc_id, firestore) => {
 	const storage = firebase.storage();
 	const URLList = [];
+	const options = {
+		maxSizeMB: 1,
+		maxWidthOrHeight: 1920,
+	};
 	for (let i = 0; i < myImages.length; i++) {
+		var cmpFile;
+		try {
+			cmpFile = await imageCompression(myImages[i], options);
+		} catch (error) {
+			console.log(error);
+		}
 		const uploadTask = storage
 			.ref(`/feedImages/${doc_id}-${i}`)
-			.put(myImages[i]);
+			.put(cmpFile);
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {
