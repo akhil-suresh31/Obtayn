@@ -1,6 +1,7 @@
 import { messageSent } from "./notificationActions";
 import firebase from "../../firebase/firebase.js";
 import { format } from "date-fns";
+import imageCompression from "browser-image-compression";
 
 export const addUserChat = (users) => {
 	return (dispatch, getState, { getFirestore }) => {

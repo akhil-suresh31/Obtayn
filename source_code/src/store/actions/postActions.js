@@ -1,6 +1,7 @@
 import "firebase/firestore";
 import "firebase/storage";
 import firebase from "../../firebase/firebase.js";
+import imageCompression from "browser-image-compression";
 
 const uploadImages = async (myImages, doc_id, firestore) => {
 	const storage = firebase.storage();
