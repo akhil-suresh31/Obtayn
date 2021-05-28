@@ -2,7 +2,11 @@ import "firebase/firestore";
 import "firebase/storage";
 import firebase from "../../firebase/firebase.js";
 import { addUserChat } from "./chatActions.js";
-import { requestAccepted, requestDeletedNotif } from "./notificationActions";
+import {
+	requestAccepted,
+	requestDeletedNotif,
+	requestDeclinedNotif,
+} from "./notificationActions";
 import imageCompression from "browser-image-compression";
 
 const uploadImages = async (myImages, doc_id, firestore) => {
@@ -86,6 +90,7 @@ export const acceptRequest = (request) => {
 		ref.update({
 			to_user_id: uid,
 			status: "accepted",
+			acceptedTime: new Date(),
 		})
 			.then(() => {
 				dispatch(requestAccepted(request, uid));
@@ -94,6 +99,24 @@ export const acceptRequest = (request) => {
 			})
 			.catch((err) => {
 				dispatch({ type: "ACCEPT_REQUEST_ERROR", err });
+			});
+	};
+};
+
+export const declineRequest = (request) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+		const ref = firestore.collection("Request").doc(request.id);
+		ref.update({
+			to_user_id: null,
+			status: "pending",
+			acceptedTime: firestore.FieldValue.delete(),
+		})
+			.then(() => {
+				dispatch(requestDeclinedNotif(request));
+			})
+			.catch((err) => {
+				dispatch({ type: "DECLINE_REQUEST_ERROR", err });
 			});
 	};
 };
@@ -119,9 +142,9 @@ export const deleteRequest = (request) => {
 			.doc(request.id)
 			.delete()
 			.then(() => {
-				if (request.status == "accepted")
+				if (request.status === "accepted")
 					dispatch(requestDeletedNotif(request));
-				else if (request.status == "pending")
+				else if (request.status === "pending")
 					dispatch({ type: "DELETE_REQUEST", request });
 			})
 			.catch((err) => {

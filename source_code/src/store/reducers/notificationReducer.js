@@ -57,7 +57,13 @@ const notificationReducer = (state = initState, action) => {
 		case "DELETED_NOTIF_ERROR":
 			console.log("error deleting notification", action.code);
 			return state;
+		case "DECLINE_NOTIF":
+			console.log("request declined notification sent");
+			return state;
 
+		case "DECLINE_NOTIF_ERROR":
+			console.log("error sending decline notification", action.code);
+			return state;
 		default:
 			return state;
 	}

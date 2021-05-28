@@ -14,12 +14,16 @@ import Swal from "sweetalert2";
 import { CheckCircleFill, TrashFill } from "react-bootstrap-icons";
 import Navbar from "../Homepage/Navbar/navbar";
 import "./requests.css";
-import { deleteRequest } from "../../store/actions/requestActions";
+import {
+	declineRequest,
+	deleteRequest,
+} from "../../store/actions/requestActions";
 import {
 	clearNotif,
 	requestFulfilledNotif,
 } from "../../store/actions/notificationActions";
 import { Redirect } from "react-router";
+import { differenceInHours, differenceInMinutes } from "date-fns";
 
 const Chat = lazy(() => import("./Chat/chat"));
 const DirectChat = lazy(() => import("./Chat/directChat"));
@@ -34,6 +38,7 @@ const Requests = ({
 	requestFulfilledNotif,
 	clearNotif,
 	highlight,
+	declineRequest,
 }) => {
 	const [show, setShow] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -182,6 +187,28 @@ const Requests = ({
 											>
 												<p className="req-title">
 													{req.title}
+													{req.acceptedTime &&
+														differenceInHours(
+															new Date(),
+															req.acceptedTime.toDate()
+														) <= 1 && (
+															<div className="fulfill-button">
+																<OverlayTrigger
+																	placement="top"
+																	overlay={renderTooltip(
+																		"Delete"
+																	)}
+																>
+																	<TrashFill
+																		onClick={() =>
+																			declineRequest(
+																				req
+																			)
+																		}
+																	/>
+																</OverlayTrigger>
+															</div>
+														)}
 												</p>
 												<p className="req-sender">
 													<b>From: </b>
@@ -581,6 +608,7 @@ const mapDispatchToProps = (dispatch) => {
 		deleteRequest: (request) => dispatch(deleteRequest(request)),
 		requestFulfilledNotif: (request) =>
 			dispatch(requestFulfilledNotif(request)),
+		declineRequest: (request) => dispatch(declineRequest(request)),
 	};
 };
 

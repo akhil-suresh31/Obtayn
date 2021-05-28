@@ -49,6 +49,30 @@ export const requestFulfilledNotif = (request) => {
 	};
 };
 
+export const requestDeclinedNotif = (request) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+		const user = getState().firebase.profile.name;
+		const title = request.title;
+		firestore
+			.collection("Notification")
+			.add({
+				trigger_event: "request",
+				trigger_event_id: request.id,
+				from_user_id: request.to_user_id,
+				to_user_id: request.from_user_id,
+				message: `${user} declined your request - "${title}"`,
+				timestamp: new Date(),
+			})
+			.then((ref) => {
+				dispatch({ type: "DECLINE_NOTIF", request });
+			})
+			.catch((err) => {
+				dispatch({ type: "DECLINE_NOTIF_ERROR", err });
+			});
+	};
+};
+
 export const requestDeletedNotif = (request) => {
 	return (dispatch, getState, { getFirestore }) => {
 		const firestore = getFirestore();

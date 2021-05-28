@@ -29,6 +29,9 @@ const requestReducer = (state = initState, action) => {
 		case "REQUEST_FULFILL_ERROR":
 			console.log("error fulfilling request", action.code);
 			return state;
+		case "DECLINE_REQUEST_ERROR":
+			console.log("Error declining request", action.code);
+			return state;
 		default:
 			return state;
 	}
